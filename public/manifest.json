@@ -1,8 +1,8 @@
 {
   "name": "tabrent",
   "short_name": "TR",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
+  "theme_color": "#000080",
+  "background_color": "#fff",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
