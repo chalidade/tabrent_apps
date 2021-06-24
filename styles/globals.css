@@ -14,3 +14,24 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.main {
+  margin: 10px 20px;
+  height: 100vh;
+}
+
+.return {
+  color: #2f2f8d;
+}
+
+.cancel {
+  color: #D60000;
+}
+
+.success {
+  color: #32C21A;
+}
+
+.confirmation {
+  color: #F9EF00;
+}

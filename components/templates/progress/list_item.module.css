@@ -1,0 +1,45 @@
+.container {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  height: 152px;
+  background: #ffffff;
+  box-shadow: 0px 2px 5px rgb(0 0 0 / 25%);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.textTransaction {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.imgItem {
+  width: 83px;
+  height: 83px;
+  background: #000;
+}
+
+.textTitle {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.textSubTitle {
+  width: 100%;
+  font-size: 12px;
+}
+
+.textSubTitlePrice {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.textStatus {
+  position: absolute;
+  margin-top: 83px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 100px;
+}
