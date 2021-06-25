@@ -3,15 +3,15 @@ import style from "../templates/globals/top_nav.module.css";
 export default function TopNav({
   back = false,
   text = "Back",
-  noArrow = false,
+  arrow = "false",
 }) {
   return (
     <div className={style.navigation}>
-      {back && noArrow ? (
+      {back && arrow == "false" ? (
         <div>
           <font className={style.textNavBackNoArrow}>{text}</font>
         </div>
-      ) : back && noArrow === "false" ? (
+      ) : back && arrow ? (
         <div>
           <img src="./icons/icon_back.svg" className={style.iconSearch} />
           <font className={style.textNavBack}>{text}</font>
