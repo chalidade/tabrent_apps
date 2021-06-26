@@ -1,10 +1,10 @@
 import TopNav from "../../components/globals/top_nav";
-import { TextField, Grid, Button } from "@material-ui/core";
+import { TextField, Grid, Button, Link } from "@material-ui/core";
 import { useState } from "react";
 
 const style = {
   textField: { marginTop: "10px", marginBottom: "10px" },
-  mt40: { marginTop: "40px" },
+  mt50: { marginTop: "50px" },
   btnOutline: {
     width: "120px",
     textTransform: "capitalize",
@@ -26,14 +26,14 @@ export default function AccountInformation() {
   };
 
   return (
-    <div>
+    <div className="mb-30">
       <TopNav
         back="true"
         text="Account Information"
         arrow="true"
         page="Profile"
       />
-      <div className="main mb-30">
+      <div className="main">
         <TextField
           style={style.textField}
           fullWidth={true}
@@ -95,7 +95,9 @@ export default function AccountInformation() {
           label="Email"
         />
         <div className="mt-15 mb-15">
-          <font className="color-primary weight-600">Change</font>
+          <Link href="/profile/change_password">
+            <font className="color-primary weight-600">Change Password</font>
+          </Link>
         </div>
         <TextField
           style={style.textField}
@@ -112,7 +114,7 @@ export default function AccountInformation() {
         <div className="mt-30">
           <p className="weight-500">Driving Licence Card</p>
         </div>
-        <Grid container style={style.mt40}>
+        <Grid container style={style.mt50}>
           <Grid item xs={3}></Grid>
           <Grid item xs={5}>
             <Button variant="outlined" style={style.btnOutline}>

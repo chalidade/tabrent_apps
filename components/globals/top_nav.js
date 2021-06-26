@@ -10,10 +10,14 @@ export default function TopNav({
 }) {
   const router = useRouter();
   const handleBack = () => {
-    router.push({
-      pathname: "/",
-      query: { page: page },
-    });
+    if (page) {
+      router.push({
+        pathname: "/",
+        query: { page: page },
+      });
+    } else {
+      router.back();
+    }
   };
 
   return (

@@ -16,8 +16,9 @@ a {
 }
 
 .main {
-  margin: 10px 20px;
+  margin: 20px 20px;
   height: 100vh;
+  margin-bottom: 40px;
 }
 
 .return {
