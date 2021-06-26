@@ -16,7 +16,7 @@ export default function ListItem({ data }) {
             className={style.imgItem}
             style={{
               background: `url(${
-                data.item_image ? data.item_image : "./progress/img_item.svg"
+                data.item_image ? data.item_image : "/progress/img_item.svg"
               })`,
               backgroundSize: "contain",
               borderRadius: "15px",
