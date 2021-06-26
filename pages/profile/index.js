@@ -42,7 +42,11 @@ export default function Index({ page, setPage }) {
           icon="./icons/icon_contact_us.svg"
           url="/profile/contact_us"
         />
-        <ListItem value="Get help" icon="./icons/icon_help.svg" />
+        <ListItem
+          value="Get help"
+          icon="./icons/icon_help.svg"
+          url="/profile/get_help"
+        />
         <ListItem value="Rate us" icon="./icons/icon_like.svg" />
         <hr />
         <ListItem
