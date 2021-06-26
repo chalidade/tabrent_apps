@@ -22,7 +22,11 @@ export default function Index({ page, setPage }) {
           icon="./icons/icon_star_outline.svg"
           url="/profile/feedback"
         />
-        <ListItem value="Referral Code" icon="./icons/icon_referal_code.svg" />
+        <ListItem
+          value="Referral Code"
+          icon="./icons/icon_referal_code.svg"
+          url="/profile/referral_code"
+        />
         <ListItem
           value="Share to your friends"
           icon="./icons/icon_market.svg"
