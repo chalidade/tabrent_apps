@@ -3,24 +3,30 @@ import Home from "./home/index";
 import Progress from "./progress/index";
 import Notification from "./notification/index";
 import Profile from "./profile/index";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function Index() {
+  const router = useRouter();
   const [page, setPage] = useState("Home");
   const [back, setBack] = useState("Home");
-  console.log(page);
+
+  useEffect(() => {
+    setPage(router.query ? router.query.page : "Home");
+  }, []);
+
   return (
     <div>
       {page == "Home" ? (
-        <Home />
+        <Home page={page} setPage={setPage} />
       ) : page == "Progress" ? (
-        <Progress />
+        <Progress page={page} setPage={setPage} />
       ) : page == "Notification" ? (
-        <Notification />
+        <Notification page={page} setPage={setPage} />
       ) : page == "Profile" ? (
-        <Profile />
+        <Profile page={page} setPage={setPage} />
       ) : (
-        <Home />
+        <Home page={page} setPage={setPage} />
       )}
       <BottomNav page={page} setPage={setPage} />
     </div>

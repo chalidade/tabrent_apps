@@ -25,13 +25,61 @@ a {
 }
 
 .cancel {
-  color: #D60000;
+  color: #d60000;
 }
 
 .success {
-  color: #32C21A;
+  color: #32c21a;
 }
 
 .confirmation {
-  color: #F9EF00;
+  color: #f9ef00;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.color-primary {
+  color: #2f2f8d;
+}
+
+.bg-primary {
+  background: #2f2f8d;
+}
+
+.weight-500 {
+  font-weight: 500;
+}
+
+.weight-600 {
+  font-weight: 600;
+}
+
+.weight-700 {
+  font-weight: 700;
+}
+
+.weight-800 {
+  font-weight: 800;
 }

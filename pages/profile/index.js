@@ -1,12 +1,12 @@
 import Header from "../../components/profiles/header";
 import ListItem from "../../components/profiles/list_item";
+import BottomNav from "../../components/globals/bottom_nav";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-export default function Index() {
+export default function Index({ page, setPage }) {
   return (
     <div>
       <Header />
-      <div className="main">
+      <div className="main" style={{ overflow: "hidden" }}>
         <ListItem
           value="Became a rental owner"
           icon="./icons/icon_market.svg"

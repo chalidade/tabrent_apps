@@ -1,14 +1,21 @@
 import style from "../templates/globals/bottom_nav.module.css";
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import { Home, ListAlt, Notifications, Person } from "@material-ui/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function TopNav({ back = false, text = "Back", page, setPage }) {
-  const [value, setValue] = useState("Home");
+  const router = useRouter();
+  const [value, setValue] = useState(page);
   const handleChangePage = (event, newValue) => {
     setValue(newValue);
     setPage(newValue);
   };
+
+  useEffect(() => {
+    setValue(router.query ? router.query.page : "Home");
+  }, []);
+
   return (
     <div className={style.navigation}>
       <BottomNavigation
