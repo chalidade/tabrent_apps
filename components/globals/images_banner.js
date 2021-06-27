@@ -17,7 +17,7 @@ radius,
         backgroundSize:size,
         backgroundRepeat:repeat,
         backgroundPosition:position,
-        borderRadius : radius
+        borderRadius : radius,
       }}
     ></div>
   );
