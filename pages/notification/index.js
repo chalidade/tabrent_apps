@@ -28,7 +28,7 @@ export default function Index() {
 
   return (
     <div>
-      <TopNav />
+      <TopNav back="true" text="Notification" />
       <div className="main" style={{ height: data ? "auto" : "100vh" }}>
         {data.map((data, index) => {
           return <ListItem data={data} />;

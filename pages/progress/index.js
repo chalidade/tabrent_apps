@@ -43,7 +43,7 @@ export default function Index() {
   ];
   return (
     <div>
-      <TopNav back="true" text="Notification" />
+      <TopNav back="true" text="Transaction History" />
       <div className="main">
         {data.map((data, index) => {
           return <ListItem data={data} />;
