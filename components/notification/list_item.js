@@ -1,4 +1,4 @@
-import { Container, Typography, Button } from "@material-ui/core";
+import { Container, Typography, Button, Link } from "@material-ui/core";
 
 const style = {
   btnFill: {
@@ -10,6 +10,7 @@ const style = {
 };
 
 export default function ListItem({ data }) {
+  let url_detail = "/notification/detail_article";
   return (
     <div className="container-standart" style={{ height: "auto" }}>
       <h1 style={{ fontSize: "20px", textTransform: "Capitalize" }}>
@@ -17,9 +18,11 @@ export default function ListItem({ data }) {
       </h1>
       <p className="mt-3">{data.item_date}</p>
       <p>{data.item_desc}</p>
-      <Button variant="outlined" fullWidth={true} style={style.btnFill}>
-        Read More
-      </Button>
+      <Link href={url_detail}>
+        <Button variant="outlined" fullWidth={true} style={style.btnFill}>
+          Read More
+        </Button>
+      </Link>
     </div>
   );
 }
