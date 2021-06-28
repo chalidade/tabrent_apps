@@ -7,6 +7,8 @@ export default function TopNav({
   text = "Back",
   arrow = "false",
   page,
+  onSearch,
+  setSearch,
 }) {
   const router = useRouter();
   const handleBack = () => {
@@ -18,6 +20,9 @@ export default function TopNav({
     } else {
       router.back();
     }
+  };
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -44,7 +49,12 @@ export default function TopNav({
       ) : (
         <div>
           <img src="/icons/icon_search.svg" className={style.iconSearch} />
-          <input type="text" className={style.searchBox} placeholder="Search" />
+          <input
+            type="text"
+            className={style.searchBox}
+            placeholder="Search"
+            onChange={handleSearch}
+          />
         </div>
       )}
     </div>
