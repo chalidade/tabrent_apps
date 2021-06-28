@@ -16,19 +16,19 @@ export default function Index() {
           <div class="row col mt-3" radius="10px">
           <Carousel>
             <Carousel.Item interval={2000}>
-              <ImageBanner image="/home/banner_1.jpg" width="350px"  height="150px" repeat="no-repeat"  radius="10px" />
+              <ImageBanner image="/home/banner_1.jpg" width="340px"  height="150px" repeat="no-repeat"  radius="10px" />
               <Carousel.Caption>
               </Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item interval={2000}>
-              <ImageBanner image="/home/banner_2.jpg" width="350px"  height="150px" repeat="no-repeat" radius="10px" />
+              <ImageBanner image="/home/banner_2.jpg" width="340px"  height="150px" repeat="no-repeat" radius="10px" />
               <Carousel.Caption>
               </Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item interval={2000}>
-            <ImageBanner image="/home/banner_3.jpg" width="350px" height="150px" repeat="no-repeat" radius="10px" />
+            <ImageBanner image="/home/banner_3.jpg" width="340px" height="150px" repeat="no-repeat" radius="10px" />
               <Carousel.Caption>
               </Carousel.Caption>
             </Carousel.Item>
@@ -41,7 +41,7 @@ export default function Index() {
                         backgroundColor: "#2F2F8D",
                         color:"#ffffff",
                         height:"60px",
-                        width:"115px",
+                        width:"105px",
                         left:"0px",
                         top:"-1px",
                         borderRadius: "15px",
@@ -67,7 +67,7 @@ export default function Index() {
                     backgroundColor: "#2F2F8D",
                     color:"#ffffff",
                     height:"60px",
-                    width:"100px",
+                    width:"95px",
                     left:"0px",
                     top:"-1px",
                     borderRadius: "15px",
@@ -80,34 +80,32 @@ export default function Index() {
           </div>
 
           <div class="row col mt-3 text-left">
-              <div class="col mt-3 text-left">
-              <Card style={{ width: "105px", height:"141px"}}>
-                <Card.Img variant="top" src="/home/banner_1.jpg" />
+
+              <Card style={{ width: "105px", height:"141px", marginRight:"2px"}}>
+                <Card.Img variant="top" src="/home/image_1.jpg" />
+                <Card.Body>
+                  <Card.Title style={{size:"2px"}}></Card.Title>
+                  <Card.Text style={{size:"2px"}}></Card.Text>
+                  <Card.Title style={{size:"2px"}}></Card.Title>
+                </Card.Body>
+              </Card>
+
+              <Card style={{ width: "105px", height:"141px", marginRight:"2px"}}>
+                <Card.Img variant="top" src="/home/image_2.jpg" />
                 <Card.Body>
                   <Card.Title style={{size:"8px"}} ></Card.Title>
                   <Card.Text style={{size:"6px"}}></Card.Text>
-                  <Button variant="primary" size="sm">Ok</Button>
                 </Card.Body>
               </Card>
 
               <Card style={{ width: "105px", height:"141px"}}>
-                <Card.Img variant="top" src="/home/banner_1.jpg" />
+                <Card.Img variant="top" src="/home/image_3.jpg" />
                 <Card.Body>
                   <Card.Title style={{size:"8px"}} ></Card.Title>
                   <Card.Text style={{size:"6px"}}></Card.Text>
-                  <Button variant="primary" size="sm">Ok</Button>
                 </Card.Body>
               </Card>
 
-              <Card style={{ width: "105px", height:"141px"}}>
-                <Card.Img variant="top" src="/home/banner_1.jpg" />
-                <Card.Body>
-                  <Card.Title style={{size:"8px"}} ></Card.Title>
-                  <Card.Text style={{size:"6px"}}></Card.Text>
-                  <Button variant="primary" size="sm">Ok</Button>
-                </Card.Body>
-              </Card>
-              </div>
           </div>
 
       </div>
