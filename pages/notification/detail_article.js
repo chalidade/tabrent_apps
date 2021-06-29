@@ -14,6 +14,7 @@ export default function DetailArticle() {
         <img src="/notification/img_banner.svg" style={{ width: "100%" }} />
         <h1
           style={{
+            marginTop:"20px",
             fontSize: "20px",
             textTransform: "Capitalize",
             color: "#2F2F8D",

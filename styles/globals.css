@@ -94,3 +94,7 @@ a {
   border-radius: 10px;
   padding: 20px;
 }
+
+.bg-white {
+  background: #fff;
+}
