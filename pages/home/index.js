@@ -1,21 +1,24 @@
 import TopNav from "../../components/globals/top_nav";
 import ImageBanner from "../../components/globals/images_banner";
-
 import { Container, Typography } from "@material-ui/core";
-import { Card, ButtonGroup, Button, Carousel} from 'react-bootstrap';
-import { MdDirectionsBike, MdMotorcycle, MdDirectionsBus, MdDirectionsCar } from "react-icons/md";
-
+import { Card, ButtonGroup, Button, Carousel } from "react-bootstrap";
+import {
+  MdDirectionsBike,
+  MdMotorcycle,
+  MdDirectionsBus,
+  MdDirectionsCar,
+} from "react-icons/md";
+import { useState, useEffect } from "react";
 
 export default function Index() {
   const [search, setSearch] = useState();
 
   return (
     <div>
-      <TopNav back="true" text="Home"/>
+      <TopNav back="true" text="Home" />
 
       <div className="main">
-
-          <div class="row col mt-3" radius="10px">
+        <div className="row col mt-3" radius="10px">
           <Carousel>
             <Carousel.Item interval={2000}>
               <ImageBanner image="/home/banner_1.jpg" width="340px"  height="150px" repeat="no-repeat"  radius="10px" />
@@ -35,9 +38,9 @@ export default function Index() {
               </Carousel.Caption>
             </Carousel.Item>
           </Carousel>
-          </div>
+        </div>
 
-          <div class="row col mt-3 text-right">
+        <div className="row col mt-3 text-right">
           <center>
                       <Button variant="primary" style={{
                         backgroundColor: "#2F2F8D",
@@ -109,7 +112,7 @@ export default function Index() {
               </Card>
 
           </div>
-
+        </div>
       </div>
     </div>
   );
