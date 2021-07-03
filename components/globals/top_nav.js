@@ -1,6 +1,7 @@
 import style from "../templates/globals/top_nav.module.css";
 import { Button, Link } from "@material-ui/core";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function TopNav({
@@ -8,9 +9,10 @@ export default function TopNav({
   text = "Back",
   arrow = "false",
   page,
-  onSearch,
+  setOnSearch,
   setSearch,
 }) {
+  const [tmpSearch, setTmpSearch] = useState();
   const router = useRouter();
   const handleBack = () => {
     if (page) {
@@ -24,6 +26,12 @@ export default function TopNav({
   };
   const handleSearch = (e) => {
     setSearch(e.target.value);
+    setTmpSearch(e.target.value);
+    if (e.target.value.length == 0) {
+      setOnSearch(false);
+    } else {
+      setOnSearch(true);
+    }
   };
 
   return (

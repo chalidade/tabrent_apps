@@ -18,7 +18,7 @@ export default function Index() {
       <TopNav back="true" text="Home" />
 
       <div className="main">
-        <div class="row col mt-3" radius="10px">
+        <div className="row col mt-3" radius="10px">
           <Carousel>
             <Carousel.Item interval={2000}>
               <ImageBanner
@@ -55,7 +55,7 @@ export default function Index() {
           </Carousel>
         </div>
 
-        <div class="row col mt-3 text-right">
+        <div className="row col mt-3 text-right">
           <center>
             <Button
               variant="primary"
@@ -110,8 +110,8 @@ export default function Index() {
           </center>
         </div>
 
-        <div class="row col mt-3 text-left">
-          <div class="col mt-3 text-left">
+        <div className="row col mt-3 text-left">
+          <div className="col mt-3 text-left">
             <Card style={{ width: "105px", height: "141px" }}>
               <Card.Img variant="top" src="/home/banner_1.jpg" />
               <Card.Body>
