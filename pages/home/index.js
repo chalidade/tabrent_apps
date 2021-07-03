@@ -21,97 +21,120 @@ export default function Index() {
         <div className="row col mt-3" radius="10px">
           <Carousel>
             <Carousel.Item interval={2000}>
-              <ImageBanner image="/home/banner_1.jpg" width="340px"  height="150px" repeat="no-repeat"  radius="10px" />
-              <Carousel.Caption>
-              </Carousel.Caption>
+              <ImageBanner
+                image="/home/banner_1.jpg"
+                width="340px"
+                height="150px"
+                repeat="no-repeat"
+                radius="10px"
+              />
+              <Carousel.Caption></Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item interval={2000}>
-              <ImageBanner image="/home/banner_2.jpg" width="340px"  height="150px" repeat="no-repeat" radius="10px" />
-              <Carousel.Caption>
-              </Carousel.Caption>
+              <ImageBanner
+                image="/home/banner_2.jpg"
+                width="340px"
+                height="150px"
+                repeat="no-repeat"
+                radius="10px"
+              />
+              <Carousel.Caption></Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item interval={2000}>
-            <ImageBanner image="/home/banner_3.jpg" width="340px" height="150px" repeat="no-repeat" radius="10px" />
-              <Carousel.Caption>
-              </Carousel.Caption>
+              <ImageBanner
+                image="/home/banner_3.jpg"
+                width="340px"
+                height="150px"
+                repeat="no-repeat"
+                radius="10px"
+              />
+              <Carousel.Caption></Carousel.Caption>
             </Carousel.Item>
           </Carousel>
         </div>
 
         <div className="row col mt-3 text-right">
           <center>
-                      <Button variant="primary" style={{
-                        backgroundColor: "#2F2F8D",
-                        color:"#ffffff",
-                        height:"60px",
-                        width:"105px",
-                        left:"0px",
-                        top:"-1px",
-                        borderRadius: "15px",
-                        marginRight: "10px",
-                        position: "sticky"
-                      }}>
-                      <MdDirectionsBike /> Bycycle </Button>
+            <Button
+              variant="primary"
+              style={{
+                backgroundColor: "#2F2F8D",
+                color: "#ffffff",
+                height: "60px",
+                width: "105px",
+                left: "0px",
+                top: "-1px",
+                borderRadius: "15px",
+                marginRight: "10px",
+                position: "sticky",
+              }}
+            >
+              <MdDirectionsBike /> Bycycle{" "}
+            </Button>
 
-                      <Button variant="primary" style={{
-                        backgroundColor: "#2F2F8D",
-                        color:"#ffffff",
-                        height:"60px",
-                        width:"120px",
-                        left:"0px",
-                        top:"-1px",
-                        borderRadius: "15px",
-                        marginRight: "10px",
-                        position: "sticky"
-                      }}>
-                    <MdMotorcycle /> Motor Cycle</Button>
+            <Button
+              variant="primary"
+              style={{
+                backgroundColor: "#2F2F8D",
+                color: "#ffffff",
+                height: "60px",
+                width: "120px",
+                left: "0px",
+                top: "-1px",
+                borderRadius: "15px",
+                marginRight: "10px",
+                position: "sticky",
+              }}
+            >
+              <MdMotorcycle /> Motor Cycle
+            </Button>
 
-                  <Button variant="primary" style={{
-                    backgroundColor: "#2F2F8D",
-                    color:"#ffffff",
-                    height:"60px",
-                    width:"95px",
-                    left:"0px",
-                    top:"-1px",
-                    borderRadius: "15px",
-                    marginRight: "10px",
-                    position: "sticky"
-                  }}>
-                  <MdDirectionsCar /> Car </Button>
+            <Button
+              variant="primary"
+              style={{
+                backgroundColor: "#2F2F8D",
+                color: "#ffffff",
+                height: "60px",
+                width: "95px",
+                left: "0px",
+                top: "-1px",
+                borderRadius: "15px",
+                marginRight: "10px",
+                position: "sticky",
+              }}
+            >
+              <MdDirectionsCar /> Car{" "}
+            </Button>
+          </center>
+        </div>
 
-            </center>
-          </div>
+        <div class="row col mt-3 text-left">
+          <Card style={{ width: "105px", height: "141px", marginRight: "2px" }}>
+            <Card.Img variant="top" src="/home/image_1.jpg" />
+            <Card.Body>
+              <Card.Title style={{ size: "2px" }}></Card.Title>
+              <Card.Text style={{ size: "2px" }}></Card.Text>
+              <Card.Title style={{ size: "2px" }}></Card.Title>
+            </Card.Body>
+          </Card>
 
-          <div class="row col mt-3 text-left">
+          <Card style={{ width: "105px", height: "141px", marginRight: "2px" }}>
+            <Card.Img variant="top" src="/home/image_2.jpg" />
+            <Card.Body>
+              <Card.Title style={{ size: "8px" }}></Card.Title>
+              <Card.Text style={{ size: "6px" }}></Card.Text>
+            </Card.Body>
+          </Card>
 
-              <Card style={{ width: "105px", height:"141px", marginRight:"2px"}}>
-                <Card.Img variant="top" src="/home/image_1.jpg" />
-                <Card.Body>
-                  <Card.Title style={{size:"2px"}}></Card.Title>
-                  <Card.Text style={{size:"2px"}}></Card.Text>
-                  <Card.Title style={{size:"2px"}}></Card.Title>
-                </Card.Body>
-              </Card>
-
-              <Card style={{ width: "105px", height:"141px", marginRight:"2px"}}>
-                <Card.Img variant="top" src="/home/image_2.jpg" />
-                <Card.Body>
-                  <Card.Title style={{size:"8px"}} ></Card.Title>
-                  <Card.Text style={{size:"6px"}}></Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card style={{ width: "105px", height:"141px"}}>
-                <Card.Img variant="top" src="/home/image_3.jpg" />
-                <Card.Body>
-                  <Card.Title style={{size:"8px"}} ></Card.Title>
-                  <Card.Text style={{size:"6px"}}></Card.Text>
-                </Card.Body>
-              </Card>
-
-          </div>
+          <Card style={{ width: "105px", height: "141px" }}>
+            <Card.Img variant="top" src="/home/image_3.jpg" />
+            <Card.Body>
+              <Card.Title style={{ size: "8px" }}></Card.Title>
+              <Card.Text style={{ size: "6px" }}></Card.Text>
+            </Card.Body>
+          </Card>
         </div>
       </div>
     </div>
