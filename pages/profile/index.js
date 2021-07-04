@@ -2,7 +2,19 @@ import Header from "../../components/profiles/header";
 import ListItem from "../../components/profiles/list_item";
 import BottomNav from "../../components/globals/bottom_nav";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, useEffect } from "react";
+
 export default function Index({ page, setPage }) {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (isLogin) {
+      setPage("Profile");
+    } else {
+      setPage("Login");
+    }
+  }, []);
+
   return (
     <div>
       <Header />
