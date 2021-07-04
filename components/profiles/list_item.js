@@ -1,9 +1,15 @@
 import { Grid, Button, Link } from "@material-ui/core";
 import style from "../templates/profiles/list_item.module.css";
-export default function ListItem({ value, icon, highlight = false, url }) {
+export default function ListItem({
+  value,
+  icon,
+  highlight = false,
+  url,
+  onClick,
+}) {
   return (
     <Link href={url}>
-      <Button fullWidth="true">
+      <Button fullWidth="true" onClick={() => onClick()}>
         <Grid
           container
           direction="row"

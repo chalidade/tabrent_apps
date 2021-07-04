@@ -8,12 +8,26 @@ export default function Index({ page, setPage }) {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    if (isLogin) {
+    try {
+      let login = localStorage.getItem("is_login");
       setPage("Profile");
-    } else {
+      setIsLogin(login);
+    } catch (e) {
       setPage("Login");
+      setIsLogin(false);
     }
   }, []);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("is_login");
+      setPage("Login");
+      setIsLogin(false);
+    } catch (e) {
+      setPage("Login");
+      setIsLogin(false);
+    }
+  };
 
   return (
     <div>
@@ -62,6 +76,7 @@ export default function Index({ page, setPage }) {
         <ListItem value="Rate us" icon="./icons/icon_like.svg" />
         <hr />
         <ListItem
+          onClick={handleLogout}
           highlight="true"
           value="Logout"
           icon="./icons/icon_logout.svg"

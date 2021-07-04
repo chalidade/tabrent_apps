@@ -1,9 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function login({ setPage, page }) {
-
   const handleLogin = () => {
-    console.log("testing");
+    localStorage.setItem("is_login", true);
+    setPage("Profile");
   };
 
   return (
