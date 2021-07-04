@@ -1,54 +1,36 @@
 import { Container, Typography } from "@material-ui/core";
-import { Card, ButtonGroup, Button, Carousel} from 'react-bootstrap';
+import { Card,Button, Carousel} from 'react-bootstrap';
 import { MdDirectionsBike, MdMotorcycle, MdDirectionsBus, MdDirectionsCar } from "react-icons/md";
 
-const style = {
+const styles= {
   btnItem: {
-    backgroundColor: "#2F2F8D",
+    backgroundColor:"#2F2F8D",
+    borderColor:"#2F2F8D",
     color:"#ffffff",
-    height:"60px",
     width:"auto",
+    height:"50px",
     left:"0px",
     top:"-1px",
     borderRadius: "15px",
-    marginRight: "auto",
+    marginRight: "3px",
+    marginTop : "3px"
   }
 };
 
 
 export default function ButtonIcon(){
   return(
+      <div className="container" style={{ height: "auto", align:"justify" }}>
 
-        <Button variant="primary" style={style.btnItem}>
-        <MdDirectionsBike /> Bycycle
-        </Button>
-  
-    //
-    // <Button variant="primary" style={{
-    //   backgroundColor: "#2F2F8D",
-    //   color:"#ffffff",
-    //   height:"60px",
-    //   width:"auto",
-    //   left:"0px",
-    //   top:"-1px",
-    //   borderRadius: "15px",
-    //   marginRight: "auto",
-    //
-    // }}>
-    // <MdMotorcycle /> Motor Cycle</Button>
-    //
-    // <Button variant="primary" style={{
-    // backgroundColor: "#2F2F8D",
-    // color:"#ffffff",
-    // height:"60px",
-    // width:"auto",
-    // left:"0px",
-    // top:"-1px",
-    // borderRadius: "15px",
-    // marginRight: "auto",
-    //
-    // }}>
-    // <MdDirectionsCar /> Car </Button>
+        <Button size="md" style={styles.btnItem}>
+        <MdDirectionsBike/> Bycycle </Button>
 
+        <Button size="md" style={styles.btnItem}>
+        <MdMotorcycle/> Motor Cycle </Button>
+
+        <Button size="md" style={styles.btnItem}>
+        <MdDirectionsCar/> Car </Button>
+
+      </div>
   );
 }

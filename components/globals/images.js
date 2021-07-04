@@ -7,6 +7,7 @@ size,
 repeat,
 position,
 radius,
+align,
 }){
   return (
     <div
@@ -18,6 +19,7 @@ radius,
         backgroundRepeat:repeat,
         backgroundPosition:position,
         borderRadius : radius,
+        align:align,
       }}
     ></div>
   );
