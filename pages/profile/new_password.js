@@ -13,26 +13,26 @@ const style = {
   },
 };
 
-export default function forgetPassword() {
+export default function newpassword() {
   return (
     <div>
       <TopNav back="true" text="Contact Us" arrow="true" page="Profile" />
       <div className="main" style={{ height: "auto" }}>
         <center className="mt-5">
           <p
-            className="color-primary weight-700 mb-1"
+            className="color-primary weight-700 mb-3"
             style={{ fontSize: "20px" }}
           >
-            Forgot your password
+            Enter a new password
           </p>
-          <p className="mb-5 mt-3 text-secondary" style={{ fontSize: "14px" }}>
-            Don’t worry, enter you registerd <br />
-            email id to recieve password reset link
+          <img src="/profile/image_new_password.svg" />
+          <p className="mb-3 mt-3 text-secondary" style={{ fontSize: "14px" }}>
+            Please enter a new strong password <br />
+            and make it sure it’s 6 characters or more
           </p>
-          <img src="/profile/img_forget_password.svg" />
           <div>
             <img
-              src="/profile/icon_email_form.svg"
+              src="/profile/icon_lock_form.svg"
               style={{
                 position: "absolute",
                 marginTop: "40px",
@@ -41,8 +41,8 @@ export default function forgetPassword() {
             />
             <input
               className="mt-4"
-              type="text"
-              placeholder="Email"
+              type="password"
+              placeholder="New Password"
               style={{
                 width: "80%",
                 border: "solid 2px #D2D2D2",
@@ -51,15 +51,35 @@ export default function forgetPassword() {
                 borderRadius: "10px",
               }}
             />
-            <p className="mt-3" style={{ fontSize: "14px" }}>
-              Remember password ?{" "}
-              <font className="color-primary weight-700">Log In</font>
-            </p>
+          </div>
+          <div>
+            <img
+              src="/profile/icon_lock_form.svg"
+              style={{
+                position: "absolute",
+                marginTop: "40px",
+                marginLeft: "15px",
+              }}
+            />
+            <input
+              className="mt-4"
+              type="password"
+              placeholder="Confirm Password"
+              style={{
+                width: "80%",
+                border: "solid 2px #D2D2D2",
+                padding: "10px",
+                paddingLeft: "50px",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+          <div>
             <button
-              className="button-primary mt-3"
+              className="button-primary mt-4"
               style={{ width: "80%", padding: "12px" }}
             >
-              Send
+              Reset Password
             </button>
           </div>
         </center>
