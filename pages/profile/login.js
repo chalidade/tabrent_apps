@@ -1,9 +1,17 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { useRouter } from "next/router";
 export default function login({ setPage, page }) {
+  const router = useRouter();
+
   const handleLogin = () => {
     localStorage.setItem("is_login", true);
     setPage("Profile");
+  };
+
+  const handleRegister = () => {
+    router.push({
+      pathname: "/profile/register",
+    });
   };
 
   return (
@@ -54,7 +62,9 @@ export default function login({ setPage, page }) {
         <p className="mt-3" style={{ fontSize: "14px" }}>
           <font className="color-primary weight-700">Forget Password </font>{" "}
           <br /> or <br /> Don't have account ?{" "}
-          <font className="color-primary weight-700">Register</font>
+          <font className="color-primary weight-700" onClick={handleRegister}>
+            Register
+          </font>
         </p>
       </center>
     </div>

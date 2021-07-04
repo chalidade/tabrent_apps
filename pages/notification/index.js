@@ -34,6 +34,7 @@ export default function Index() {
     <div>
       <TopNav
         text="Notification"
+        back="false"
         setSearch={setSearch}
         search={search}
         setOnSearch={setOnSearch}

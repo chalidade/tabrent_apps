@@ -11,6 +11,7 @@ export default function TopNav({
   page,
   setOnSearch,
   setSearch,
+  onClick,
 }) {
   const [tmpSearch, setTmpSearch] = useState();
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function TopNav({
           <font className={style.textNavBackNoArrow}>{text}</font>
         </div>
       ) : back && arrow ? (
-        <div onClick={handleBack}>
+        <div onClick={onClick ? () => onClick() : handleBack}>
           <Button
             style={{
               position: "absolute",
