@@ -8,6 +8,7 @@ import { Container, Typograph} from "@material-ui/core";
 import { Text, Card, ButtonGroup, Button, Carousel} from 'react-bootstrap';
 import { MdDirectionsBike, MdMotorcycle, MdDirectionsBus, MdDirectionsCar } from "react-icons/md";
 import { BsFilterRight } from "react-icons/bs";
+import { VscSettings } from "react-icons/vsc";
 
 
 export default function Index() {
@@ -28,13 +29,22 @@ export default function Index() {
           <div className="row">
               <div className="col">
               <p style={{
-              position: "absolute",
               width: "119px",
               height: "24px",
               left: "31px",
               top: "409px",
-              size:"20px"}}>
-              Ready to rent !
+              size:"20px",
+
+              fontFamily: "Calibri",
+              fontStyle: "normal",
+              fontWeight:"bold",
+              fontSize: "20px",
+              lineHeight: "24px",
+
+              color: "#000000",
+
+            }}>
+              Ready to rent!
               </p>
               </div>
 
@@ -47,13 +57,11 @@ export default function Index() {
                     left:"0px",
                     top:"-1px",
                     borderRadius: "15px",
-                  }}><BsFilterRight /> Filter
+                  }}><VscSettings style={{weight:"bold"}} /> Filter
                   </Button>
               </div>
           </div>
           </div>
-
-          <Cards />
           <Cards />
       </div>
 
