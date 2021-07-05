@@ -27,11 +27,18 @@ export default function Index() {
           <div className="container mt-3" style={{ height: "auto", width:"auto"}}>
           <div className="row">
               <div className="col">
-              <p style={{fontFamily: "Calibri", fontWeight: "700", size: "30px", lineHeight: "24px", color: "#000000"}}> Ready to rent !</p>
+              <p style={{
+              position: "absolute",
+              width: "119px",
+              height: "24px",
+              left: "31px",
+              top: "409px",
+              size:"20px"}}>
+              Ready to rent !
+              </p>
               </div>
 
               <div className="col text-right" style={{align:"right"}}>
-
                   <Button size="md" style={{
                     backgroundColor:"#2F2F8D",
                     borderColor:"#2F2F8D",
@@ -46,6 +53,7 @@ export default function Index() {
           </div>
           </div>
 
+          <Cards />
           <Cards />
       </div>
 
