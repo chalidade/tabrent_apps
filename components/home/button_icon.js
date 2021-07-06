@@ -7,30 +7,33 @@ const styles= {
     backgroundColor:"#2F2F8D",
     borderColor:"#2F2F8D",
     color:"#ffffff",
-    width:"auto",
+    width:"90px",
     height:"50px",
     left:"0px",
     top:"-1px",
     borderRadius: "15px",
-    marginRight: "3px",
-    marginTop : "3px"
+    margin : "3px 0px 0px 0px",
+    justifyContent : "center"
   }
 };
 
 
 export default function ButtonIcon(){
   return(
-      <div className="container" style={{ height: "auto", align:"justify" }}>
+        <div className="row" style={{ height: "auto", align:"justify" }}>
+          <div className="col">
+          <Button size="sm" style={styles.btnItem}>
+          <MdDirectionsBike/> Bycycle </Button>
+          </div>
+          <div className="col">
+          <Button size="sm" style={styles.btnItem}>
+          <MdMotorcycle/> Motor Cycle </Button>
+          </div>
+          <div className="col">
+          <Button size="sm" style={styles.btnItem}>
+          <MdDirectionsCar/> Car </Button>
+          </div>
+        </div>
 
-        <Button size="md" style={styles.btnItem}>
-        <MdDirectionsBike/> Bycycle </Button>
-
-        <Button size="md" style={styles.btnItem}>
-        <MdMotorcycle/> Motor Cycle </Button>
-
-        <Button size="md" style={styles.btnItem}>
-        <MdDirectionsCar/> Car </Button>
-
-      </div>
   );
 }

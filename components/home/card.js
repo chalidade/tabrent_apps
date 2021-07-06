@@ -62,7 +62,7 @@ export default function Cards(){
                     size="small"
                     readOnly
                     value={4}
-                    style={{ marginTop: "10px"}}
+                    style={{ marginTop: "10px", backgroundPosition:"center"}}
                   />
                   </div>
               </div>
@@ -84,7 +84,7 @@ export default function Cards(){
                     size="small"
                     readOnly
                     value={4}
-                    style={{ marginTop: "10px"}}
+                    style={{ marginTop: "10px", backgroundPosition:"center"}}
                   />
                   </div>
               </div>
@@ -106,7 +106,7 @@ export default function Cards(){
                     size="small"
                     readOnly
                     value={4}
-                    style={{ marginTop: "10px"}}
+                    style={{ marginTop: "10px", backgroundPosition:"center"}}
                   />
                   </div>
               </div>
@@ -128,7 +128,7 @@ export default function Cards(){
                     size="small"
                     readOnly
                     value={4}
-                    style={{ marginTop: "10px"}}
+                    style={{ marginTop: "10px", backgroundPosition:"center"}}
                   />
                   </div>
               </div>
@@ -172,7 +172,7 @@ export default function Cards(){
                     size="small"
                     readOnly
                     value={4}
-                    style={{ marginTop: "10px"}}
+                    style={{ marginTop: "10px", backgroundPosition:"center"}}
                   />
                   </div>
               </div>
