@@ -2,6 +2,7 @@ import Images from "../../components/globals/images";
 
 import { Container, Typography } from "@material-ui/core";
 import { MdStar } from "react-icons/md";
+import Rating from "@material-ui/lab/Rating";
 
 const styles= {
   owner: {
@@ -56,10 +57,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "5px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
@@ -75,10 +79,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#C8C8C8", margin:"0px"}} />
-                  <MdStar style={{color : "#C8C8C8", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
@@ -94,10 +101,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
@@ -113,10 +123,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
@@ -132,10 +145,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
@@ -151,10 +167,13 @@ export default function Cards(){
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
                   <div className="col">
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#F9EF00", margin:"0px"}} />
-                  <MdStar style={{color : "#C8C8C8", margin:"0px"}} />
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={4}
+                    style={{ marginTop: "10px"}}
+                  />
                   </div>
               </div>
           </div>
