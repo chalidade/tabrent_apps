@@ -182,8 +182,8 @@ export default function Cards(){
             <Images image="/home/image_7.jpg" width="81.85px"  height="70px" repeat="no-repeat" radius="10px" />
               <div className="row">
                   <div className="col">
-                     <o style={styles.owner}> Carteran Jaya</o>
-                     <p style={styles.car_name}> Suzuky Carry Pickup</p>
+                     <o style={styles.owner}> Pak Al Debaran </o>
+                     <p style={styles.car_name}>Toyota Hiace Highhead</p>
                      <p style={styles.price}> Rp 200.000 <small style={{fontWeight: "bold"}}>/Day</small></p>
                   </div>
               </div>
@@ -204,9 +204,9 @@ export default function Cards(){
             <Images image="/home/image_8.jpg" width="81.85px"  height="70px" repeat="no-repeat" radius="10px" />
               <div className="row">
                   <div className="col">
-                     <o style={styles.owner}> Carteran Jaya</o>
-                     <p style={styles.car_name}> Suzuky Carry Pickup</p>
-                     <p style={styles.price}> Rp 200.000 <small style={{fontWeight: "bold"}}>/Day</small></p>
+                     <o style={styles.owner}> Toyota Hiace Luxury</o>
+                     <p style={styles.car_name}> Luxury Minibus</p>
+                     <p style={styles.price}> Rp 1.200.000 <small style={{fontWeight: "bold"}}>/Day</small></p>
                   </div>
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>
@@ -226,9 +226,9 @@ export default function Cards(){
             <Images image="/home/image_9.jpg" width="81.85px"  height="70px" repeat="no-repeat" radius="10px" />
               <div className="row">
                   <div className="col">
-                     <o style={styles.owner}> Carteran Jaya</o>
-                     <p style={styles.car_name}> Suzuky Carry Pickup</p>
-                     <p style={styles.price}> Rp 200.000 <small style={{fontWeight: "bold"}}>/Day</small></p>
+                     <o style={styles.owner}> Pak Nino</o>
+                     <p style={styles.car_name}> Yamah N-MAX</p>
+                     <p style={styles.price}> Rp 100.000 <small style={{fontWeight: "bold"}}>/Day</small></p>
                   </div>
               </div>
               <div className="row" style={{ height:"auto", marginBottom: "0px", marginTop:"0px" }}>

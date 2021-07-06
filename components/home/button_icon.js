@@ -23,15 +23,15 @@ export default function ButtonIcon(){
         <div className="row" style={{ height: "auto", align:"justify" }}>
           <div className="col">
           <Button size="sm" style={styles.btnItem}>
-          <MdDirectionsBike/> Bycycle </Button>
+          <MdDirectionsBike/> Bycycle</Button>
           </div>
           <div className="col">
           <Button size="sm" style={styles.btnItem}>
-          <MdMotorcycle/> Motor Cycle </Button>
+          <MdMotorcycle/> Motor Cycle</Button>
           </div>
           <div className="col">
           <Button size="sm" style={styles.btnItem}>
-          <MdDirectionsCar/> Car </Button>
+          <MdDirectionsCar/> Car</Button>
           </div>
         </div>
 
