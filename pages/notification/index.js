@@ -52,6 +52,7 @@ export default function Index() {
           return <ListItem data={data} />;
         })}
       </div>
+      
     </div>
   );
 }
