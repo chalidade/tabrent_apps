@@ -3,6 +3,7 @@ import Home from "./home/index";
 import Progress from "./progress/index";
 import Notification from "./notification/index";
 import Profile from "./profile/index";
+import Login from "./profile/login";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -25,6 +26,8 @@ export default function Index() {
         <Notification page={page} setPage={setPage} />
       ) : page == "Profile" ? (
         <Profile page={page} setPage={setPage} />
+      ) : page == "Login" ? (
+        <Login page={page} setPage={setPage} />
       ) : (
         <Home page={page} setPage={setPage} />
       )}

@@ -94,3 +94,20 @@ a {
   border-radius: 10px;
   padding: 20px;
 }
+
+.bg-white {
+  background: #fff;
+}
+
+.button-primary {
+  border: none;
+  padding: 5px 20px;
+  font-size: 11px;
+  background: #2f2f8d;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.color-primary {
+  color: #2f2f8d;
+}

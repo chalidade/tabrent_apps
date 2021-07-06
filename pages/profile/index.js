@@ -2,7 +2,33 @@ import Header from "../../components/profiles/header";
 import ListItem from "../../components/profiles/list_item";
 import BottomNav from "../../components/globals/bottom_nav";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useState, useEffect } from "react";
+
 export default function Index({ page, setPage }) {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    try {
+      let login = localStorage.getItem("is_login");
+      setPage("Profile");
+      setIsLogin(login);
+    } catch (e) {
+      setPage("Login");
+      setIsLogin(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("is_login");
+      setPage("Login");
+      setIsLogin(false);
+    } catch (e) {
+      setPage("Login");
+      setIsLogin(false);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -50,6 +76,7 @@ export default function Index({ page, setPage }) {
         <ListItem value="Rate us" icon="./icons/icon_like.svg" />
         <hr />
         <ListItem
+          onClick={handleLogout}
           highlight="true"
           value="Logout"
           icon="./icons/icon_logout.svg"

@@ -15,7 +15,7 @@ export default function Index() {
 
   return (
     <div>
-      <TopNav back="true" text="Home"/>
+      <TopNav back="true" text="Home" />
 
       <div className="main">
 
