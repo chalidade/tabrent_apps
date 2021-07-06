@@ -12,15 +12,12 @@ import { VscSettings } from "react-icons/vsc";
 
 
 export default function Index() {
-
   return (
     <div>
       <TopNav back="true" text="Home" />
 
       <div className="main">
-
         <Banner />
-
           <div className="container mt-3" style={{ height: "auto", width:"auto"}}>
               <ButtonIcon />
           </div>

@@ -1,10 +1,6 @@
 import TopNav from "../../components/globals/top_nav";
 
 import { Container, Typography } from "@material-ui/core";
-
-export default function detail(){
-  
-import { Container, Typography, IconButton } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { Carousel } from "react-bootstrap";
 import { useRouter } from "next/router";
