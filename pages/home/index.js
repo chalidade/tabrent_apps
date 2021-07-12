@@ -144,6 +144,22 @@ export default function Index() {
             </tr>
           </table>
         </div>
+        {/*
+      <div className="main" style={{height:"auto"}}>
+        <Banner />
+          <div className="container row mt-3" style = {{height: "auto", width: "auto",overflowX: "scroll"}}>
+          <table>
+          <tr>
+          <ButtonIcon type="Bycycle" value="Bycycle" />
+          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
+          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
+          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
+          <ButtonIcon />
+          </tr>
+          </table>
+
+          </div>
+          */}
 
         <div
           className="container mt-3"
