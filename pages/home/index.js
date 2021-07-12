@@ -1,142 +1,67 @@
 import TopNav from "../../components/globals/top_nav";
-import ImageBanner from "../../components/globals/images_banner";
-import { Container, Typography } from "@material-ui/core";
-import { Card, ButtonGroup, Button, Carousel } from "react-bootstrap";
-import {
-  MdDirectionsBike,
-  MdMotorcycle,
-  MdDirectionsBus,
-  MdDirectionsCar,
-} from "react-icons/md";
-import { useState, useEffect } from "react";
+import ImageBanner from "../../components/globals/images";
+import Banner from "../../components/home/banner";
+import ButtonIcon from "../../components/home/button_icon";
+import Cards from "../../components/home/card";
+
+import { Container, Typograph} from "@material-ui/core";
+import { Text, Card, ButtonGroup, Button, Carousel} from 'react-bootstrap';
+import { MdDirectionsBike, MdMotorcycle, MdDirectionsBus, MdDirectionsCar } from "react-icons/md";
+import { BsFilterRight } from "react-icons/bs";
+import { VscSettings } from "react-icons/vsc";
+
 
 export default function Index() {
-  const [search, setSearch] = useState();
-
   return (
     <div>
       <TopNav back="true" text="Home" />
 
       <div className="main">
-        <div className="row col mt-3" radius="10px">
-          <Carousel>
-            <Carousel.Item interval={2000}>
-              <ImageBanner
-                image="/home/banner_1.jpg"
-                width="340px"
-                height="150px"
-                repeat="no-repeat"
-                radius="10px"
-              />
-              <Carousel.Caption></Carousel.Caption>
-            </Carousel.Item>
+        <Banner />
+          <div className="container mt-3" style={{ height: "auto", width:"auto"}}>
+              <ButtonIcon />
+          </div>
 
-            <Carousel.Item interval={2000}>
-              <ImageBanner
-                image="/home/banner_2.jpg"
-                width="340px"
-                height="150px"
-                repeat="no-repeat"
-                radius="10px"
-              />
-              <Carousel.Caption></Carousel.Caption>
-            </Carousel.Item>
+          <div className="container mt-3" style={{ height: "auto", width:"auto"}}>
+          <div className="row">
+              <div className="col">
+              <p style={{
+              width: "119px",
+              height: "24px",
+              left: "31px",
+              top: "409px",
+              size:"20px",
 
-            <Carousel.Item interval={2000}>
-              <ImageBanner
-                image="/home/banner_3.jpg"
-                width="340px"
-                height="150px"
-                repeat="no-repeat"
-                radius="10px"
-              />
-              <Carousel.Caption></Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-        </div>
+              fontFamily: "Calibri",
+              fontStyle: "normal",
+              fontWeight:"bold",
+              fontSize: "20px",
+              lineHeight: "24px",
 
-        <div className="row col mt-3 text-right">
-          <center>
-            <Button
-              variant="primary"
-              style={{
-                backgroundColor: "#2F2F8D",
-                color: "#ffffff",
-                height: "60px",
-                width: "105px",
-                left: "0px",
-                top: "-1px",
-                borderRadius: "15px",
-                marginRight: "10px",
-                position: "sticky",
-              }}
-            >
-              <MdDirectionsBike /> Bycycle{" "}
-            </Button>
+              color: "#000000",
 
-            <Button
-              variant="primary"
-              style={{
-                backgroundColor: "#2F2F8D",
-                color: "#ffffff",
-                height: "60px",
-                width: "120px",
-                left: "0px",
-                top: "-1px",
-                borderRadius: "15px",
-                marginRight: "10px",
-                position: "sticky",
-              }}
-            >
-              <MdMotorcycle /> Motor Cycle
-            </Button>
+            }}>
+              Ready to rent!
+              </p>
+              </div>
 
-            <Button
-              variant="primary"
-              style={{
-                backgroundColor: "#2F2F8D",
-                color: "#ffffff",
-                height: "60px",
-                width: "95px",
-                left: "0px",
-                top: "-1px",
-                borderRadius: "15px",
-                marginRight: "10px",
-                position: "sticky",
-              }}
-            >
-              <MdDirectionsCar /> Car{" "}
-            </Button>
-          </center>
-        </div>
-
-        <div class="row col mt-3 text-left">
-          <Card style={{ width: "105px", height: "141px", marginRight: "2px" }}>
-            <Card.Img variant="top" src="/home/image_1.jpg" />
-            <Card.Body>
-              <Card.Title style={{ size: "2px" }}></Card.Title>
-              <Card.Text style={{ size: "2px" }}></Card.Text>
-              <Card.Title style={{ size: "2px" }}></Card.Title>
-            </Card.Body>
-          </Card>
-
-          <Card style={{ width: "105px", height: "141px", marginRight: "2px" }}>
-            <Card.Img variant="top" src="/home/image_2.jpg" />
-            <Card.Body>
-              <Card.Title style={{ size: "8px" }}></Card.Title>
-              <Card.Text style={{ size: "6px" }}></Card.Text>
-            </Card.Body>
-          </Card>
-
-          <Card style={{ width: "105px", height: "141px" }}>
-            <Card.Img variant="top" src="/home/image_3.jpg" />
-            <Card.Body>
-              <Card.Title style={{ size: "8px" }}></Card.Title>
-              <Card.Text style={{ size: "6px" }}></Card.Text>
-            </Card.Body>
-          </Card>
-        </div>
+              <div className="col text-right" style={{align:"right"}}>
+                  <Button size="md" style={{
+                    backgroundColor:"#2F2F8D",
+                    borderColor:"#2F2F8D",
+                    color:"#ffffff",
+                    height:"auto",
+                    left:"0px",
+                    top:"-1px",
+                    borderRadius: "15px",
+                  }}><VscSettings style={{weight:"bold"}} /> Filter
+                  </Button>
+              </div>
+          </div>
+          </div>
+          <Cards />
       </div>
+
     </div>
   );
 }
