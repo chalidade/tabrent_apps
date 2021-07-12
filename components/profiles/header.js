@@ -9,7 +9,7 @@ export default function Header({ page, setPage }) {
         style={{ padding: "20px", paddingTop: "25px" }}
       >
         <Grid container item xs={2}>
-          <img src="./icons/icon_profile.svg" />
+          <img src="/icons/icon_profile.svg" />
         </Grid>
         <Grid container item xs={7} style={{ paddingLeft: "15px" }}>
           <p className={style.textProfile}>Tabrent Apps</p>

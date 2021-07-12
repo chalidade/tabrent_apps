@@ -12,6 +12,7 @@ export default function TopNav({
   setOnSearch,
   setSearch,
   onClick,
+  background = true,
 }) {
   const [tmpSearch, setTmpSearch] = useState();
   const router = useRouter();
@@ -36,7 +37,14 @@ export default function TopNav({
   };
 
   return (
-    <div className={style.navigation}>
+    <div
+      className={style.navigation}
+      style={{
+        position: background ? "unset" : "absolute",
+        background: background ? "#fff" : "none",
+        boxShadow: background ? "0px 3px 10px rgb(0 0 0 / 10%)" : "none",
+      }}
+    >
       {back && arrow == "false" ? (
         <div>
           <font className={style.textNavBackNoArrow}>{text}</font>
@@ -46,15 +54,24 @@ export default function TopNav({
           <Button
             style={{
               position: "absolute",
-              marginTop: "9px",
+              marginTop: background ? "9px" : "7px",
               border: "none",
-              marginLeft: "-10px",
+              marginLeft: background ? "-10px" : "0px",
               background: "none",
             }}
           >
-            <img src="/icons/icon_back.svg" />
+            {background ? (
+              <img src="/icons/icon_back.svg" />
+            ) : (
+              <img src="/icons/icon_back_white.svg" />
+            )}
           </Button>
-          <font className={style.textNavBack}>{text}</font>
+          <font
+            className={style.textNavBack}
+            style={{ color: background ? "#2f2f8d" : "#FFF" }}
+          >
+            {text}
+          </font>
         </div>
       ) : (
         <div>
