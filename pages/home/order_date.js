@@ -9,7 +9,6 @@ import {
   TextField,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import DateFnsUtils from "@date-io/date-fns";
 import { useState, useEffect } from "react";
 
 function getWeeksAfter(date, amount) {
