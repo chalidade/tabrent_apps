@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopNav from "../../components/globals/top_nav";
+import { Link } from "@material-ui/core";
 
 export default function OrderDate() {
   return (
     <div style={{ background: "#2F2F8D", overflow: "hidden" }}>
-      <TopNav back="true" text="Back" arrow="true" background={false} />
+      <TopNav
+        back="true"
+        text="Back"
+        arrow="true"
+        background={false}
+        page="Profile"
+      />
       <div
         style={{
           position: "absolute",
@@ -25,13 +32,19 @@ export default function OrderDate() {
         <table width="100%">
           <tr>
             <td className="text-left">
-              <img src="/icons/icon_new_order.svg" />
+              <Link href="/profile/list_rent">
+                <img src="/icons/icon_new_order.svg" />
+              </Link>
             </td>
             <td className="text-center">
-              <img src="/icons/icon_rented.svg" />
+              <Link href="/profile/list_rent">
+                <img src="/icons/icon_rented.svg" />
+              </Link>
             </td>
             <td className="text-right">
-              <img src="/icons/icon_complete.svg" />
+              <Link href="/profile/list_rent">
+                <img src="/icons/icon_complete.svg" />
+              </Link>
             </td>
           </tr>
         </table>

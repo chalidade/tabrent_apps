@@ -1,4 +1,4 @@
-import { Grid, Button, IconButton } from "@material-ui/core";
+import { Grid, Button, IconButton, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import style from "../templates/profiles/favorite.module.css";
 import ClassNames from "classnames";
@@ -73,9 +73,15 @@ export default function ListItem({ data }) {
               </IconButton>
             </Grid>
             <Grid item xs={10}>
-              <Button fullWidth={true} size="small" style={customStyle.btnFill}>
-                Rent Now
-              </Button>
+              <Link href="/home/detail">
+                <Button
+                  fullWidth={true}
+                  size="small"
+                  style={customStyle.btnFill}
+                >
+                  Detail
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </Grid>

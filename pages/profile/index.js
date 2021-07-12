@@ -8,11 +8,10 @@ export default function Index({ page, setPage }) {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    try {
-      let login = localStorage.getItem("is_login");
+    if (localStorage.getItem("is_login") !== null) {
       setPage("Profile");
-      setIsLogin(login);
-    } catch (e) {
+      setIsLogin(true);
+    } else {
       setPage("Login");
       setIsLogin(false);
     }
@@ -36,6 +35,7 @@ export default function Index({ page, setPage }) {
         <ListItem
           value="Became a rental owner"
           icon="./icons/icon_market.svg"
+          url="/profile/term_and_condition"
         />
         <hr />
         <ListItem
@@ -56,12 +56,14 @@ export default function Index({ page, setPage }) {
         <ListItem
           value="Share to your friends"
           icon="./icons/icon_market.svg"
+          url="/profile/"
         />
         <hr />
         <ListItem
           value="Emergency Call"
           highlight="true"
           icon="./icons/icon_emergency.svg"
+          url="/profile/"
         />
         <ListItem
           value="Contact us"

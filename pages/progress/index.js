@@ -1,5 +1,5 @@
 import TopNav from "../../components/globals/top_nav";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Typography, Link } from "@material-ui/core";
 import ListItem from "../../components/progress/list_item";
 
 export default function Index() {

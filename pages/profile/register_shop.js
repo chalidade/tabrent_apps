@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "@material-ui/core";
 import TopNav from "../../components/globals/top_nav";
 
 export default function OrderDate() {
   return (
     <div style={{ background: "#2F2F8D", overflow: "hidden" }}>
-    <TopNav back="true" text="Back" arrow="true" background={false} />
+      <TopNav back="true" text="Back" arrow="true" background={false} />
       <div
         style={{
           position: "absolute",
@@ -37,7 +38,9 @@ export default function OrderDate() {
           Bank Account <br />
           <input className="form-control mt-2 p-4" />
         </p>
-        <button className="button-primary p-3 w-100 mt-3">Next</button>
+        <Link href="/profile/register_shop_next">
+          <button className="button-primary p-3 w-100 mt-3">Next</button>
+        </Link>
       </div>
       <img src="/profile/icon_logo_mitra.svg" className="profile-mitra" />
       <div className="main"></div>

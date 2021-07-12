@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function OrderDate() {
@@ -6,7 +7,10 @@ export default function OrderDate() {
     <div>
       <div className="main" style={{ height: "auto" }}>
         <center style={{ marginTop: "70px" }}>
-          <img src="/profile/icon_logo_tabrent.svg" style={{ width: "150px" }} />
+          <img
+            src="/profile/icon_logo_tabrent.svg"
+            style={{ width: "150px" }}
+          />
           <p
             className="mt-3"
             style={{ fontSize: "14px", width: "30vh", color: "#959595" }}
@@ -70,12 +74,14 @@ export default function OrderDate() {
           </p>
         </center>
       </div>
-      <button
-        className="button-primary w-100 p-2"
-        style={{ borderRadius: "0px", position: "absolute", bottom: "0px" }}
-      >
-        Next
-      </button>
+      <Link href="/profile/register_shop/">
+        <button
+          className="button-primary w-100 p-2"
+          style={{ borderRadius: "0px", position: "absolute", bottom: "0px" }}
+        >
+          Next
+        </button>
+      </Link>
     </div>
   );
 }

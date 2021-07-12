@@ -14,7 +14,13 @@ export default function Detail() {
 
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
-      <TopNav back="true" text="Detail Booking" arrow="true" search="true" />
+      <TopNav
+        back="true"
+        text="Detail Booking"
+        arrow="true"
+        search="true"
+        page="Home"
+      />
       <Carousel slide={true} touch={true} indicators={false} controls={false}>
         <Carousel.Item>
           <div

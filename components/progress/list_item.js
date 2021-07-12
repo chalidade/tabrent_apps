@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Link } from "@material-ui/core";
 import style from "../templates/progress/list_item.module.css";
 import ClassNames from "classnames";
 
@@ -7,9 +7,11 @@ export default function ListItem({ data }) {
     <div className={style.container}>
       <Grid container direction="row">
         <Grid container item xs={12}>
-          <font className={ClassNames(style.textTransaction, "return")}>
-            Transaction Number #{data.item_transaction}
-          </font>
+          <Link href="/progress/detail">
+            <font className={ClassNames(style.textTransaction, "return")}>
+              Transaction Number #{data.item_transaction}
+            </font>
+          </Link>
         </Grid>
         <Grid container item xs={4} style={{ paddingTop: "10px" }}>
           <div

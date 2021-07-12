@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "@material-ui/core";
 import TopNav from "../../components/globals/top_nav";
 
 export default function OrderDate() {
@@ -58,7 +59,9 @@ export default function OrderDate() {
             (max file size 2 Mb)
           </span>
         </p>
-        <button className="button-primary p-3 w-100 mt-3">Finish</button>
+        <Link href="/profile/partner_profile">
+          <button className="button-primary p-3 w-100 mt-3">Finish</button>
+        </Link>
       </div>
       <div className="main"></div>
     </div>

@@ -12,8 +12,9 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 export default function Register() {
+  const router = useRouter();
   const [indexPage, setIndexpage] = useState(0);
   const [page, setPage] = useState([1, 0, 0]);
   const [gender, setGander] = useState();
@@ -45,6 +46,8 @@ export default function Register() {
       setIndexpage(index);
       tmpPage[index] = 1;
       setPage(tmpPage);
+    } else {
+      router.push("/");
     }
   };
 

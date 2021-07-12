@@ -19,6 +19,7 @@ align,
         backgroundRepeat: repeat,
         backgroundPosition:position,
         borderRadius : radius,
+        backgroundPosition:'center',
         align:align,
       }}
     ></div>
