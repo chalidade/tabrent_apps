@@ -1,11 +1,43 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { INDEX } from "../../config/api_url";
+import { useState, useEffect } from "react";
+
 export default function login({ setPage, page }) {
   const router = useRouter();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+
 
   const handleLogin = () => {
-    localStorage.setItem("is_login", true);
-    setPage("Profile");
+    let json = {
+      action : "list",
+      db : "tabrent",
+      table : "tx_user",
+      "where": [
+        [
+            "user_username",
+            "=",
+            username
+        ],
+        [
+            "user_password",
+            "=",
+            password
+        ]
+    ]
+    };
+
+    fetch_data(INDEX, json).then(function (data) {
+      if (data.success) {
+        localStorage.setItem("is_login", true);
+        localStorage.setItem("user_data", JSON.stringify(data.result));
+        setPage("Profile");
+      } else {
+        alert("Please Check Username / Password");
+      }
+    });
   };
 
   const handleRegister = () => {
@@ -25,6 +57,7 @@ export default function login({ setPage, page }) {
           />
           <input
             type="text"
+            onChange={e => setUsername(e.target.value)}
             className="form-control mt-5 pl-5"
             placeholder="Username"
             style={{
@@ -42,6 +75,7 @@ export default function login({ setPage, page }) {
           />
           <input
             type="password"
+            onChange={e => setPassword(e.target.value)}
             className="form-control mt-3 pl-5"
             placeholder="Password"
             style={{

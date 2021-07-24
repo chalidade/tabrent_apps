@@ -22,6 +22,7 @@
     "react": "17.x",
     "react-bootstrap": "^1.6.1",
     "react-dom": "17.x",
+    "react-file-base64": "^1.0.3",
     "react-icons": "^4.2.0"
   }
 }

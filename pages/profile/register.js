@@ -13,7 +13,24 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { STORE } from "../../config/api_url";
+import FileBase64 from 'react-file-base64';
+
 export default function Register() {
+  // Store Data
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState(0);
+  const [confirmPassword, setConfirmPassword] = useState(0);
+  const [ktpNumber, setKtpNumber] = useState();
+  const [address, setAddress] = useState();
+  const [uploadIdCard, setUploadIdCard] = useState();
+  const [uploadIdPhoto, setUploadIdPhoto] = useState();
+
   const router = useRouter();
   const [indexPage, setIndexpage] = useState(0);
   const [page, setPage] = useState([1, 0, 0]);
@@ -24,6 +41,7 @@ export default function Register() {
 
   const style = {
     textField: { marginTop: "10px", marginBottom: "10px" },
+    textFieldAlert: { marginTop: "10px", marginBottom: "10px", borderBottom: "solid thin red" },
     mt50: { marginTop: "50px" },
     btnOutline: {
       width: "120px",
@@ -46,9 +64,39 @@ export default function Register() {
       setIndexpage(index);
       tmpPage[index] = 1;
       setPage(tmpPage);
-    } else {
-      router.push("/");
     }
+  };
+
+  const handleFinish = async () => {
+    let json = {
+      action : "save",
+      db : "tabrent",
+      table : "tx_user",
+      primaryKey : "user_id",
+      value: [
+        {
+          user_id: null,
+          user_first_name: firstName,
+          user_last_name: lastName,
+          user_phone_number: phoneNumber,
+          user_email: email,
+          user_username: username,
+          user_password: password,
+          user_personal_id_number: ktpNumber,
+          user_address: address,
+          user_type: 1,
+          user_status: 0,
+        },
+      ],
+    };
+
+    fetch_data(STORE, json).then(function (result) {
+      if (result.success) {
+        handleNext();
+      } else {
+        alert("Check Your Data");
+      }
+    });
   };
 
   const handleBack = () => {
@@ -60,6 +108,74 @@ export default function Register() {
       setPage(tmpPage);
     }
   };
+
+  const handleGetPhotoID = (e) => {
+        // get the files
+        let files = e.target.files;
+
+        // Process each file
+        var allFiles = [];
+        for (var i = 0; i < files.length; i++) {
+    
+          let file = files[i];
+    
+          // Make new FileReader
+          let reader = new FileReader();
+    
+          // Convert the file to base64 text
+          reader.readAsDataURL(file);
+    
+          // on reader load somthing...
+          reader.onload = () => {
+    
+            // Make a fileInfo Object
+            let fileInfo = {
+              name: file.name,
+              type: file.type,
+              size: Math.round(file.size / 1000) + ' kB',
+              base64: reader.result,
+              file: file,
+            };
+    
+            // Push it to the state
+            setUploadIdPhoto(fileInfo);
+          }
+        }
+  }
+
+  const handleGetPhotoKTP = (e) => {
+    // get the files
+    let files = e.target.files;
+
+    // Process each file
+    var allFiles = [];
+    for (var i = 0; i < files.length; i++) {
+
+      let file = files[i];
+
+      // Make new FileReader
+      let reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+
+        // Make a fileInfo Object
+        let fileInfo = {
+          name: file.name,
+          type: file.type,
+          size: Math.round(file.size / 1000) + ' kB',
+          base64: reader.result,
+          file: file,
+        };
+
+        // Push it to the state
+        setUploadIdCard(fileInfo);
+      }
+    }
+  }
 
   return (
     <div>
@@ -99,56 +215,89 @@ export default function Register() {
             <TextField
               style={style.textField}
               fullWidth={true}
+              onChange={(e) => setFirstName(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="First Name"
             />
             <TextField
               style={style.textField}
               className="mt-15 mb-15"
               fullWidth={true}
+              onChange={(e) => setLastName(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Last Name (Opsional)"
             />
             <TextField
               style={style.textField}
               fullWidth={true}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Phone Number"
             />
             <TextField
               type="email"
               style={style.textField}
               fullWidth={true}
+              onChange={(e) => setEmail(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Email"
             />
             <TextField
               style={style.textField}
               fullWidth={true}
+              onChange={(e) => setUsername(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Username"
             />
             <TextField
               type="password"
               style={style.textField}
               fullWidth={true}
+              onChange={(e) => setPassword(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Password"
             />
             <TextField
               type="password"
-              style={style.textField}
+              style={password !== confirmPassword ? style.textFieldAlert : style.textField}
               fullWidth={true}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Confirm Password"
             />
-            <button
-              onClick={handleNext}
-              className="button-primary mt-3"
-              style={{ width: "100%", padding: "10px" }}
-            >
-              Next
-            </button>
+            {
+              password.length !== 0 && password == confirmPassword ? (
+                <button
+                  onClick={handleNext}
+                  className="button-primary mt-3"
+                  style={{ width: "100%", padding: "10px"}}
+                >
+                  Next
+                </button>
+              ) : ""
+            }
+            
           </div>
         ) : indexPage == 1 ? (
           <div>
@@ -156,13 +305,21 @@ export default function Register() {
               style={style.textField}
               fullWidth={true}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={(e) => setKtpNumber(e.target.value)}
               label="Personal ID Number (KTP)"
             />
             <TextField
               style={style.textField}
               className="mt-15 mb-15"
               fullWidth={true}
+              onChange={(e) => setAddress(e.target.value)}
               id="standard-basic"
+              InputLabelProps={{
+                shrink: true,
+              }}
               label="Current Address"
             />
             <p className="mt-3 text-secondary weight-600">
@@ -171,17 +328,20 @@ export default function Register() {
             <div
               style={{
                 width: "100%",
-                background: "#F7F7F7",
-                height: "90px",
+                background: `url(${uploadIdCard ? uploadIdCard.base64 : "#F7F7F7"})`,
+                height: "170px",
                 borderRadius: "10px",
+                backgroundSize: "cover"
               }}
             ></div>
-            <button
-              className="button-primary mt-3 pl-5 pr-5"
-              style={{ padding: "10px" }}
-            >
-              Upload
-            </button>
+            <label htmlFor="upload_ktp" onChange={e => handleGetPhotoKTP(e)} className="button-primary mt-3 pl-5 pr-5" style={{ padding: "10px" }}>
+            <input 
+              type="file"
+              id="upload_ktp"
+              style={{display:'none'}}
+            />
+            Upload
+            </label>
             <span style={{ fontSize: "12px", paddingLeft: "10px" }}>
               (max file size 2 Mb)
             </span>
@@ -191,29 +351,35 @@ export default function Register() {
             <div
               style={{
                 width: "100%",
-                background: "#F7F7F7",
-                height: "90px",
+                background: `url(${uploadIdPhoto ? uploadIdPhoto.base64 : "#F7F7F7"})`,
+                height: "170px",
                 borderRadius: "10px",
+                backgroundSize: "cover"
               }}
             >
+            {uploadIdPhoto ? "" : (
               <center>
                 <img
                   src="/profile/img_selfie_ktp.svg"
                   style={{ width: "15vh" }}
                 />
               </center>
+              )}
+              
             </div>
-            <button
-              className="button-primary mt-3 pl-5 pr-5"
-              style={{ padding: "10px" }}
-            >
-              Upload
-            </button>
+            <label htmlFor="upload_ktp_with_photo" onChange={e => handleGetPhotoID(e)} className="button-primary mt-3 pl-5 pr-5" style={{ padding: "10px" }}>
+            <input 
+              type="file"
+              id="upload_ktp_with_photo"
+              style={{display:'none'}}
+            />
+            Upload
+            </label>
             <span style={{ fontSize: "12px", paddingLeft: "10px" }}>
               (max file size 2 Mb)
             </span>
             <button
-              onClick={handleNext}
+              onClick={handleFinish}
               className="button-primary mt-4"
               style={{ width: "100%", padding: "10px" }}
             >
@@ -227,7 +393,7 @@ export default function Register() {
               style={{ marginTop: "70px" }}
             />
             <button
-              onClick={handleNext}
+              onClick={() => router.push('/')}
               className="button-primary"
               style={{ width: "100%", padding: "10px", marginTop: "70px" }}
             >
