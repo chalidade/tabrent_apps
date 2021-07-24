@@ -3,6 +3,10 @@ import ImageBanner from "../../components/globals/images";
 import Banner from "../../components/home/banner";
 import ButtonIcon from "../../components/home/button_icon";
 import Cards from "../../components/home/card";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { STORE, INDEX } from "../../config/api_url";
 
 import { Container, Typograph } from "@material-ui/core";
 import { Text, Card, ButtonGroup, Button, Carousel } from "react-bootstrap";
@@ -16,6 +20,25 @@ import { BsFilterRight } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 
 export default function Index() {
+  const [product, setProduct] = useState([]);
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let data = JSON.parse(localStorage.getItem('user_data'));
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_product"
+      };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+          setProduct(data.result);
+        }
+      });
+    }
+  }, [])
+
   return (
     <div>
       <TopNav back="true" text="Home" />
@@ -144,22 +167,6 @@ export default function Index() {
             </tr>
           </table>
         </div>
-        {/*
-      <div className="main" style={{height:"auto"}}>
-        <Banner />
-          <div className="container row mt-3" style = {{height: "auto", width: "auto",overflowX: "scroll"}}>
-          <table>
-          <tr>
-          <ButtonIcon type="Bycycle" value="Bycycle" />
-          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
-          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
-          <ButtonIcon type="MotorCycle" value="Motor Cycle" />
-          <ButtonIcon />
-          </tr>
-          </table>
-
-          </div>
-          */}
 
         <div
           className="container mt-3"
@@ -206,7 +213,16 @@ export default function Index() {
             </div>
           </div>
         </div>
-        <Cards />
+        <div
+          className="container mt-2 col"
+          style={{ width: "auto", height: "auto", marginBottom: "0px" }}
+        >
+          <div className="row">
+            {product ? product.map((data, index) => {
+              return <Cards data={data} />;
+            })  : ""}
+          </div>
+        </div>
       </div>
     </div>
   );

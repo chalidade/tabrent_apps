@@ -1,9 +1,38 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopNav from "../../components/globals/top_nav";
 import { Link } from "@material-ui/core";
+import { fetch_data } from "../../components/globals/api";
+import { STORE, INDEX, MAIN } from "../../config/api_url";
 
 export default function OrderDate() {
+  const router = useRouter();
+  const [product, setProduct] = useState([]);
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let data = JSON.parse(localStorage.getItem('user_data'));
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_product",
+        "where": [
+          [
+              "product_owner",
+              "=",
+              data.user_id
+          ]
+        ]
+      };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+          setProduct(data.result);
+        }
+      });
+    }
+  }, [])
   return (
     <div style={{ background: "#2F2F8D", overflow: "hidden" }}>
       <TopNav
@@ -52,14 +81,14 @@ export default function OrderDate() {
         <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
           PRODUCTS
         </p>
-        <p style={{ fontSize: "12px" }}>0 Products</p>
+        <p onClick={() => router.push("/profile/list_rent")} style={{ fontSize: "12px" }}>{product.length} Products</p>
         <hr />
         <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
           REVIEWS
         </p>
         <p style={{ fontSize: "12px" }}>0 Reviews</p>
         <hr />
-        <button className="button-primary p-3 w-100 mt-3">
+        <button onClick={() => router.push('/profile/product_new')} className="button-primary p-3 w-100 mt-3">
           Add New Product
         </button>
       </div>

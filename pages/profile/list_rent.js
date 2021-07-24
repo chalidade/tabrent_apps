@@ -9,8 +9,47 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { STORE, INDEX, MAIN } from "../../config/api_url";
 
 export default function OrderDate() {
+  const [product, setProduct] = useState([]);
+  const [photo, setPhoto] = useState([]);
+  const router = useRouter();
+
+  const handleEdit = e => {
+    router.push({
+      pathname: '/profile/product_new/',
+      query: { id: e.target.id },
+    })
+  }
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let data = JSON.parse(localStorage.getItem('user_data'));
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_product",
+        "where": [
+          [
+              "product_owner",
+              "=",
+              data.user_id
+          ]
+        ]
+      };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+          setProduct(data.result);
+        }
+      });
+    }
+  }, [])
+
+
   return (
     <div>
       <TopNav back="true" text="Back" arrow="true" />
@@ -176,8 +215,40 @@ export default function OrderDate() {
           </tr>
         </table>
       </div>
-      <div className="profile-div-product">
-        <img src="/icons/icon_no_product.svg" />
+      <div className="profile-div-product" style={{paddingTop: product.length !== 0 ? "20px" : "100px", paddingBottom: product.length !== 0 ? "20px" : "0px"}}>
+        {product.length !== 0 ? product.map((data, index) => {
+          return (
+            <div className="product-div">
+              <table>
+                <tr>
+                  <td>
+                    <center>
+                      <div className="product-profile-div" style={{background: `url(${data.product_image_main !== null ? MAIN+data.product_image_main : "/profile/icon_no_picture.PNG"})`, backgroundSize: 'cover'}}></div>
+                    </center>
+                  </td>
+                  <td>
+                    <p className="text-left pl-3 p-0 m-0" style={{ fontWeight: '700' }}>{data.product_name}</p>
+                    <p className="text-left pl-3 p-0 m-0" style={{ fontSize: '12px' }}>{data.product_brand}</p>
+                    <p className="text-left pl-3 p-0 m-0" style={{ fontSize: '14px' }}>{data.product_price}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td className="pl-3 text-left">
+                    <button id={data.product_id} onClick={e => handleEdit(e)} style={{border: 'none', background: 'none', fontSize: '14px'}}>
+                      <img src="/icons/icon_edit.svg" style={{marginTop: '-5px', width: '15px'}} /> Edit
+                    </button>
+                    <button style={{border: 'none', background: 'none', marginLeft: '25px', fontSize: '14px'}}>
+                      <img src="/icons/icon_trash.svg" style={{marginTop: '-5px', width: '15px'}} /> Delete
+                    </button>
+                  </td>
+                </tr>
+              </table>
+            </div>);
+        }) : ( 
+          <div>
+            <img src="/icons/icon_no_product.svg" />
+          </div> )}
       </div>
     </div>
   );

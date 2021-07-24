@@ -155,7 +155,34 @@ a {
   width: 100%;
   padding-top: 100px;
   background: #fbfbfb;
-  height: 60vh;
+  min-height: 60vh;
+  height: auto;
   text-align: center;
   margin-top: -20px;
+}
+
+.profile-div-photo {
+  height: 100px;
+  width: 100px;
+  padding-top: 35px;
+  border: dotted #2f2f8d;
+  padding-left: 15px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+.product-div {
+    padding: 10px;
+    background: #fff;
+    height: 120px;
+    margin: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 8px #d4d4d494;
+}
+
+.product-profile-div {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  background: #000;
 }

@@ -2,6 +2,8 @@ import Images from "../../components/globals/images";
 import { Container, Typography, Link } from "@material-ui/core";
 import { MdStar } from "react-icons/md";
 import Rating from "@material-ui/lab/Rating";
+import { STORE, INDEX, MAIN } from "../../config/api_url";
+import router from "next/router";
 
 const styles = {
   owner: {
@@ -35,13 +37,8 @@ const styles = {
   },
 };
 
-export default function Cards() {
+export default function Cards({data}) {
   return (
-    <div
-      className="container mt-2 col"
-      style={{ width: "auto", height: "auto", marginBottom: "0px" }}
-    >
-      <div className="row">
         <div
           className="container-standart col"
           style={{
@@ -54,22 +51,26 @@ export default function Cards() {
             paddingBottom: "0px",
           }}
         >
-          <Link href="/home/detail">
+          <div onClick={() => router.push({
+              pathname: "/home/detail",
+              query: { id: data.product_id },
+            })}>
             <Images
-              image="/home/image_1.jpg"
+              image={data.product_image_main !== null ? MAIN+data.product_image_main : "/profile/icon_no_picture.PNG"}
               width="100%"
-              height="70px"
+              height="118px"
               repeat="no-repeat"
               radius="10px"
               align="center"
+              size= "cover"
             />
             <div className="row">
               <div className="col">
-                <o style={styles.owner}> Pak Rahmat</o>
-                <p style={styles.car_name}> Daihatsu Ayla</p>
+                <o style={styles.owner}> {data.product_name}</o>
+                <p style={styles.car_name}> {data.product_brand}</p>
                 <p style={styles.price}>
                   {" "}
-                  Rp 250.000 <small style={{ fontWeight: "bold" }}>/Day</small>
+                  Rp {data.product_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <small style={{ fontWeight: "bold" }}>/Day</small>
                 </p>
               </div>
             </div>
@@ -86,269 +87,12 @@ export default function Cards() {
                   name="read-only"
                   size="small"
                   readOnly
-                  value={4}
+                  value={data.product_rating !== null ? data.product_rating : 0}
                   style={{ marginTop: "10px" }}
                 />
               </div>
             </div>
-          </Link>
-        </div>
-
-        <div
-          className="container-standart col"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            width: "105px",
-            height: "auto",
-            marginBottom: "0px",
-            align: "left",
-            paddingBottom: "0px",
-          }}
-        >
-          <Link href="/home/detail">
-            <Images
-              image="/home/image_2.jpg"
-              width="100%"
-              height="70px"
-              repeat="no-repeat"
-              radius="10px"
-            />
-            <div className="row">
-              <div className="col">
-                <o style={styles.owner}> Pak Budi</o>
-                <p style={styles.car_name}> Honda Verza</p>
-                <p style={styles.price}>
-                  {" "}
-                  Rp 60.000 <small style={{ fontWeight: "bold" }}>/Day</small>
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                height: "auto",
-                marginBottom: "10px",
-                marginTop: "-10px",
-              }}
-            >
-              <div className="col">
-                <Rating
-                  name="read-only"
-                  size="small"
-                  readOnly
-                  value={4}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div
-          className="container-standart col"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            width: "105px",
-            height: "auto",
-            marginBottom: "0px",
-            align: "left",
-            paddingBottom: "0px",
-          }}
-        >
-          <Link href="/home/detail">
-            <Images
-              image="/home/image_3.jpg"
-              width="100%"
-              height="70px"
-              repeat="no-repeat"
-              radius="10px"
-            />
-            <div className="row">
-              <div className="col">
-                <o style={styles.owner}> Harapan Jaya</o>
-                <p style={styles.car_name}> Exclusive Luxury Bus</p>
-                <p style={styles.price}>
-                  {" "}
-                  Rp 800.000 <small style={{ fontWeight: "bold" }}>/Day</small>
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                height: "auto",
-                marginBottom: "10px",
-                marginTop: "-10px",
-              }}
-            >
-              <div className="col">
-                <Rating
-                  name="read-only"
-                  size="small"
-                  readOnly
-                  value={4}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div
-          className="container-standart col"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            width: "105px",
-            height: "auto",
-            marginBottom: "0px",
-            align: "left",
-            paddingBottom: "0px",
-          }}
-        >
-          <Link href="/home/detail">
-            <Images
-              image="/home/image_4.jpg"
-              width="100%"
-              height="70px"
-              repeat="no-repeat"
-              radius="10px"
-            />
-            <div className="row">
-              <div className="col">
-                <o style={styles.owner}> Pak Handoko</o>
-                <p style={styles.car_name}> Honda Freed</p>
-                <p style={styles.price}>
-                  {" "}
-                  Rp 350.000 <small style={{ fontWeight: "bold" }}>/Day</small>
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                height: "auto",
-                marginBottom: "10px",
-                marginTop: "-10px",
-              }}
-            >
-              <div className="col">
-                <Rating
-                  name="read-only"
-                  size="small"
-                  readOnly
-                  value={4}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div
-          className="container-standart col"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            width: "105px",
-            height: "auto",
-            marginBottom: "0px",
-            align: "left",
-            paddingBottom: "0px",
-          }}
-        >
-          <Link href="/home/detail">
-            <Images
-              image="/home/image_5.jpg"
-              width="100%"
-              height="70px"
-              repeat="no-repeat"
-              radius="10px"
-            />
-            <div className="row">
-              <div className="col">
-                <o style={styles.owner}> Rahmat Rent Car</o>
-                <p style={styles.car_name}> Toyota Avanza</p>
-                <p style={styles.price}>
-                  {" "}
-                  Rp 280.000 <small style={{ fontWeight: "bold" }}>/Day</small>
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                height: "auto",
-                marginBottom: "10px",
-                marginTop: "-10px",
-              }}
-            >
-              <div className="col">
-                <Rating
-                  name="read-only"
-                  size="small"
-                  readOnly
-                  value={4}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div
-          className="container-standart col"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            width: "105px",
-            height: "auto",
-            marginBottom: "0px",
-            align: "left",
-            paddingBottom: "0px",
-          }}
-        >
-          <Link href="/home/detail">
-            <Images
-              image="/home/image_6.jpg"
-              width="100%"
-              height="70px"
-              repeat="no-repeat"
-              radius="10px"
-            />
-            <div className="row">
-              <div className="col">
-                <o style={styles.owner}> Carteran Jaya</o>
-                <p style={styles.car_name}> Suzuky Carry Pickup</p>
-                <p style={styles.price}>
-                  {" "}
-                  Rp 200.000 <small style={{ fontWeight: "bold" }}>/Day</small>
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-              style={{
-                height: "auto",
-                marginBottom: "10px",
-                marginTop: "-10px",
-              }}
-            >
-              <div className="col">
-                <Rating
-                  name="read-only"
-                  size="small"
-                  readOnly
-                  value={4}
-                  style={{ marginTop: "10px" }}
-                />
-              </div>
-            </div>
-            </Link>
           </div>
-      </div>
-    </div>
+        </div>
   );
 }
