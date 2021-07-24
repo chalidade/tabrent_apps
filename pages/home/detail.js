@@ -1,31 +1,66 @@
 import TopNav from "../../components/globals/top_nav";
-
 import { Container, Typography } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { Carousel } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { useState, useEffect } from "react";
+import { INDEX, MAIN } from "../../config/api_url";
 
 export default function Detail() {
   const router = useRouter();
+  const [product, setProduct] = useState([]);
+  const [slider, setSlider] = useState([]);
   const handleRent = () => {
     router.push({
       pathname: "/home/order",
     });
   };
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let data = JSON.parse(localStorage.getItem('user_data'));
+      let product_id = router.query.id;
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_product",
+        "where": [
+          [
+              "product_id",
+              "=",
+              product_id
+          ]
+        ]
+      };
+
+      
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) { 
+          let product = data.result;
+          setProduct(product);
+          setSlider(JSON.parse(product.product_image))
+        }
+      });
+    }
+  }, [])
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
       <TopNav back="true" text="Detail" arrow="true" search="true" />
       <Carousel slide={true} touch={true} indicators={false} controls={false}>
-        <Carousel.Item>
+      {slider ? slider.map((data, index) => {
+        return <Carousel.Item>
           <div
             style={{
-              background: "url(/home/product_2.jpg)",
+              background: `url(${data ? MAIN+data : "/home/product_2.jpg"})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "345px",
             }}
           ></div>
-        </Carousel.Item>
+        </Carousel.Item>;
+      }) : (
+        <div>
         <Carousel.Item>
           <div
             style={{
@@ -46,14 +81,15 @@ export default function Detail() {
             }}
           ></div>
         </Carousel.Item>
+      </div>)}
       </Carousel>
       <div className="bg-white mt-3 p-3 pl-4 pr-4" style={{ height: "145px" }}>
         <p className="m-0" style={{ fontSize: "14px" }}>
-          <b>Daihatsu Agya Merah</b>
+          <b>{product.product_name ? product.product_name : "Product Name"}</b>
         </p>
         <p className="m-0">
           <font style={{ color: "#2F2F8D", fontSize: "22px" }}>
-            <b>Rp. 280.000 </b>
+            <b>Rp. {product.product_price ? product.product_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "120.000"} </b>
           </font>
           <font style={{ color: "#2F2F8D", fontSize: "14px" }}> / Day </font>
         </p>
@@ -87,12 +123,12 @@ export default function Detail() {
                 name="read-only"
                 size="small"
                 readOnly
-                value={4}
+                value={product.product_rating ? product.product_rating : 0}
                 style={{ marginTop: "10px" }}
               />
             </td>
             <td>
-              <font style={{ fontSize: "11px", marginLeft: "5px" }}>3.6</font>
+              <font style={{ fontSize: "11px", marginLeft: "5px" }}>{product.product_rating ? product.product_rating : 0}</font>
             </td>
             <td>
               <span
@@ -105,7 +141,7 @@ export default function Detail() {
                 |
               </span>
               <font style={{ fontSize: "11px", marginLeft: "5px" }}>
-                Rented 27 Times
+                Rented {product.product_rent_count ? product.product_rent_count : 0} Times
               </font>
             </td>
           </tr>
@@ -136,8 +172,7 @@ export default function Detail() {
           <font style={{ fontSize: "14px", color: "#C8C8C8" }}>Overtime</font>
           <br />
           <font style={{ fontSize: "14px" }}>
-            Biaya overtime adalah 10% dari harga yang tertera pada rental
-            perjam.
+          {product.product_rental_rules_overtime ? product.product_rental_rules_overtime : "Biaya overtime adalah 10% dari harga yang tertera pada rental perjam."} 
           </font>
         </p>
         <p className="mt-3">
@@ -146,8 +181,7 @@ export default function Detail() {
           </font>
           <br />
           <font style={{ fontSize: "14px" }}>
-            Biaya overtime adalah 10% dari harga yang tertera pada rental
-            perjam.
+          {product.product_rental_rules_regulation ? product.product_rental_rules_regulation : "Biaya overtime adalah 10% dari harga yang tertera pada rental perjam."}
           </font>
         </p>
       </div>
@@ -164,7 +198,7 @@ export default function Detail() {
               </font>
             </td>
             <td className="text-right" style={{ fontSize: "14px" }}>
-              05:00 - 22:00
+            {product.product_pickup_date ? product.product_pickup_date : "12:00"}
             </td>
           </tr>
           <tr>
@@ -174,7 +208,7 @@ export default function Detail() {
               </font>
             </td>
             <td className="text-right" style={{ fontSize: "14px" }}>
-              05:00 - 22:00
+              {product.product_return_date ? product.product_return_date : "13:00"}
             </td>
           </tr>
         </table>
@@ -185,7 +219,7 @@ export default function Detail() {
           <b>Cancellation Policy</b>
         </p>
         <p className="mt-2">
-          <font style={{ fontSize: "14px", color: "#C8C8C8" }}>No Refund.</font>
+          <font style={{ fontSize: "14px", color: "#C8C8C8" }}>{product.product_cancel ? product.product_cancel : "No Refund."}</font>
           <br />
         </p>
       </div>
