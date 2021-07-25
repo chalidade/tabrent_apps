@@ -7,15 +7,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
 import { STORE, INDEX } from "../../config/api_url";
-
-import { Container, Typograph } from "@material-ui/core";
-import { Text, Card, ButtonGroup, Button, Carousel } from "react-bootstrap";
-import {
-  MdDirectionsBike,
-  MdMotorcycle,
-  MdDirectionsBus,
-  MdDirectionsCar,
-} from "react-icons/md";
+import { Button } from "react-bootstrap";
 import { BsFilterRight } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 
@@ -42,7 +34,7 @@ export default function Index() {
   return (
     <div>
       <TopNav back="true" text="Home" />
-      <div className="main" style={{ height: "auto" }}>
+      <div className="main" style={{ height: "auto", minHeight: "1000px" }}>
         <Banner />
         <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
           <table>

@@ -161,8 +161,6 @@ export default function AccountInformation() {
     }
 }
 
-console.log(photo);
-
 useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       let data = JSON.parse(localStorage.getItem('user_data'));

@@ -3,23 +3,59 @@ import { Container, Typography, IconButton } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { Carousel } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import { INDEX, MAIN, STORE } from "../../config/api_url";
+import { fetch_data } from "../../components/globals/api";
 
 export default function Detail() {
   const router = useRouter();
+  const [user, setUser] = useState();
+  const [orderData, setOrderData] = useState();
+
   const handleRent = () => {
     router.push({
       pathname: "/progress/detail",
     });
   };
 
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let order_id = router.query.id;
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_order",
+        "where": [
+          [
+              "order_id",
+              "=",
+              order_id
+          ]
+        ]
+      };
+            
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) { 
+          let order = data.result;
+          let getUser = JSON.parse(localStorage.getItem('user_data'));
+          setOrderData(order);
+          setUser(getUser);
+        }
+      });
+
+
+
+    }
+  }, [])
+
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
-      <TopNav back="true" text="Back" arrow="true" />
+      <TopNav back="true" text="Back" arrow="true"  page="Home" />
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <table width="100%">
           <tr>
             <td width="60%">Transaction Number</td>
-            <td className="text-right">110551214</td>
+            <td className="text-right">{orderData ? orderData.order_transaction_number : "110551214"}</td>
           </tr>
         </table>
       </div>
@@ -30,7 +66,7 @@ export default function Detail() {
             <td width="60%">Total Payment</td>
             <td className="text-right">
               <font style={{ fontWeight: "700", color: "#2F2F8D" }}>
-                Rp 1.200.000
+                Rp {orderData ? orderData.order_payment_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "1.200.000"}
               </font>
             </td>
           </tr>
@@ -38,11 +74,11 @@ export default function Detail() {
       </div>
 
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
-        <p>Bank BCA</p>
+        <p>{orderData ? orderData.order_payment_name : "Bank BCA"}</p>
         <hr />
         <p>
           <font style={{ fontSize: "12px" }}>Bank Account Number</font> <br />
-          <font style={{ fontWeight: "700" }}>1400 501 2001</font>
+          <font style={{ fontWeight: "700" }}>{orderData ? orderData.order_payment_number : "1400 501 2001"}</font>
         </p>
         <button
           className="button-primary"

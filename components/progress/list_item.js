@@ -1,15 +1,26 @@
 import { Grid, Link } from "@material-ui/core";
 import style from "../templates/progress/list_item.module.css";
 import ClassNames from "classnames";
+import { MAIN } from "../../config/api_url";
+import { useRouter } from "next/router";
 
 export default function ListItem({ data }) {
+  const router = useRouter();
+
+  const handleClickList = () => {
+    router.push({
+      pathname: "/home/order_detail",
+      query: {id: data.order_id}
+  });
+  }
+
   return (
-    <div className={style.container}>
+    <div className={style.container} onClick={handleClickList}>
       <Grid container direction="row">
         <Grid container item xs={12}>
           <Link href="/progress/detail">
             <font className={ClassNames(style.textTransaction, "return")}>
-              Transaction Number #{data.item_transaction}
+              Transaction Number #{data.order_transaction_number}
             </font>
           </Link>
         </Grid>
@@ -18,9 +29,9 @@ export default function ListItem({ data }) {
             className={style.imgItem}
             style={{
               background: `url(${
-                data.item_image ? data.item_image : "/progress/img_item.svg"
+                MAIN+data.product_image_main ? MAIN+data.product_image_main : "/progress/img_item.svg"
               })`,
-              backgroundSize: "contain",
+              backgroundSize: "cover",
               borderRadius: "15px",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -28,24 +39,27 @@ export default function ListItem({ data }) {
           ></div>
         </Grid>
         <Grid container item xs={8} style={{ paddingTop: "5px" }}>
-          <p className={ClassNames(style.textTitle, "m-0")}>{data.item}</p>
+          <p className={ClassNames(style.textTitle, "m-0")}>{data.product_name}</p>
           <p className={ClassNames(style.textSubTitle, "m-0")}>
-            {data.item_seller}
+            {data.user_first_name+" "+data.user_last_name}
           </p>
           <p className={ClassNames(style.textSubTitle, "m-0")}>
-            {data.item_number}
+            {data.order_payment_name}
           </p>
           <p className={ClassNames(style.textSubTitlePrice, "m-0")}>
-            Rp. {data.item_price}
+            Rp. {data.order_payment_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </p>
+          <p className={ClassNames(style.textSubTitlePrice, "mt-1", data.order_status == 0 ? style.waiting : data.order_status == 1 ? style.success : data.order_status == 2 ? style.complete : style.cancel)}>
+            {data.order_status == 2
+              ? "Complete Returned"
+              : data.item_status == 1
+              ? "Payment Success"
+              : data.item_status == 3
+              ? "Transaction Cancelled"
+              : "Waiting Payment"}
           </p>
           <p className={ClassNames(style.textStatus, data.item_status)}>
-            {data.item_status == "return"
-              ? "Complete Returned"
-              : data.item_status == "success"
-              ? "Payment Success"
-              : data.item_status == "cancel"
-              ? "Transaction Cancelled"
-              : "Waiting Confirmation"}
+           
           </p>
         </Grid>
       </Grid>

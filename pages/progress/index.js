@@ -1,51 +1,63 @@
 import TopNav from "../../components/globals/top_nav";
 import { Container, Typography, Link } from "@material-ui/core";
 import ListItem from "../../components/progress/list_item";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { fetch_data } from "../../components/globals/api";
+import { STORE, INDEX } from "../../config/api_url";
 
 export default function Index() {
-  let data = [
-    {
-      item: "Daihatsu Agya Merah",
-      item_image: "/progress/product_1.svg",
-      item_seller: "Pak Bambang",
-      item_number: "AB 123 BC",
-      item_price: "1.120.610",
-      item_status: "return",
-      item_transaction: "11092817811",
-    },
-    {
-      item: "Toyota Xenia",
-      item_image: "/progress/product_2.svg",
-      item_seller: "Bu Tejo",
-      item_number: "AB 256 BC",
-      item_price: "1.250.610",
-      item_status: "success",
-      item_transaction: "11092817812",
-    },
-    {
-      item: "Daihatsu Ayla",
-      item_image: "/progress/product_3.svg",
-      item_seller: "Superjo Rent",
-      item_number: "AB 456 BC",
-      item_price: "1.120.700",
-      item_status: "cancel",
-      item_transaction: "11092817813",
-    },
-    {
-      item: "Honda Brio",
-      item_image: "/progress/product_5.svg",
-      item_seller: "Sby Rent",
-      item_number: "AB 458 BC",
-      item_price: "1.120.800",
-      item_status: "confirmation",
-      item_transaction: "11092817814",
-    },
-  ];
+  const [order, setOrder] = useState([]);
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      let user = JSON.parse(localStorage.getItem('user_data'));
+      let json = {
+        action: "list",
+        db: "tabrent",
+        table: "tx_order",
+        raw : {
+          selected : "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+        },
+        leftJoin: [
+        {
+            table: "tx_product",
+            field1: "tx_product.product_id",
+            field2: "tx_order.order_product_id"
+        },
+        {
+          table : "tx_user",
+          field1 : "tx_product.product_owner",
+          field2 : "tx_user.user_id"
+        }],
+        where: [
+            [
+                "order_user_id",
+                "=",
+                user.user_id
+            ]
+        ]
+    };
+  
+      fetch_data(INDEX, json).then(function (order) {
+        if (order.success) {
+          if (order.count == 1) {
+            setOrder([order.result]);
+          } else {
+            setOrder(order.result);
+          }
+        }
+      });
+    }
+
+    
+  }, [])
+  
   return (
     <div>
       <TopNav back="true" text="Transaction History" />
       <div className="main">
-        {data.map((data, index) => {
+        {order.map((data, index) => {
           return <ListItem data={data} />;
         })}
       </div>

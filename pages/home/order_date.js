@@ -1,27 +1,34 @@
 import TopNav from "../../components/globals/top_nav";
-import {
-  Grid,
-  Button,
-  Accordion,
-  AccordionSummary,
-  Typography,
-  AccordionDetails,
-  TextField,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useState, useEffect } from "react";
-
-function getWeeksAfter(date, amount) {
-  return date ? addWeeks(date, amount) : undefined;
-}
-
+import { useRouter } from "next/router";
 export default function OrderDate() {
-  const [value, setValue] = useState([null, null]);
-  const [expanded, setExpanded] = useState(false);
+  const router = useRouter();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [productId, setProductId] = useState();
 
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleConfirm = () => {
+    let json = {
+      order_start_date : startDate, 
+      order_end_date : endDate
+    };
+    localStorage.setItem("order_data", JSON.stringify(json));
+    router.push({
+      pathname: "/home/order",
+      query: {id: productId}
+    })
+  }
+
+  useEffect(() => {
+    if (typeof localStorage !== 'undefined') {
+      setProductId(router.query.id);
+      if (JSON.parse(localStorage.getItem('order_data'))) {
+        let data = JSON.parse(localStorage.getItem('order_data'));
+        setStartDate(data.order_start_date);
+        setStartDate(data.order_end_date);
+      }
+    }
+  }, [])
 
   return (
     <div>
@@ -51,6 +58,7 @@ export default function OrderDate() {
                   <input
                     id="checkIn"
                     type="date"
+                    onChange={e => setStartDate(e.target.value)}
                     className="pt-2 pb-2 mt-2"
                     style={{
                       border: "solid 2px #D2D2D2",
@@ -66,6 +74,7 @@ export default function OrderDate() {
                   <input
                     id="checkOut"
                     type="date"
+                    onChange={e => setEndDate(e.target.value)}
                     className="pt-2 pb-2 mt-2"
                     style={{
                       border: "solid 2px #D2D2D2",
@@ -78,12 +87,16 @@ export default function OrderDate() {
             </tr>
           </table>
           <center>
+          {startDate && endDate ? (
             <button
+              onClick={handleConfirm}
               className="button-primary mt-4 p-2"
               style={{ width: "100%" }}
             >
               Confirm
             </button>
+          ) : ""}
+            
           </center>
         </div>
       </div>

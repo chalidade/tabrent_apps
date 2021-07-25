@@ -11,11 +11,6 @@ export default function Detail() {
   const router = useRouter();
   const [product, setProduct] = useState([]);
   const [slider, setSlider] = useState([]);
-  const handleRent = () => {
-    router.push({
-      pathname: "/home/order",
-    });
-  };
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
@@ -25,6 +20,14 @@ export default function Detail() {
         action : "list",
         db : "tabrent",
         table : "tx_product",
+        raw : {
+          selected : "tx_product.*, tx_user.user_first_name,  tx_user.user_last_name, tx_user.user_profile"
+        },
+        leftJoin : [{
+          table : "tx_user",
+          field1 : "tx_user.user_id",
+          field2 : "tx_product.product_owner"
+      }],
         "where": [
           [
               "product_id",
@@ -40,6 +43,7 @@ export default function Detail() {
           let product = data.result;
           setProduct(product);
           setSlider(JSON.parse(product.product_image))
+          localStorage.setItem("product", JSON.stringify(product));
         }
       });
     }
@@ -151,11 +155,11 @@ export default function Detail() {
         <table>
           <tr>
             <td>
-              <img src="/icons/icon_profile.svg" />
+              <img src={product.user_profile ? MAIN + product.user_profile : "/icons/icon_profile.svg"} />
             </td>
             <td className="pl-3">
               <p className="m-0">
-                <b>Pak Bambang</b>
+                <b>{product.user_first_name ? product.user_first_name + " " + product.user_last_name : "Merchant Name"}</b>
               </p>
               <p className="m-0" style={{ fontSize: "12px" }}>
                 89% partner positive rating
@@ -233,7 +237,10 @@ export default function Detail() {
           bottom: "0px",
           fontSize: "14px",
         }}
-        onClick={handleRent}
+        onClick={() => router.push({
+          pathname: "/home/order_date",
+          query: {id: product.product_id}
+        })}
       >
         Rent Now
       </div>
