@@ -50,13 +50,15 @@ export default function ListItem({ data }) {
             Rp. {data.order_payment_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </p>
           <p className={ClassNames(style.textSubTitlePrice, "mt-1", data.order_status == 0 || data.order_status == 1 ? style.waiting : data.order_status == 1 ? style.success : data.order_status == 2 ? style.complete : style.cancel)}>
-            {order.order_status == 5
+            {data.order_status == "3"
                 ? "Complete Returned"
-                : order.order_status == 3
+                : data.order_status == "2"
                 ? "Payment Success"
-                : order.order_status == 4
+                : data.order_status == "4"
                 ? "Transaction Cancelled"
-                : order.order_status == 2
+                : data.order_status == "5"
+                ? "Payment Reject"
+                : data.order_status == "1"
                 ? "Waiting Confirm Seller"
                 : "Waiting Payment"}
           </p>

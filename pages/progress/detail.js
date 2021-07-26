@@ -13,10 +13,6 @@ export default function Detail() {
   const [slider, setSlider] = useState([]);
   const router = useRouter();
 
-  const handleRent = () => {
-   
-  };
-
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       let order_id = router.query.id;
@@ -56,6 +52,66 @@ export default function Detail() {
       });
     }
   }, [])
+
+  const handleCancel = () => {
+    let json_update = {
+      action: "update",
+      db: "tabrent",
+      table: "tx_order",
+      where: [
+          [
+              "order_id",
+              "=",
+              order.order_id
+          ]
+      ],
+      value: {
+          order_status : "4"
+      }
+    }
+
+    fetch_data(STORE, json_update).then(function (result_update) {
+      if (result_update.success) {
+        alert("Booking Cancelled");
+        router.push({
+          pathname: "/",
+          query: {page: "Progress"}
+        });
+      } else {
+        alert("Update Failed");
+      }
+    });
+  }
+
+  const handleUnCancel = () => {
+    let json_update = {
+      action: "update",
+      db: "tabrent",
+      table: "tx_order",
+      where: [
+          [
+              "order_id",
+              "=",
+              order.order_id
+          ]
+      ],
+      value: {
+          order_status : "0"
+      }
+    }
+
+    fetch_data(STORE, json_update).then(function (result_update) {
+      if (result_update.success) {
+        alert("Re-Booking Success");
+        router.push({
+          pathname: "/",
+          query: {page: "Progress"}
+        });
+      } else {
+        alert("Update Failed");
+      }
+    });
+  }
 
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
@@ -166,14 +222,16 @@ export default function Detail() {
           <tr>
             <td width="40%">Status</td>
             <td className="text-right">
-            <font style={{color: order.order_status == 0 || order.order_status == 2 ? "rgb(255, 123, 0)" : order.order_status == 3 ? "rgb(0, 89, 255)" : order.order_status == 4 ? "rgb(0, 255, 21)" : "rgb(255, 30, 0)"}}>
-              {order.order_status == 5
+            <font style={{color: order.order_status == 0 || order.order_status == 1 ? "rgb(255, 123, 0)" : order.order_status == 2 ? "rgb(0, 89, 255)" : order.order_status == 3 ? "rgb(0, 255, 21)" : "rgb(255, 30, 0)"}}>
+              {order.order_status == 3
                 ? "Complete Returned"
-                : order.order_status == 3
+                : order.order_status == 2
                 ? "Payment Success"
                 : order.order_status == 4
                 ? "Transaction Cancelled"
-                : order.order_status == 2
+                : order.order_status == 5
+                ? "Payment Reject"
+                : order.order_status == 1
                 ? "Waiting Confirm Seller"
                 : "Waiting Payment"}
             </font>
@@ -191,10 +249,17 @@ export default function Detail() {
         }}
       >
         <table width="100%">
+        {order.order_status == 0 || order.order_status == 5 ? (
           <tr>
-            <td width="50%"><button className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Cancel Booking</button></td>
+            <td width="50%"><button onClick={() => handleCancel()} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Cancel Booking</button></td>
             <td><button onClick={ () => router.push({ pathname: "/home/order_detail", query: {id: order.order_id} })} className="button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Pay</button></td>
           </tr>
+          ) : order.order_status == 4 ? (
+          <tr>
+            <td width="100%"><button onClick={() => handleUnCancel()} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Re-Booking</button></td>
+          </tr>
+          ) : ""}
+          
         </table>
       </div>
     </div>

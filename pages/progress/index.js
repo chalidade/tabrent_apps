@@ -57,9 +57,9 @@ export default function Index() {
     <div>
       <TopNav back="true" text="Transaction History" />
       <div className="main">
-        {order.map((data, index) => {
+        {order.length !== 0 ? order.map((data, index) => {
           return <ListItem data={data} />;
-        })}
+        }) : ""}
       </div>
     </div>
   );
