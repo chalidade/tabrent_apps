@@ -9,7 +9,7 @@ export default function ListItem({ data }) {
 
   const handleClickList = () => {
     router.push({
-      pathname: "/home/order_detail",
+      pathname: "/progress/detail",
       query: {id: data.order_id}
   });
   }
@@ -49,17 +49,16 @@ export default function ListItem({ data }) {
           <p className={ClassNames(style.textSubTitlePrice, "m-0")}>
             Rp. {data.order_payment_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </p>
-          <p className={ClassNames(style.textSubTitlePrice, "mt-1", data.order_status == 0 ? style.waiting : data.order_status == 1 ? style.success : data.order_status == 2 ? style.complete : style.cancel)}>
-            {data.order_status == 2
-              ? "Complete Returned"
-              : data.item_status == 1
-              ? "Payment Success"
-              : data.item_status == 3
-              ? "Transaction Cancelled"
-              : "Waiting Payment"}
-          </p>
-          <p className={ClassNames(style.textStatus, data.item_status)}>
-           
+          <p className={ClassNames(style.textSubTitlePrice, "mt-1", data.order_status == 0 || data.order_status == 1 ? style.waiting : data.order_status == 1 ? style.success : data.order_status == 2 ? style.complete : style.cancel)}>
+            {order.order_status == 5
+                ? "Complete Returned"
+                : order.order_status == 3
+                ? "Payment Success"
+                : order.order_status == 4
+                ? "Transaction Cancelled"
+                : order.order_status == 2
+                ? "Waiting Confirm Seller"
+                : "Waiting Payment"}
           </p>
         </Grid>
       </Grid>

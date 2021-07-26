@@ -2,7 +2,7 @@ import TopNav from "../../components/globals/top_nav";
 import { Carousel, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { STORE } from "../../config/api_url";
+import { STORE, INDEX } from "../../config/api_url";
 import { fetch_data } from "../../components/globals/api";
 
 export default function Detail() {
@@ -36,24 +36,58 @@ export default function Detail() {
     value.order_status = 0;
     value.order_payment_total = product.product_price * duration;
 
-    let json = {
-      action : "save",
+    let check_order = {
+      action : "list",
       db : "tabrent",
       table : "tx_order",
-      primaryKey : "order_id",
-      value: [value],
+      where: [
+        [
+            "order_transaction_number",
+            "=",
+            "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number
+        ]
+      ]
     };
+    
+    let json;
 
-    fetch_data(STORE, json).then(function (result) {
-      if (result.success) {
-        localStorage.setItem("order_data", JSON.stringify(result.data[0]));
-        router.push({
-            pathname: "/home/order_detail",
-            query: {id: result.data[0].order_id}
-        });
+    fetch_data(INDEX, check_order).then(function (data) {
+      if (data.success) { 
+        json = {
+          action : "update",
+          db : "tabrent",
+          table : "tx_order",
+          where: [
+            [
+                "order_transaction_number",
+                "=",
+                "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number
+            ]
+          ],
+          value: value
+        };
       } else {
-        alert("Check Your Data");
+        json = {
+          action : "save",
+          db : "tabrent",
+          table : "tx_order",
+          primaryKey : "order_id",
+          value: [value],
+        };
       }
+      
+       fetch_data(STORE, json).then(function (result) {
+        if (result.success) {
+          localStorage.setItem("order_data", JSON.stringify(result.data[0]));
+          router.push({
+              pathname: "/home/order_detail",
+              query: {id: result.data[0].order_id}
+          });
+        } else {
+          alert("Check Your Data");
+        }
+       });
+
     });
   };
 
@@ -258,7 +292,7 @@ useEffect(() => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <table width="100%">
+            <table width="100%" cellPadding="5">
               <tr >
                 <td><img src="/icons/icon_bca.png" width="70px" /></td>
                 <td className="pl-3">

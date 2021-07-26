@@ -42,15 +42,12 @@ export default function Detail() {
           setUser(getUser);
         }
       });
-
-
-
     }
   }, [])
 
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
-      <TopNav back="true" text="Back" arrow="true"  page="Home" />
+      <TopNav back="true" text="Back" arrow="true" />
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <table width="100%">
           <tr>
@@ -145,18 +142,21 @@ export default function Detail() {
       </div>
 
       <div
-        className="mt-3 p-2 text-center text-white"
+        className="mt-3 text-center text-white"
         style={{
           height: "auto",
-          background: "#2F2F8D",
           position: "absolute",
           width: "100%",
           bottom: "0px",
           fontSize: "14px",
         }}
-        onClick={handleRent}
       >
-        Ok
+         <table width="100%">
+          <tr>
+            <td width="50%"><button onClick={() => router.push("/")} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Back To Home</button></td>
+            <td><button onClick={handleRent} className="button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Pay</button></td>
+          </tr>
+        </table>
       </div>
     </div>
   );
