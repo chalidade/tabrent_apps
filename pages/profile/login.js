@@ -47,7 +47,7 @@ export default function login({ setPage, page }) {
   };
 
   return (
-    <div className="main" style={{ height: "auto" }}>
+    <div className="main" style={{ height: "auto", minHeight: '680px' }}>
       <center className="mt-5">
         <img src="/profile/icon_login.svg" className="mt-5" />
         <div>

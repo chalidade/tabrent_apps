@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import "bootstrap/dist/css/bootstrap.min.css";
-import TopNav from "../../components/globals/top_nav";
+import { ExitToApp } from '@material-ui/icons';
 import { Link } from "@material-ui/core";
 import { fetch_data } from "../../components/globals/api";
 import { STORE, INDEX, MAIN } from "../../config/api_url";
@@ -10,38 +10,44 @@ export default function OrderDate() {
   const router = useRouter();
   const [product, setProduct] = useState([]);
 
+  const handleLogout = () => {
+    router.push('/');
+    localStorage.removeItem("is_login");
+  };
+
+
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
-      let data = JSON.parse(localStorage.getItem('user_data'));
-      let json = {
-        action : "list",
-        db : "tabrent",
-        table : "tx_product",
-        "where": [
-          [
-              "product_owner",
-              "=",
-              data.user_id
+      if (localStorage.getItem("is_login") !== null) {
+        let data = JSON.parse(localStorage.getItem('user_data'));
+        let json = {
+          action : "list",
+          db : "tabrent",
+          table : "tx_product",
+          "where": [
+            [
+                "product_owner",
+                "=",
+                data.user_id
+            ]
           ]
-        ]
-      };
-  
-      fetch_data(INDEX, json).then(function (data) {
-        if (data.success) {
-          setProduct(data.result);
-        }
-      });
+        };
+    
+        fetch_data(INDEX, json).then(function (data) {
+          if (data.success) {
+            if (data.count == 1) {
+              setProduct([data.result]);
+            } else {
+              setProduct(data.result);
+            }
+          }
+        });
+      }
     }
   }, [])
   return (
     <div style={{ background: "#2F2F8D", overflow: "hidden" }}>
-      <TopNav
-        back="true"
-        text="Back"
-        arrow="true"
-        background={false}
-        page="Profile"
-      />
+        <div onClick={() => handleLogout()} style={{position:'absolute', top: '10px', right: '10px', color: '#fff'}}><ExitToApp /><span style={{ padding: '10px' }}>Logout</span></div>
       <div
         style={{
           position: "absolute",

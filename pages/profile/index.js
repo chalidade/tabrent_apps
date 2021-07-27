@@ -3,18 +3,29 @@ import ListItem from "../../components/profiles/list_item";
 import BottomNav from "../../components/globals/bottom_nav";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 export default function Index({ page, setPage }) {
+  const router = useRouter();
   const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState();
 
   useEffect(() => {
-    if (localStorage.getItem("is_login") !== null) {
-      setPage("Profile");
-      setIsLogin(true);
-    } else {
-      setPage("Login");
-      setIsLogin(false);
+    if (typeof localStorage !== 'undefined') {
+      let getUser = JSON.parse(localStorage.getItem('user_data'));
+      setUser(getUser);
+      if (localStorage.getItem("is_login") !== null) {
+        if(getUser.user_type == 2) {
+          router.push('/profile/partner_profile');
+        } else {
+          setPage("Profile");
+          setIsLogin(true);
+        }
+      } else {
+        setPage("Login");
+        setIsLogin(false);
+      }
     }
+    
   }, []);
 
   const handleLogout = () => {
@@ -32,12 +43,15 @@ export default function Index({ page, setPage }) {
     <div>
       <Header />
       <div className="main" style={{ overflow: "hidden" }}>
+      {user && user.user_type == 2 ? (<div>
         <ListItem
-          value="Became a rental owner"
+          value="My Shop"
           icon="./icons/icon_market.svg"
-          url="/profile/term_and_condition"
+          url="/profile/partner_profile"
         />
         <hr />
+      </div>) : ""}
+       
         <ListItem
           value="My favorite"
           icon="./icons/icon_love.svg"

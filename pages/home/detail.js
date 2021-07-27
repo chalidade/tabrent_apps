@@ -223,7 +223,7 @@ export default function Detail() {
           <b>Cancellation Policy</b>
         </p>
         <p className="mt-2">
-          <font style={{ fontSize: "14px", color: "#C8C8C8" }}>{product.product_cancel ? product.product_cancel : "No Refund."}</font>
+          <font style={{ fontSize: "14px", color: "#C8C8C8" }}>{product.product_cancelation_policy ? product.product_cancelation_policy : "No Refund."}</font>
           <br />
         </p>
       </div>

@@ -43,7 +43,11 @@ export default function OrderDate() {
   
       fetch_data(INDEX, json).then(function (data) {
         if (data.success) {
-          setProduct(data.result);
+          if (data.count == 1) {
+            setProduct([data.result]);
+          } else {
+            setProduct(data.result);
+          }
         }
       });
     }

@@ -1,25 +1,16 @@
 import TopNav from "../../components/globals/top_nav";
-import {
-  Grid,
-  Button,
-  Accordion,
-  AccordionSummary,
-  Typography,
-  AccordionDetails,
-  TextField,
-  Link,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { TextField } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
 import { STORE } from "../../config/api_url";
-import FileBase64 from 'react-file-base64';
 
 export default function Register() {
   // Store Data
   const [firstName, setFirstName] = useState();
+  const [show, setShow] = useState(true);
   const [lastName, setLastName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();
@@ -28,6 +19,8 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState(0);
   const [ktpNumber, setKtpNumber] = useState();
   const [address, setAddress] = useState();
+  const [asId, setAsId] = useState();
+  const [asName, setAsName] = useState();
   const [uploadIdCard, setUploadIdCard] = useState();
   const [uploadIdPhoto, setUploadIdPhoto] = useState();
 
@@ -35,6 +28,7 @@ export default function Register() {
   const [indexPage, setIndexpage] = useState(0);
   const [page, setPage] = useState([1, 0, 0]);
   const [gender, setGander] = useState();
+  const [registerAs, setRegisterAs] = useState();
   const changeGender = (event) => {
     setGander(event.target.value);
   };
@@ -84,7 +78,7 @@ export default function Register() {
           user_password: password,
           user_personal_id_number: ktpNumber,
           user_address: address,
-          user_type: 1,
+          user_type: asId ? asId : 1,
           user_status: 0,
         },
       ],
@@ -106,6 +100,8 @@ export default function Register() {
       setIndexpage(index);
       tmpPage[indexPage] = 0;
       setPage(tmpPage);
+    } else {
+      router.back();
     }
   };
 
@@ -177,6 +173,12 @@ export default function Register() {
     }
   }
 
+  const handleSetAs = (id, name) => {
+    setAsId(id);
+    setAsName(name);
+    setShow(false);
+  }
+
   return (
     <div>
       <TopNav
@@ -212,6 +214,7 @@ export default function Register() {
         </p>
         {indexPage == 0 ? (
           <div>
+            <p onClick={() => setShow(true)} style={{ borderBottom: 'solid thin black', paddingBottom: '10px' }}>{asName ? asName : "Register As"}</p>
             <TextField
               style={style.textField}
               fullWidth={true}
@@ -402,6 +405,31 @@ export default function Register() {
           </div>
         )}
       </div>
+        <Modal centered show={show} onHide={() => setShow(false)}>
+          <Modal.Body>
+            <h4 className="text-center mb-4 pb-3">Register As</h4>
+            <table width="100%">
+              <tr>
+                <td className="text-center">
+                  <div onClick={(id, name) => handleSetAs(1, "Standart User")}>
+                    <img
+                      src="/icons/icon_standart_user.png"
+                    />
+                    <p style={{ fontWeight: '700', marginTop: '10px' }}>Standart User <br /> <font style={{fontWeight: '500', fontSize: '12px'}}>if you want rent car</font></p>
+                  </div>
+                </td>
+                <td className="text-center" onClick={(id, name) => handleSetAs(2, "Rental Owner")}>
+                  <div>
+                    <img
+                      src="/icons/icon_owner.png"
+                    />
+                    <p style={{ fontWeight: '700', marginTop: '10px' }}>Rental Owner <br /><font style={{fontWeight: '500', fontSize: '12px'}}>if you are rental owner</font></p>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </Modal.Body>
+      </Modal>
     </div>
   );
 }
