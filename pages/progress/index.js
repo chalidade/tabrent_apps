@@ -10,44 +10,46 @@ export default function Index() {
   const [order, setOrder] = useState([]);
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       let user = JSON.parse(localStorage.getItem('user_data'));
-      let json = {
-        action: "list",
-        db: "tabrent",
-        table: "tx_order",
-        raw : {
-          selected : "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
-        },
-        leftJoin: [
-        {
-            table: "tx_product",
-            field1: "tx_product.product_id",
-            field2: "tx_order.order_product_id"
-        },
-        {
-          table : "tx_user",
-          field1 : "tx_product.product_owner",
-          field2 : "tx_user.user_id"
-        }],
-        where: [
-            [
-                "order_user_id",
-                "=",
-                user.user_id
-            ]
-        ]
-    };
-  
-      fetch_data(INDEX, json).then(function (order) {
-        if (order.success) {
-          if (order.count == 1) {
-            setOrder([order.result]);
-          } else {
-            setOrder(order.result);
+      if(user.user_id.length !== 0) { 
+        let json = {
+          action: "list",
+          db: "tabrent",
+          table: "tx_order",
+          raw : {
+            selected : "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+          },
+          leftJoin: [
+          {
+              table: "tx_product",
+              field1: "tx_product.product_id",
+              field2: "tx_order.order_product_id"
+          },
+          {
+            table : "tx_user",
+            field1 : "tx_product.product_owner",
+            field2 : "tx_user.user_id"
+          }],
+          where: [
+              [
+                  "order_user_id",
+                  "=",
+                  user.user_id
+              ]
+          ]
+      };
+    
+        fetch_data(INDEX, json).then(function (order) {
+          if (order.success) {
+            if (order.count == 1) {
+              setOrder([order.result]);
+            } else {
+              setOrder(order.result);
+            }
           }
-        }
-      });
+        });
+      }
     }
 
     

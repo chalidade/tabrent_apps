@@ -10,7 +10,7 @@ export default function Index({ page, setPage }) {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       let getUser = JSON.parse(localStorage.getItem('user_data'));
       setUser(getUser);
       if (localStorage.getItem("is_login") !== null) {
@@ -20,6 +20,14 @@ export default function Index({ page, setPage }) {
           setPage("Profile");
           setIsLogin(true);
         }
+      } else {
+        setPage("Login");
+        setIsLogin(false);
+      }
+    } else {
+      if (localStorage.getItem("is_login") !== null) {
+          setPage("Profile");
+          setIsLogin(true);
       } else {
         setPage("Login");
         setIsLogin(false);
