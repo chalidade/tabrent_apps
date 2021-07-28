@@ -79,6 +79,8 @@ export default function AccountInformation() {
               product_rental_rules_overtime : overTime,
               product_rental_rules_regulation : generalRegulation,
               product_pickup_rules : pickupRule, 
+              product_return_date: returnDate,
+              product_pickup_date: pickupDate,
               product_cancelation_policy : cancel,
               product_owner : userId,
               product_status : 0
@@ -89,34 +91,34 @@ export default function AccountInformation() {
     fetch_data(STORE, json).then(function (result) {
       if (result.success) {
         setProductId(result.id);
+
+        // Image Upload
+        json_file = {
+          "action": "upload_base64",
+          "db": "tabrent",
+          "table": "tx_product",
+          "update" : "product_image",
+          "main" : true,
+          "where": [
+              [
+                  "product_id",
+                  "=",
+                  productId
+              ]
+          ],
+          "value" : photo
+        }
+
+      fetch_data(STORE, json_file).then(function (result_file) {
+        if (result_file.success) {
+          alert("Update Success");
+          router.push('/profile/list_rent');
+        } else {
+          alert("Upload File Failed");
+        }
+      });
       } else {
         alert("Check Your Data");
-      }
-    });
-
-    // Image Upload
-      json_file = {
-        "action": "upload_base64",
-        "db": "tabrent",
-        "table": "tx_product",
-        "update" : "product_image",
-        "main" : true,
-        "where": [
-            [
-                "product_id",
-                "=",
-                productId
-            ]
-        ],
-        "value" : photo
-      }
-
-    fetch_data(STORE, json_file).then(function (result_file) {
-      if (result_file.success) {
-        alert("Update Success");
-        router.push('/profile/list_rent');
-      } else {
-        alert("Upload File Failed");
       }
     });
 
@@ -233,17 +235,6 @@ useEffect(() => {
             </tr>
         </table>
       </div>
-      <TextField
-          style={style.textField}
-          fullWidth={true}
-          value={name}
-          onChange={e => setName(e.target.value)}
-          id="standard-basic"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          label="Product Name"
-        />
         <TextField
           active={true}
           style={style.textField}
@@ -255,6 +246,17 @@ useEffect(() => {
           onChange={e => setBrand(e.target.value)}
           id="standard-basic"
           label="Product Brand"
+        />
+        <TextField
+          style={style.textField}
+          fullWidth={true}
+          value={name}
+          onChange={e => setName(e.target.value)}
+          id="standard-basic"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          label="Tipe dan Tahun"
         />
         <TextField
           style={style.textField}

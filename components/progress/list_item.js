@@ -39,12 +39,9 @@ export default function ListItem({ data }) {
           ></div>
         </Grid>
         <Grid container item xs={8} style={{ paddingTop: "5px" }}>
-          <p className={ClassNames(style.textTitle, "m-0")}>{data.product_name}</p>
+          <p className={ClassNames(style.textTitle, "m-0")} style={{ fontSize: '14px' }}>{data.product_name}</p>
           <p className={ClassNames(style.textSubTitle, "m-0")}>
             {data.user_first_name+" "+data.user_last_name}
-          </p>
-          <p className={ClassNames(style.textSubTitle, "m-0")}>
-            {data.order_payment_name}
           </p>
           <p className={ClassNames(style.textSubTitlePrice, "m-0")}>
             Rp. {data.order_payment_total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

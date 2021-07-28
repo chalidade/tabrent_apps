@@ -10,7 +10,7 @@ import { STORE } from "../../config/api_url";
 export default function Register() {
   // Store Data
   const [firstName, setFirstName] = useState();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [lastName, setLastName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
   const [email, setEmail] = useState();

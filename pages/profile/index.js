@@ -41,7 +41,7 @@ export default function Index({ page, setPage }) {
 
   return (
     <div>
-      <Header />
+      <Header user={user} />
       <div className="main" style={{ overflow: "hidden" }}>
       {user && user.user_type == 2 ? (<div>
         <ListItem
@@ -67,11 +67,11 @@ export default function Index({ page, setPage }) {
           icon="./icons/icon_referal_code.svg"
           url="/profile/referral_code"
         />
-        <ListItem
+        {/* <ListItem
           value="Share to your friends"
           icon="./icons/icon_market.svg"
           url="/profile/"
-        />
+        /> */}
         <hr />
         <ListItem
           value="Emergency Call"
@@ -84,12 +84,14 @@ export default function Index({ page, setPage }) {
           icon="./icons/icon_contact_us.svg"
           url="/profile/contact_us"
         />
+        
         <ListItem
           value="Get help"
           icon="./icons/icon_help.svg"
           url="/profile/get_help"
         />
-        <ListItem value="Rate us" icon="./icons/icon_like.svg" />
+       
+        {/* <ListItem value="Rate us" icon="./icons/icon_like.svg" /> */}
         <hr />
         <ListItem
           onClick={handleLogout}

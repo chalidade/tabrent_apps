@@ -13,6 +13,7 @@ export default function TopNav({
   setSearch,
   onClick,
   background = true,
+  customPage = false
 }) {
   const [tmpSearch, setTmpSearch] = useState();
   const router = useRouter();
@@ -21,6 +22,10 @@ export default function TopNav({
       router.push({
         pathname: "/",
         query: { page: page },
+      });
+    } else if(customPage) {
+      router.push({
+        pathname: "/" + customPage
       });
     } else {
       router.back();

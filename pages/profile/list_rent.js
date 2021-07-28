@@ -16,6 +16,7 @@ import { STORE, INDEX, MAIN } from "../../config/api_url";
 export default function OrderDate() {
   const [product, setProduct] = useState([]);
   const [photo, setPhoto] = useState([]);
+  const [user, setUser] = useState();
   const router = useRouter();
 
   const handleEdit = e => {
@@ -28,6 +29,7 @@ export default function OrderDate() {
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       let data = JSON.parse(localStorage.getItem('user_data'));
+      setUser(data);
       let json = {
         action : "list",
         db : "tabrent",
@@ -56,19 +58,18 @@ export default function OrderDate() {
 
   return (
     <div>
-      <TopNav back="true" text="Back" arrow="true" />
+      <TopNav back="true" text="Back" arrow="true" customPage="profile/partner_profile" />
       <div className="main" style={{ height: "auto" }}>
         <table width="100%">
           <tr>
             <td className="text-center">
-              <img
-                src="/profile/icon_logo_mitra.svg"
-                style={{ width: "50px" }}
-              />
+              <div className="partner-profile-text-logo" style={{fontSize: '24px', width: '50px', height: '50px', boxShadow: 'none', background: '#343434'}}> 
+                {user ? user.user_first_name.charAt(0) + user.user_last_name.charAt(0) : "TR" }
+              </div>
             </td>
             <td>
               <p className="weight-700 mb-0 mt-1" style={{ fontSize: "18px" }}>
-                Tabrent Rental
+              {user ? user.user_first_name + " " + user.user_last_name : "Rental Owner" }
               </p>
               <p style={{ fontSize: "11px" }}>
                 There is no rating for this rental shop
@@ -242,9 +243,10 @@ export default function OrderDate() {
                     <button id={data.product_id} onClick={e => handleEdit(e)} style={{border: 'none', background: 'none', fontSize: '14px'}}>
                       <img src="/icons/icon_edit.svg" style={{marginTop: '-5px', width: '15px'}} /> Edit
                     </button>
-                    <button style={{border: 'none', background: 'none', marginLeft: '25px', fontSize: '14px'}}>
+
+                    {/* <button onClick={() => handleDelete()} style={{border: 'none', background: 'none', marginLeft: '25px', fontSize: '14px'}}>
                       <img src="/icons/icon_trash.svg" style={{marginTop: '-5px', width: '15px'}} /> Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               </table>

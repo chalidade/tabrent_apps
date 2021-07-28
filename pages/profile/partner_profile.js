@@ -9,6 +9,7 @@ import { STORE, INDEX, MAIN } from "../../config/api_url";
 export default function OrderDate() {
   const router = useRouter();
   const [product, setProduct] = useState([]);
+  const [user, setUser] = useState();
 
   const handleLogout = () => {
     router.push('/');
@@ -20,6 +21,7 @@ export default function OrderDate() {
     if (typeof localStorage !== 'undefined') {
       if (localStorage.getItem("is_login") !== null) {
         let data = JSON.parse(localStorage.getItem('user_data'));
+        setUser(data);
         let json = {
           action : "list",
           db : "tabrent",
@@ -102,10 +104,12 @@ export default function OrderDate() {
         className="profile-mitra text-center"
         style={{ width: "100%", marginLeft: "0px" }}
       >
-        <img src="/profile/icon_logo_mitra.svg" style={{ width: "120px" }} />
+        <div className="partner-profile-text-logo"> 
+          {user ? user.user_first_name.charAt(0) + user.user_last_name.charAt(0) : "TR" }
+        </div>
         <br />
         <p className="mt-3 text-white weight-600" style={{ fontSize: "20px" }}>
-          Tabrent rental
+          {user ? user.user_first_name + " " + user.user_last_name : "Rental Owner" }
         </p>
         <p className="text-white" style={{ marginTop: "-10px" }}>
           There is no rating for this rental shop

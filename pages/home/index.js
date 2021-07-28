@@ -173,7 +173,6 @@ export default function Index() {
                   left: "31px",
                   top: "409px",
                   size: "20px",
-
                   fontFamily: "Calibri",
                   fontStyle: "normal",
                   fontWeight: "bold",
@@ -209,7 +208,7 @@ export default function Index() {
           className="container mt-2 col"
           style={{ width: "auto", height: "auto", marginBottom: "0px" }}
         >
-          <div className="row">
+          <div className="row mt-4">
             {product ? product.map((data, index) => {
               return <Cards data={data} />;
             })  : ""}
