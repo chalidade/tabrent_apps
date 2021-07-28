@@ -12,7 +12,6 @@ export default function Index() {
   useEffect(() => {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       let user = JSON.parse(localStorage.getItem('user_data'));
-      if(user.user_id.length !== 0) { 
         let json = {
           action: "list",
           db: "tabrent",
@@ -49,7 +48,6 @@ export default function Index() {
             }
           }
         });
-      }
     }
 
     
@@ -58,10 +56,10 @@ export default function Index() {
   return (
     <div>
       <TopNav back="true" text="Transaction History" />
-      <div className="main">
+      <div className="main" style={{height: 'auto', minHeight: '100vh'}}>
         {order.length !== 0 ? order.map((data, index) => {
           return <ListItem data={data} />;
-        }) : ""}
+        }) : (<center style={{width: '100%',marginTop: '80px'}}><img src="/icons/icon_no_product.svg" /></center>)}
       </div>
     </div>
   );

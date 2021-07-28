@@ -34,7 +34,7 @@ export default function Index() {
   return (
     <div>
       <TopNav back="true" text="Home" />
-      <div className="main" style={{ height: "auto", minHeight: "1000px" }}>
+      <div className="main" style={{ height: "auto", minHeight: "100vh" }}>
         <Banner />
         <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
           <table>
@@ -209,9 +209,9 @@ export default function Index() {
           style={{ width: "auto", height: "auto", marginBottom: "0px" }}
         >
           <div className="row mt-4">
-            {product ? product.map((data, index) => {
+            {product.length !== 0 ? product.map((data, index) => {
               return <Cards data={data} />;
-            })  : ""}
+            })  : (<center style={{width: '100%',marginTop: '40px'}}><img src="/icons/icon_no_product.svg" /></center>)}
           </div>
         </div>
       </div>

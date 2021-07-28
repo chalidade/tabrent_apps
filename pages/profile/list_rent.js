@@ -27,7 +27,7 @@ export default function OrderDate() {
   }
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       let data = JSON.parse(localStorage.getItem('user_data'));
       setUser(data);
       let json = {

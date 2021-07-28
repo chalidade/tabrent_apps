@@ -9,7 +9,7 @@ import { STORE, INDEX, MAIN } from "../../config/api_url";
 export default function OrderDate() {
   const router = useRouter();
   const [product, setProduct] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState([]);
 
   const handleLogout = () => {
     router.push('/');
@@ -18,7 +18,7 @@ export default function OrderDate() {
 
 
   useEffect(() => {
-    if (typeof localStorage !== 'undefined') {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       if (localStorage.getItem("is_login") !== null) {
         let data = JSON.parse(localStorage.getItem('user_data'));
         setUser(data);
@@ -105,11 +105,11 @@ export default function OrderDate() {
         style={{ width: "100%", marginLeft: "0px" }}
       >
         <div className="partner-profile-text-logo"> 
-          {user ? user.user_first_name.charAt(0) + user.user_last_name.charAt(0) : "TR" }
+          {user.length !== 0 ? user.user_first_name.charAt(0) + user.user_last_name.charAt(0) : "TR" }
         </div>
         <br />
         <p className="mt-3 text-white weight-600" style={{ fontSize: "20px" }}>
-          {user ? user.user_first_name + " " + user.user_last_name : "Rental Owner" }
+          {user.length !== 0 ? user.user_first_name + " " + user.user_last_name : "Rental Owner" }
         </p>
         <p className="text-white" style={{ marginTop: "-10px" }}>
           There is no rating for this rental shop
