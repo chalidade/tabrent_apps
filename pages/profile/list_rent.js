@@ -1,7 +1,7 @@
  import TopNav from "../../components/globals/top_nav";
+ import { Modal, Button } from 'react-bootstrap';
 import {
   Grid,
-  Button,
   Accordion,
   AccordionSummary,
   Typography,
@@ -15,6 +15,7 @@ import { STORE, INDEX, MAIN } from "../../config/api_url";
 
 export default function OrderDate() {
   const [product, setProduct] = useState([]);
+  const [show, setShow] = useState(false);
   const [photo, setPhoto] = useState([]);
   const [user, setUser] = useState();
   const router = useRouter();
@@ -24,6 +25,38 @@ export default function OrderDate() {
       pathname: '/profile/product_new/',
       query: { id: e.target.id },
     })
+  }
+
+  const handleDelete = e => {
+    let id = e.target.id;
+    let json = {
+      action: "delete",
+      db: "tabrent",
+      table: "tx_product",
+      "where": [
+        [
+            "product_owner",
+            "=",
+            user.user_id
+        ]
+      ],
+      "where_delete": [
+          [
+              "product_id",
+              "=",
+              id
+          ]
+      ]
+    };
+
+    fetch_data(STORE, json).then(function (data) {
+      if (data.success) {
+          setProduct(data.result);
+          setShow(false);
+      } else {
+          setShow(false);
+      }
+    });
   }
 
   useEffect(() => {
@@ -77,7 +110,7 @@ export default function OrderDate() {
             </td>
           </tr>
         </table>
-        <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
+        {/* <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
           <table>
             <tr>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
@@ -199,14 +232,14 @@ export default function OrderDate() {
               </td>
             </tr>
           </table>
-        </div>
+        </div> */}
         <table width="100%" className="mt-4">
           <tr>
             <td className="text-left">
               <p className="mb-0 weight-700">Vehicles</p>
             </td>
             <td className="text-right">
-              <button className="button-primary pl-3 pr-3">
+              {/* <button className="button-primary pl-3 pr-3">
                 <table>
                   <tr>
                     <td>
@@ -215,7 +248,7 @@ export default function OrderDate() {
                     <td className="pl-2"> Filter</td>
                   </tr>
                 </table>
-              </button>
+              </button> */}
             </td>
           </tr>
         </table>
@@ -234,7 +267,7 @@ export default function OrderDate() {
                   <td>
                     <p className="text-left pl-3 p-0 m-0" style={{ fontWeight: '700' }}>{data.product_name}</p>
                     <p className="text-left pl-3 p-0 m-0" style={{ fontSize: '12px' }}>{data.product_brand}</p>
-                    <p className="text-left pl-3 p-0 m-0" style={{ fontSize: '14px' }}>{data.product_price}</p>
+                    <p className="text-left pl-3 p-0 m-0" style={{ fontSize: '14px' }}>{data.product_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                   </td>
                 </tr>
                 <tr>
@@ -244,18 +277,35 @@ export default function OrderDate() {
                       <img src="/icons/icon_edit.svg" style={{marginTop: '-5px', width: '15px'}} /> Edit
                     </button>
 
-                    {/* <button onClick={() => handleDelete()} style={{border: 'none', background: 'none', marginLeft: '25px', fontSize: '14px'}}>
+                    <button onClick={() => setShow(true)} style={{border: 'none', background: 'none', marginLeft: '25px', fontSize: '14px'}}>
                       <img src="/icons/icon_trash.svg" style={{marginTop: '-5px', width: '15px'}} /> Delete
-                    </button> */}
+                    </button>
                   </td>
                 </tr>
               </table>
+              <Modal centered show={show} onHide={() => setShow(false)}>
+              <Modal.Header closeButton>
+                <Modal.Title>Confirmation Delete</Modal.Title>
+              </Modal.Header>
+                <Modal.Body>Are You Sure Delete This Product ?</Modal.Body>
+                <Modal.Footer>
+                  <Button className="btn-danger" variant="secondary" onClick={()=>setShow(false)}>
+                    Cancel
+                  </Button>
+                  <Button id={data.product_id} onClick={(e) => handleDelete(e)} variant="success">
+                    Delete
+                  </Button>
+                </Modal.Footer>
+              </Modal>
             </div>);
         }) : ( 
           <div>
             <img src="/icons/icon_no_product.svg" />
           </div> )}
       </div>
+      <button onClick={() => router.push('/profile/product_new')} className="button-primary p-3 w-100 mt-3" style={{position: 'sticky', bottom: 0}}>
+          Add New Product
+        </button>
     </div>
   );
 }

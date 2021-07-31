@@ -51,14 +51,14 @@ export default function login({ setPage, page }) {
       <center className="mt-5">
         <img src="/profile/icon_login.svg" className="mt-5" />
         <div>
-          <img
+          {/* <img
             src="/profile/icon_user.svg"
             style={{ position: "absolute", left: "63px", marginTop: "15px" }}
-          />
+          /> */}
           <input
             type="text"
             onChange={e => setUsername(e.target.value)}
-            className="form-control mt-5 pl-5"
+            className="form-control mt-5 pl-4"
             placeholder="Username"
             style={{
               padding: "25px",
@@ -69,14 +69,14 @@ export default function login({ setPage, page }) {
           />
         </div>
         <div>
-          <img
+          {/* <img
             src="/profile/icon_lock.svg"
             style={{ position: "absolute", left: "63px", marginTop: "15px" }}
-          />
+          /> */}
           <input
             type="password"
             onChange={e => setPassword(e.target.value)}
-            className="form-control mt-3 pl-5"
+            className="form-control mt-3 pl-4"
             placeholder="Password"
             style={{
               padding: "25px",

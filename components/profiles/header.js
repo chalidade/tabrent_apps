@@ -20,7 +20,7 @@ export default function Header({ user }) {
         </font>
         </Grid>
         <Grid container item xs={7} style={{ paddingLeft: "15px" }}>
-          <p className={style.textProfile}>{user ? user.user_first_name + " " + user.user_last_name : "Rental Owner" }</p>
+          <p className={style.textProfile}>{user ? user.user_first_name : "Rental Owner" }</p>
           <Link href="/profile/account_information">
             <p className={style.textSubProfile}>Account Information &gt; </p>
           </Link>

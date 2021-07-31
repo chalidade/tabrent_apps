@@ -10,6 +10,8 @@ export default function OrderDate() {
   const router = useRouter();
   const [product, setProduct] = useState([]);
   const [user, setUser] = useState([]);
+  const [newOrder, setNewOrder] = useState(0);
+  const [rented, setRented] = useState(0);
 
   const handleLogout = () => {
     router.push('/');
@@ -44,6 +46,79 @@ export default function OrderDate() {
             }
           }
         });
+
+        let json_new_order = {
+          action: "list",
+          db: "tabrent",
+          table: "tx_order",
+          raw: {
+            "selected": "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+          },
+          leftJoin : [
+          {
+              table : "tx_product",
+              field1 : "tx_product.product_id",
+              field2 : "tx_order.order_product_id"
+          },
+          {
+            table: "tx_user",
+            field1: "tx_user.user_id",
+            field2: "tx_order.order_user_id"
+          }],
+          where: [
+              [
+                  "product_owner",
+                  "=",
+                  data.user_id
+              ],
+              [
+                  "order_status",
+                  "=",
+                  "3"
+              ]
+          ]
+      };
+    
+        fetch_data(INDEX, json_new_order).then(function (data) {
+          setNewOrder(data.count);
+        });
+
+        let json_rented = {
+          action: "list",
+          db: "tabrent",
+          table: "tx_order",
+          raw: {
+            "selected": "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+          },
+          leftJoin : [
+          {
+              table : "tx_product",
+              field1 : "tx_product.product_id",
+              field2 : "tx_order.order_product_id"
+          },
+          {
+            table: "tx_user",
+            field1: "tx_user.user_id",
+            field2: "tx_order.order_user_id"
+          }],
+          where: [
+              [
+                  "product_owner",
+                  "=",
+                  data.user_id
+              ],
+              [
+                  "order_status",
+                  "=",
+                  "4"
+              ]
+          ]
+      };
+    
+        fetch_data(INDEX, json_rented).then(function (data) {
+          setRented(data.count);
+        });
+
       }
     }
   }, [])
@@ -69,17 +144,48 @@ export default function OrderDate() {
         <table width="100%">
           <tr>
             <td className="text-left">
-              <Link href="/profile/list_rent">
+              <Link href="/profile/list_new_order">
                 <img src="/icons/icon_new_order.svg" />
+                {newOrder !== 0 ? (
+                  <div 
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      position: 'absolute',
+                      marginTop: '-60px',
+                      background: 'red',
+                      color: 'white',
+                      marginLeft: '56px',
+                      borderRadius: '50px',
+                      textAlign: 'center',
+                      fontSize: '13px',
+                }}>{newOrder}</div>
+                ) : ""}
+               
               </Link>
             </td>
             <td className="text-center">
-              <Link href="/profile/list_rent">
+              <Link href="/profile/list_rented_order">
                 <img src="/icons/icon_rented.svg" />
+                {rented !== 0 ? (
+                  <div 
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      position: 'absolute',
+                      marginTop: '-60px',
+                      background: 'red',
+                      color: 'white',
+                      marginLeft: '50px',
+                      borderRadius: '50px',
+                      textAlign: 'center',
+                      fontSize: '13px',
+                }}>{rented}</div>
+                ) : ""}
               </Link>
             </td>
             <td className="text-right">
-              <Link href="/profile/list_rent">
+              <Link href="/profile/list_done_order">
                 <img src="/icons/icon_complete.svg" />
               </Link>
             </td>
@@ -114,12 +220,12 @@ export default function OrderDate() {
         <p className="text-white" style={{ marginTop: "-10px" }}>
           There is no rating for this rental shop
         </p>
-        <table width="100%" className="profile-name-balance">
+        {/* <table width="100%" className="profile-name-balance">
           <tr>
             <td className="text-left pl-4">Balance</td>
             <td className="text-right pr-4">Rp 1.000.000</td>
           </tr>
-        </table>
+        </table> */}
       </div>
       <div className="main"></div>
     </div>

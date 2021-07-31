@@ -68,7 +68,7 @@ export default function Cards({data}) {
             />
             <div className="row">
               <div className="col">
-                <p className="p-0" style={styles.owner}> {data.product_name.lenght > 30 ? data.product_name.slice(0, 27) + "..." : data.product_name }</p>
+                <p className="p-0" style={styles.owner}> {data.product_name.length > 30 ? data.product_name.slice(0, 27) + "..." : data.product_name }</p>
                 <p class="mb-2" style={styles.price}>
                   Rp {data.product_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} <small style={{ fontWeight: "bold" }}>/Day</small>
                 </p>

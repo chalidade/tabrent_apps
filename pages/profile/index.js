@@ -16,8 +16,10 @@ export default function Index({ page, setPage }) {
       if (localStorage.getItem("is_login") !== null) {
         if(getUser.user_type == 2) {
           router.push('/profile/partner_profile');
+        } if(getUser.user_type == 3) {
+          router.push('/profile/admin_menu');
         } else {
-          setPage("Profile");
+          setPage("Home");
           setIsLogin(true);
         }
       } else {
