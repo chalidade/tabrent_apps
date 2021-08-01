@@ -1,28 +1,33 @@
 import ImageBanner from "../../components/globals/images";
 import { Container, Typography } from "@material-ui/core";
 import { Card, ButtonGroup, Button, Carousel} from 'react-bootstrap';
+import { MAIN } from "../../config/api_url";
 
-export default function Banner(){
+export default function Banner({data}){
   return(
     <div className="mt-3" style={{ height: "auto", shadow: "none" }}>
     <Carousel>
+    {data ? data.map((value, index) => {
+      let photo = MAIN + value;
+      return (
         <Carousel.Item interval={2000}>
-          <ImageBanner image="/home/banner_1.jpg" width="auto"  height="156px" repeat="no-repeat"  radius="10px" />
-            <Carousel.Caption>
-            </Carousel.Caption>
-            </Carousel.Item>
-
-        <Carousel.Item interval={2000}>
-            <ImageBanner image="/home/banner_2.jpg" width="auto"  height="156px" repeat="no-repeat" radius="10px" />
-            <Carousel.Caption>
-            </Carousel.Caption>
-        </Carousel.Item>
-
-        <Carousel.Item interval={2000}>
-            <ImageBanner image="/home/banner_3.jpg" width="auto" height="156px" repeat="no-repeat" radius="10px" />
-            <Carousel.Caption>
+          <div
+            style={{
+              height:'156px',
+              width : '100%',
+              backgroundImage: `url('${photo}')`,
+              backgroundSize:'cover',
+              backgroundRepeat:'no-repeat',
+              backgroundPosition:'center',
+              borderRadius : '10px',
+            }}
+          >
+          </div>
+          <Carousel.Caption>
           </Carousel.Caption>
         </Carousel.Item>
+      );
+    }) : ""}
     </Carousel>
     </div>
   );

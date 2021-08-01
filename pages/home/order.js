@@ -17,6 +17,7 @@ export default function Detail() {
   const [orderData, setOrderData] = useState();
   const [duration, setDuration] = useState();
   const [product, setProduct] = useState();
+  const [paymentMethod, setPaymentMethod] = useState();
 
   const handleRent = () => {
     const timeElapsed = Date.now();
@@ -103,20 +104,37 @@ useEffect(() => {
       let getUser = JSON.parse(localStorage.getItem('user_data'));
       setUser(getUser);
       setProductId(router.query.id);
-        let order = JSON.parse(localStorage.getItem('order_data'));
-        let product = JSON.parse(localStorage.getItem('product'));
-        let start_date = new Date(order.order_start_date);
-        let end_date = new Date(order.order_end_date);
 
-        // To calculate the time difference of two dates
-        var Difference_In_Time = end_date.getTime() - start_date.getTime();
-          
-        // To calculate the no. of days between two dates
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+      let json_payment = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_payment_method"
+      };
 
-        setDuration(Difference_In_Days);
-        setOrderData(order);
-        setProduct(product);
+      fetch_data(INDEX, json_payment).then(function (data) {
+        if (data.success) {
+          if (data.count == 1) {
+            setPaymentMethod([data.result]);
+          } else {
+            setPaymentMethod(data.result);
+          }
+        } 
+      });
+
+      let order = JSON.parse(localStorage.getItem('order_data'));
+      let product = JSON.parse(localStorage.getItem('product'));
+      let start_date = new Date(order.order_start_date);
+      let end_date = new Date(order.order_end_date);
+
+      // To calculate the time difference of two dates
+      var Difference_In_Time = end_date.getTime() - start_date.getTime();
+        
+      // To calculate the no. of days between two dates
+      var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+      setDuration(Difference_In_Days);
+      setOrderData(order);
+      setProduct(product);
     }
   }, [])
 
@@ -293,33 +311,19 @@ useEffect(() => {
         </Modal.Header>
         <Modal.Body>
             <table width="100%" cellPadding="5">
-              <tr >
-                <td><img src="/icons/icon_bca.png" width="70px" /></td>
-                <td className="pl-3">
-                  <div onClick={(id, name, number) => handlePayment(1, "Bank BCA", "1400525422")}>
-                    <font style={{fontSize: "20px", fontWeight: "500"}}> Bank BCA </font>
-                    <br /> <font style={{fontSize: "14px"}}> 1400525422 a/n Chalid Ade Rahman </font>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><img src="/icons/icon_ovo.jpg" width="70px" /></td>
-                <td className="pl-3">
-                  <div onClick={(id, name, number) => handlePayment(2, "OVO", "08544547752")}>
-                    <font style={{fontSize: "20px", fontWeight: "500"}}> OVO </font>
-                    <br /> <font style={{fontSize: "14px"}}> 08544547752 a/n Chalid Ade Rahman </font>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td><img src="/icons/icon_dana.jpg" width="70px" /></td>
-                <td className="pl-3">
-                  <div onClick={(id, name, number) => handlePayment(3, "DANA", "08544547752")}>
-                    <font style={{fontSize: "20px", fontWeight: "500"}}> DANA </font>
-                    <br /> <font style={{fontSize: "14px"}}> 08544547752 a/n Chalid Ade Rahman </font>
-                  </div>
-                </td>
-              </tr>
+              {paymentMethod ? paymentMethod.map((data, index) => {
+                return (
+                  <tr >
+                    <td><img src="/icons/icon_bca.png" width="70px" /></td>
+                    <td className="pl-3">
+                      <div onClick={(id, name, number) => handlePayment(1, "Bank BCA", "1400525422")}>
+                        <font style={{fontSize: "20px", fontWeight: "500"}}> Bank BCA </font>
+                        <br /> <font style={{fontSize: "14px"}}> 1400525422 a/n Chalid Ade Rahman </font>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })  : "" }
             </table>
         </Modal.Body>
       </Modal>

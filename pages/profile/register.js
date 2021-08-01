@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
-import { STORE } from "../../config/api_url";
+import { INDEX, STORE } from "../../config/api_url";
 
 export default function Register() {
   // Store Data
@@ -62,33 +62,95 @@ export default function Register() {
   };
 
   const handleFinish = async () => {
-    let json = {
-      action : "save",
-      db : "tabrent",
-      table : "tx_user",
-      primaryKey : "user_id",
-      value: [
-        {
-          user_id: null,
-          user_first_name: firstName,
-          user_last_name: lastName,
-          user_phone_number: phoneNumber,
-          user_email: email,
-          user_username: username,
-          user_password: password,
-          user_personal_id_number: ktpNumber,
-          user_address: address,
-          user_type: asId ? asId : 1,
-          user_status: 0,
-        },
-      ],
-    };
+    let json_check = {
+      action: "list",
+      db: "tabrent",
+      table: "tx_user",
+      where: [['user_email', '=', email]]
+  };
 
-    fetch_data(STORE, json).then(function (result) {
-      if (result.success) {
-        handleNext();
+    fetch_data(INDEX, json_check).then(function (data) {
+      if (data.success) {
+       alert("Email Already Register on Our System");
       } else {
-        alert("Check Your Data");
+        let json = {
+          action : "save",
+          db : "tabrent",
+          table : "tx_user",
+          primaryKey : "user_id",
+          value: [
+            {
+              user_id: null,
+              user_first_name: firstName,
+              user_last_name: lastName,
+              user_phone_number: phoneNumber,
+              user_email: email,
+              user_username: username,
+              user_password: password,
+              user_personal_id_number: ktpNumber,
+              user_address: address,
+              user_type: asId ? asId : 1,
+              user_status: 0,
+            },
+          ],
+        };
+    
+        
+        fetch_data(STORE, json).then(function (result) {
+          if (result.success) {
+            let id = result.id;
+            let json_ktp = {
+              action: "upload_base64",
+              db: "tabrent",
+              table: "tx_user",
+              where: [
+                  [
+                      "user_id",
+                      "=",
+                      id
+                  ]
+              ],
+              update : "user_id_photo",
+              main : false,
+              value : [uploadIdCard]
+          }
+    
+          let json_ktp_photo = {
+            action: "upload_base64",
+            db: "tabrent",
+            table: "tx_user",
+            where: [
+                [
+                    "user_id",
+                    "=",
+                    id
+                ]
+            ],
+            update : "user_id_photo_with_user",
+            main : false,
+            value : [uploadIdPhoto]
+        }
+        
+        fetch_data(STORE, json_ktp).then(function (data) {
+          if (data.success) {
+           console.log("Upload KTP Success");
+          } else {
+           console.log("Upload KTP Failed");
+          }
+        });
+    
+        fetch_data(STORE, json_ktp_photo).then(function (data) {
+          if (data.success) {
+           console.log("Upload KTP + Photo Success");
+          } else {
+           console.log("Upload KTP + Photo Failed");
+          }
+        });
+            handleNext();
+          } else {
+            alert("Check Your Data");
+          }
+        });
       }
     });
   };
@@ -214,7 +276,7 @@ export default function Register() {
         </p>
         {indexPage == 0 ? (
           <div>
-            <p onClick={() => setShow(true)} style={{ borderBottom: 'solid thin black', paddingBottom: '10px' }}>{asName ? asName : "Register As"}</p>
+            {/* <p onClick={() => setShow(true)} style={{ borderBottom: 'solid thin black', paddingBottom: '10px' }}>{asName ? asName : "Register As"}</p> */}
             <TextField
               style={style.textField}
               fullWidth={true}
@@ -312,6 +374,7 @@ export default function Register() {
                 shrink: true,
               }}
               onChange={(e) => setKtpNumber(e.target.value)}
+              defaultValue=""
               label="Personal ID Number (KTP)"
             />
             <TextField
@@ -320,6 +383,7 @@ export default function Register() {
               fullWidth={true}
               onChange={(e) => setAddress(e.target.value)}
               id="standard-basic"
+              defaultValue=""
               InputLabelProps={{
                 shrink: true,
               }}

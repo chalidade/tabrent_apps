@@ -81,7 +81,7 @@ export default function AdminMenu() {
       </div>
       <div
         className="profile-main"
-        style={{ overflow: "hidden", height: "60vh", top: "50vh" }}
+        style={{ overflow: "hidden", minHeight: "60vh", top: "50vh", height: "auto" }}
       >
         <p><b>Admin Menu</b></p>
         <hr />
@@ -144,6 +144,10 @@ export default function AdminMenu() {
                 color: '#fff'
               }}>{countPayment}</div>
             ) : "" }
+        </p>
+        <hr />
+        <p onClick={() => router.push('/profile/list_payment_method')} className="mb-1 weight-600" style={{ fontSize: "12px" }}>
+            PAYMENT METHOD LIST
         </p>
         <hr />
         <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>

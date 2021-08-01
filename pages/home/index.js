@@ -13,6 +13,7 @@ import { VscSettings } from "react-icons/vsc";
 
 export default function Index() {
   const [product, setProduct] = useState([]);
+  const [banner, setBanner] = useState([]);
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
@@ -20,27 +21,82 @@ export default function Index() {
       let json = {
         action : "list",
         db : "tabrent",
-        table : "tx_product"
+        table : "tx_product",
+        where: [["product_status", "=", "1"]]
       };
   
       fetch_data(INDEX, json).then(function (data) {
         if (data.success) {
-          setProduct(data.result);
+          if (data.count == 1) {
+            setProduct([data.result]);
+          } else {
+            setProduct(data.result);
+          }
         }
       });
+
+      let json_banner = {
+        action: "list",
+        db: "tabrent",
+        table: "tx_banner"
+     };
+  
+      fetch_data(INDEX, json_banner).then(function (data) {
+        if (data.success) {
+          let photo = [];
+          if (data.count == 1) {
+            let photo_data = JSON.parse(data.result.banner_image);
+            photo.push(photo_data[0]);
+          } else {
+              data.result.forEach(value => {
+                let photo_data = JSON.parse(value.banner_image);
+                photo.push(photo_data[0]);
+              });
+          }
+          setBanner(photo);
+        } else {
+         setBanner([]);
+        }
+      });
+
     }
   }, [])
+
+  const handleFilter = (e) => {
+    let category = e;
+    let json = {
+      action : "list",
+      db : "tabrent",
+      table : "tx_product",
+      where: [["product_status", "=", "1"], ["product_category", "=", category]]
+    };
+
+    fetch_data(INDEX, json).then(function (data) {
+      if (data.success) {
+        if (data.count == 1) {
+          setProduct([data.result]);
+        } else {
+          setProduct(data.result);
+        }
+      } else {
+        setProduct([]);
+      }
+    });
+
+  }
 
   return (
     <div>
       <TopNav back="true" text="Home" />
       <div className="main" style={{ height: "auto", minHeight: "100vh" }}>
-        <Banner />
+        <Banner data={banner} />
         <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
           <table>
             <tr>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Bicycle"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -48,18 +104,14 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="/icons/icon_bicycle.svg" />
-                      </td>
-                      <td className="pl-2"> Bicycle</td>
-                    </tr>
-                  </table>
+                    <img id="Bicycle" src="/icons/icon_bicycle.svg" className="mr-2" />
+                    <span id="Bicycle">Bicycle</span>
                 </button>
               </td>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Motorcycle"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -67,21 +119,14 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img
-                          src="/icons/icon_motorcyle.svg"
-                          style={{ width: "25px" }}
-                        />
-                      </td>
-                      <td className="pl-2"> Motorcycle</td>
-                    </tr>
-                  </table>
+                  <img id="Motorcycle" src="/icons/icon_bicycle.svg" className="mr-2" />
+                  <span id="Motorcycle">Motorcycle</span>
                 </button>
               </td>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Box"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -89,18 +134,14 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="/icons/icon_box.svg" />
-                      </td>
-                      <td className="pl-2"> Box</td>
-                    </tr>
-                  </table>
+                  <img id="Box" src="/icons/icon_box.svg" className="mr-2" />
+                  <span id="Box">Box</span>
                 </button>
               </td>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Pickup"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -108,18 +149,14 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="/icons/icon_truck.svg" />
-                      </td>
-                      <td className="pl-2"> Pickup</td>
-                    </tr>
-                  </table>
+                  <img id="Pickup" src="/icons/icon_truck.svg" className="mr-2" />
+                  <span id="Pickup">Pickup</span>
                 </button>
               </td>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Bus"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -127,18 +164,14 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="/icons/icon_bus.svg" />
-                      </td>
-                      <td className="pl-2"> Bus</td>
-                    </tr>
-                  </table>
+                  <img id="Bus" src="/icons/icon_bus.svg" className="mr-2" />
+                  <span id="Bus">Bus</span>
                 </button>
               </td>
               <td className="mr-3" style={{ paddingRight: "10px" }}>
                 <button
+                  id="Car"
+                  onClick={e => handleFilter(e.target.id)}
                   className="button-primary p-3 pl-3 pr-3"
                   style={{
                     borderRadius: "10px",
@@ -146,14 +179,23 @@ export default function Index() {
                     width: "125px",
                   }}
                 >
-                  <table>
-                    <tr>
-                      <td>
-                        <img src="/icons/icon_car.svg" />
-                      </td>
-                      <td className="pl-2"> Car</td>
-                    </tr>
-                  </table>
+                  <img id="Car" src="/icons/icon_car.svg" className="mr-2" />
+                  <span id="Car">Car</span>
+                </button>
+              </td>
+              <td className="mr-3" style={{ paddingRight: "10px" }}>
+                <button
+                  id="Ambulance"
+                  onClick={e => handleFilter(e.target.id)}
+                  className="button-primary p-3 pl-3 pr-3"
+                  style={{
+                    borderRadius: "10px",
+                    height: "55px",
+                    width: "125px",
+                  }}
+                >
+                  <img id="Ambulance" src="/icons/icon_car.svg" className="mr-2" style={{width: '30px'}} />
+                  <span id="Ambulance">Ambulance</span>
                 </button>
               </td>
             </tr>
@@ -184,23 +226,6 @@ export default function Index() {
               >
                 Ready to rent!
               </p>
-            </div>
-
-            <div className="col text-right" style={{ align: "right" }}>
-              <Button
-                size="md"
-                style={{
-                  backgroundColor: "#2F2F8D",
-                  borderColor: "#2F2F8D",
-                  color: "#ffffff",
-                  height: "auto",
-                  left: "0px",
-                  top: "-1px",
-                  borderRadius: "15px",
-                }}
-              >
-                <VscSettings style={{ weight: "bold" }} /> Filter
-              </Button>
             </div>
           </div>
         </div>

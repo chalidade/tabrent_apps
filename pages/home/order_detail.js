@@ -200,7 +200,7 @@ export default function Detail() {
 
   return (
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
-      <TopNav back="true" text="Back" arrow="true" />
+      <TopNav back="true" text="Back" arrow="true" page="Progress" />
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <table width="100%">
           <tr>
@@ -307,7 +307,6 @@ export default function Detail() {
           height: "auto",
           position: "absolute",
           width: "100%",
-          bottom: "0px",
           fontSize: "14px",
         }}
       >

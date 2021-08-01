@@ -18,26 +18,35 @@ export default function Index() {
     if (typeof localStorage !== 'undefined') {
       let getUser = JSON.parse(localStorage.getItem('user_data'));
       setUser(getUser);
+      if (localStorage.getItem("is_login") !== null) {
+        if(getUser.user_type == 2) {
+          router.push('/profile/partner_profile');
+        } if(getUser.user_type == 3) {
+          router.push('/profile/admin_menu');
+        } else {
+          setPage("Profile");
+        }
+      } else {
+        router.push('/profile/login');
+      }
     }
     setPage(router.query ? router.query.page : "Home");
   }, []);
 
   return (
     <div>
-      {page == "Home" ? (
+      {user && page == "Home" ? (
         <Home page={page} setPage={setPage} />
-      ) : page == "Progress" ? (
+      ) : user && page == "Progress" ? (
         <Progress page={page} setPage={setPage} />
-      ) : page == "Notification" ? (
+      ) : user && page == "Notification" ? (
         <Notification page={page} setPage={setPage} />
-      ) : page == "Profile" ? (
+      ) : user && page == "Profile" ? (
         <Profile page={page} setPage={setPage} />
-      ) : page == "Login" ? (
-        <Login page={page} setPage={setPage} />
-      ) : (
+      ) : user && user.user_type == 1 ? (
         <Home page={page} setPage={setPage} />
-      )}
-      <BottomNav page={page} setPage={setPage} />
+      ) : ""}
+      {user  && user.user_type == 1 ? (<BottomNav page={page} setPage={setPage} />) : ""}
     </div>
   );
 }

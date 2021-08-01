@@ -151,7 +151,7 @@ export default function OrderDate() {
         db: "tabrent",
         table: "tx_order",
         raw: {
-          "selected": "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+          selected: "tx_order.*, tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
         },
         leftJoin : [
         {

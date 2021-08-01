@@ -4,7 +4,7 @@ import { fetch_data } from "../../components/globals/api";
 import { INDEX } from "../../config/api_url";
 import { useState, useEffect } from "react";
 
-export default function login({ setPage, page }) {
+export default function login() {
   const router = useRouter();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -33,7 +33,7 @@ export default function login({ setPage, page }) {
       if (data.success) {
         localStorage.setItem("is_login", true);
         localStorage.setItem("user_data", JSON.stringify(data.result));
-        setPage("Profile");
+        router.push('/');
       } else {
         alert("Please Check Username / Password");
       }

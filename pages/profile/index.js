@@ -19,11 +19,11 @@ export default function Index({ page, setPage }) {
         } if(getUser.user_type == 3) {
           router.push('/profile/admin_menu');
         } else {
-          setPage("Home");
+          setPage("Profile");
           setIsLogin(true);
         }
       } else {
-        setPage("Login");
+        router.push('/profile/login');
         setIsLogin(false);
       }
     } else {
@@ -31,7 +31,7 @@ export default function Index({ page, setPage }) {
           setPage("Profile");
           setIsLogin(true);
       } else {
-        setPage("Login");
+        router.push('/profile/login');
         setIsLogin(false);
       }
     }
@@ -41,10 +41,10 @@ export default function Index({ page, setPage }) {
   const handleLogout = () => {
     try {
       localStorage.removeItem("is_login");
-      setPage("Login");
+      router.push('/profile/login');
       setIsLogin(false);
     } catch (e) {
-      setPage("Login");
+      router.push('/profile/login');
       setIsLogin(false);
     }
   };

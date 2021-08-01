@@ -8,6 +8,7 @@
   font-weight: 600;
   color: #fff;
   margin: 0px;
+  width: 100%;
 }
 
 .textSubProfile {
@@ -19,12 +20,12 @@
 .btnVerified {
   background: #d60000;
   border: none;
-  width: 110px;
-  font-size: 12px;
-  height: 25px;
-  border-radius: 6px;
+  width: 18px;
+  font-size: 9px;
+  height: 18px;
+  border-radius: 20px;
   color: #fff;
   position: absolute;
-  margin-left: -20px;
-  margin-top: 15px;
+  margin-left: 5px;
+  margin-top: -5px;
 }

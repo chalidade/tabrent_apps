@@ -20,13 +20,19 @@ export default function Header({ user }) {
         </font>
         </Grid>
         <Grid container item xs={7} style={{ paddingLeft: "15px" }}>
-          <p className={style.textProfile}>{user ? user.user_first_name : "Rental Owner" }</p>
+          <p className={style.textProfile}>{user ? user.user_first_name + " " + user.user_last_name : "Rental Owner" } 
+            <span>
+              {user && user.user_status == 0 ? (
+                <button className={style.btnVerified}>x</button>
+              ) : (
+                <button className={style.btnVerified} style={{background: '#04ff04d1'}}>✓</button>
+              )
+              }
+            </span>
+          </p>
           <Link href="/profile/account_information">
             <p className={style.textSubProfile}>Account Information &gt; </p>
           </Link>
-        </Grid>
-        <Grid container item xs={3}>
-          <button className={style.btnVerified}>Not Verified</button>
         </Grid>
       </Grid>
     </div>

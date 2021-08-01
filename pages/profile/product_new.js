@@ -161,7 +161,7 @@ export default function AccountInformation() {
         }
       }
     }
-}
+  }
 
 useEffect(() => {
     if (typeof localStorage !== 'undefined') {
