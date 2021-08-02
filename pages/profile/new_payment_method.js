@@ -18,7 +18,6 @@ export default function OrderDate() {
     table: "tx_payment_method",
     primaryKey: "payment_id",
     value: [{
-          user_id: null,
           payment_name: name,
           payment_account_name: accountName,
           payment_number: accountNumber,

@@ -15,7 +15,7 @@ export default function login() {
       action : "list",
       db : "tabrent",
       table : "tx_user",
-      "where": [
+      where: [
         [
             "user_username",
             "=",
@@ -26,7 +26,8 @@ export default function login() {
             "=",
             password
         ]
-    ]
+      ],
+      orWhere: ["user_email", username]
     };
 
     fetch_data(INDEX, json).then(function (data) {
