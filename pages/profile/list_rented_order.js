@@ -202,9 +202,9 @@ export default function OrderDate() {
                   <Button className="btn-danger" variant="secondary" onClick={()=>setShow(false)}>
                     Close
                   </Button>
-                  {/* <Button id={data.order_id} onClick={(e) => handleProcess(e)} variant="success">
+                  <Button id={data.order_id} onClick={(e) => handleProcess(e)} variant="success">
                     Return
-                  </Button> */}
+                  </Button>
                 </Modal.Footer>
               </Modal>
             </div>);
