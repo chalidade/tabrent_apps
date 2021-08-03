@@ -223,16 +223,18 @@ export default function Detail() {
             <td width="40%">Status</td>
             <td className="text-right">
             <font style={{color: order.order_status == 0 || order.order_status == 1 ? "rgb(255, 123, 0)" : order.order_status == 2 ? "rgb(0, 89, 255)" : order.order_status == 3 ? "rgb(0, 255, 21)" : "rgb(255, 30, 0)"}}>
-              {order.order_status == 3
-                ? "Complete Returned"
-                : order.order_status == 2
+              {data.order_status == "3"
+                ? "Process to Rent Owner"
+                : data.order_status == "2"
                 ? "Payment Success"
-                : order.order_status == 4
-                ? "Transaction Cancelled"
-                : order.order_status == 5
-                ? "Payment Reject"
-                : order.order_status == 1
-                ? "Waiting Confirm Seller"
+                : data.order_status == "4"
+                ? "Rented"
+                : data.order_status == "5"
+                ? "Done"
+                : data.order_status == "6"
+                ? "Reject"
+                : data.order_status == "1"
+                ? "Waiting Confirm By Tabrent"
                 : "Waiting Payment"}
             </font>
             </td>

@@ -48,15 +48,17 @@ export default function ListItem({ data }) {
           </p>
           <p className={ClassNames(style.textSubTitlePrice, "mt-1", data.order_status == 0 || data.order_status == 1 ? style.waiting : data.order_status == 1 ? style.success : data.order_status == 2 ? style.complete : style.cancel)}>
             {data.order_status == "3"
-                ? "Complete Returned"
+                ? "Process to Rent Owner"
                 : data.order_status == "2"
                 ? "Payment Success"
                 : data.order_status == "4"
-                ? "Transaction Cancelled"
+                ? "Rented"
                 : data.order_status == "5"
-                ? "Payment Reject"
+                ? "Done"
+                : data.order_status == "6"
+                ? "Reject"
                 : data.order_status == "1"
-                ? "Waiting Confirm Seller"
+                ? "Waiting Confirm By Tabrent"
                 : "Waiting Payment"}
           </p>
         </Grid>
