@@ -66,7 +66,7 @@ export default function Detail() {
           ]
       ],
       value: {
-          order_status : "4"
+          order_status : "7"
       }
     }
 
@@ -233,6 +233,10 @@ export default function Detail() {
                 ? "Done"
                 : order.order_status == "6"
                 ? "Reject"
+                : order.order_status == "7"
+                ? "Booking Cancel"
+                : order.order_status == "8"
+                ? "Payment Reject"
                 : order.order_status == "1"
                 ? "Waiting Confirm By Tabrent"
                 : "Waiting Payment"}
@@ -251,12 +255,12 @@ export default function Detail() {
         }}
       >
         <table width="100%">
-        {order.order_status == 0 || order.order_status == 5 ? (
+        {order.order_status == 0 || order.order_status == 8 ? (
           <tr>
             <td width="50%"><button onClick={() => handleCancel()} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Cancel Booking</button></td>
             <td><button onClick={ () => router.push({ pathname: "/home/order_detail", query: {id: order.order_id} })} className="button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Pay</button></td>
           </tr>
-          ) : order.order_status == 4 ? (
+          ) : order.order_status == 7 ? (
           <tr>
             <td width="100%"><button onClick={() => handleUnCancel()} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Re-Booking</button></td>
           </tr>
