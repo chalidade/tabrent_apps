@@ -316,9 +316,9 @@ useEffect(() => {
                   <tr >
                     {/* <td><img src="/icons/icon_bca.png" width="70px" /></td> */}
                     <td className="pl-3">
-                      <div onClick={(id, name, number) => handlePayment(data.payment_id, data.payment_name, data.payment_account_number)}>
+                      <div onClick={(id, name, number) => handlePayment(data.payment_id, data.payment_name, data.payment_number)}>
                         <font style={{fontSize: "20px", fontWeight: "500"}}> {data.payment_name} </font>
-                        <br /> <font style={{fontSize: "14px"}}> {data.payment_account_number} a/n {data.payment_account_name} </font>
+                        <br /> <font style={{fontSize: "14px"}}> {data.payment_number} a/n {data.payment_account_name} </font>
                       </div>
                     </td>
                   </tr>
