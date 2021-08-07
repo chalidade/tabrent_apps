@@ -22,6 +22,16 @@ export default function Index() {
         action : "list",
         db : "tabrent",
         table : "tx_product",
+        raw : {
+          selected : "ROUND((SUM(`rating_number`) / COUNT(`rating_number`)), 0) as `rating`, `tx_product`.*"
+        },
+        groupby: "product_id",
+        leftJoin: [
+          {
+              table: "tx_rating",
+              field1: "tx_rating.rating_product_id",
+              field2: "tx_product.product_id"
+          }],
         where: [["product_status", "=", "1"]]
       };
   
@@ -90,7 +100,7 @@ export default function Index() {
       <TopNav back="true" text="Home" />
       <div className="main" style={{ height: "auto", minHeight: "100vh" }}>
         <Banner data={banner} />
-        <div className="mt-4" style={{ width: "330px", overflowX: "scroll" }}>
+        <div className="mt-4" style={{ width: "100%", overflowX: "scroll" }}>
           <table>
             <tr>
               <td className="mr-3" style={{ paddingRight: "10px" }}>

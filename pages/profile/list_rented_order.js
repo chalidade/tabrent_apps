@@ -58,7 +58,7 @@ export default function OrderDate() {
               [
                   "order_status",
                   "=",
-                  "3"
+                  "4"
               ]
           ]
       };

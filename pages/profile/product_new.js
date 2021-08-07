@@ -31,14 +31,17 @@ export default function AccountInformation() {
   const [category, setCategory] = useState();
   const [name, setName] = useState();
   const [brand, setBrand] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [priceWidthDriver, setPriceWithDriver] = useState(0);
+  const [priceWidthDriverDiscount, setPriceWithDriverDiscount] = useState(0);
   const [generalRegulation, setGeneralRegulation] = useState();
   const [overTime, setOvertime] = useState();
   const [returnDate, setReturnDate] = useState();
   const [pickupDate, setPickupDate] = useState();
   const [pickupRule, setPickupRule] = useState();
   const [cancel, setCancel] = useState();
-
+  
   const handleFinish = async () => {
     let json, json_file;
     if (productId) {
@@ -51,6 +54,9 @@ export default function AccountInformation() {
               product_id: productId,
               product_name : name,
               product_price : price,
+              product_discount: discount,
+              product_price_with_driver: priceWidthDriver,
+              product_price_with_driver_discount: priceWidthDriverDiscount,
               product_brand : brand,
               product_category : category,
               product_rental_rules_overtime : overTime,
@@ -63,7 +69,6 @@ export default function AccountInformation() {
               product_status : 0
               },
       };
-
     } else {
       json = {
         action : "save",
@@ -73,6 +78,9 @@ export default function AccountInformation() {
         value: [{
               product_name : name,
               product_price : price,
+              product_discount: discount,
+              product_price_with_driver: priceWidthDriver,
+              product_price_with_driver_discount: priceWidthDriverDiscount,
               product_rent_count : 0,
               product_brand : brand,
               product_category : category,
@@ -103,7 +111,7 @@ export default function AccountInformation() {
               [
                   "product_id",
                   "=",
-                  productId
+                  result.id
               ]
           ],
           "value" : photo
@@ -236,6 +244,17 @@ useEffect(() => {
         </table>
       </div>
         <TextField
+          style={style.textField}
+          fullWidth={true}
+          value={name}
+          onChange={e => setName(e.target.value)}
+          id="standard-basic"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          label="Product Name"
+        />
+        <TextField
           active={true}
           style={style.textField}
           fullWidth={true}
@@ -246,17 +265,6 @@ useEffect(() => {
           onChange={e => setBrand(e.target.value)}
           id="standard-basic"
           label="Product Brand"
-        />
-        <TextField
-          style={style.textField}
-          fullWidth={true}
-          value={name}
-          onChange={e => setName(e.target.value)}
-          id="standard-basic"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          label="Tipe dan Tahun"
         />
         <TextField
           style={style.textField}
@@ -291,6 +299,40 @@ useEffect(() => {
             shrink: true,
           }}
           label="Price Per Day"
+        />
+        <TextField
+          style={style.textField}
+          className="mt-15 mb-15"
+          fullWidth={true}
+          value={discount}
+          onChange={e => setDiscount(e.target.value)}
+          id="standard-basic"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          label="Discount Price"
+        />
+         <TextField
+          style={style.textField}
+          fullWidth={true}
+          value={priceWidthDriver}
+          onChange={e => setPriceWithDriver(e.target.value)}
+          id="standard-basic"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          label="Price With Driver"
+        />
+        <TextField
+          style={style.textField}
+          fullWidth={true}
+          value={priceWidthDriverDiscount}
+          onChange={e => setPriceWithDriverDiscount(e.target.value)}
+          id="standard-basic"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          label="Price With Driver Discount Price"
         />
         <h6 className="mt-3 mb-1" style={{fontWeight:'700'}}>Rental Rules</h6>
         <TextField

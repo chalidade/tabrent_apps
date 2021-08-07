@@ -87,7 +87,7 @@ export default function Cards({data}) {
                   name="read-only"
                   size="small"
                   readOnly
-                  value={data.product_rating !== null ? data.product_rating : 4}
+                  value={data.rating !== null ? data.rating : 0}
                   style={{ marginTop: "10px" }}
                 />
               </div>

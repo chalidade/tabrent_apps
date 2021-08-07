@@ -150,6 +150,10 @@ export default function AdminMenu() {
             PAYMENT METHOD LIST
         </p>
         <hr />
+        <p onClick={() => router.push('/profile/list_banner')} className="mb-1 weight-600" style={{ fontSize: "12px" }}>
+            PROMO LIST
+        </p>
+        <hr />
         <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
             UPDATE HELP 
         </p>

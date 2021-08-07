@@ -6,11 +6,13 @@ export default function OrderDate() {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [productId, setProductId] = useState();
+  const [type, setType] = useState();
 
   const handleConfirm = () => {
     let json = {
       order_start_date : startDate, 
-      order_end_date : endDate
+      order_end_date : endDate,
+      order_type: type
     };
     localStorage.setItem("order_data", JSON.stringify(json));
     router.push({
@@ -22,10 +24,11 @@ export default function OrderDate() {
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       setProductId(router.query.id);
+      setType(router.query.type);
       if (JSON.parse(localStorage.getItem('order_data'))) {
         let data = JSON.parse(localStorage.getItem('order_data'));
         setStartDate(data.order_start_date);
-        setStartDate(data.order_end_date);
+        setEndDate(data.order_end_date);
       }
     }
   }, [])
@@ -53,7 +56,7 @@ export default function OrderDate() {
           <table width="100%" className="ml-1">
             <tr>
               <td>
-                <label for="checkIn" className=" text-secondary">
+                <label htmlFor="checkIn" className=" text-secondary">
                   Start Rent Date
                   <input
                     id="checkIn"
@@ -69,7 +72,7 @@ export default function OrderDate() {
                 </label>
               </td>
               <td>
-                <label for="checkOut" className=" text-secondary">
+                <label htmlFor="checkOut" className=" text-secondary">
                   End Rent Date
                   <input
                     id="checkOut"
@@ -86,20 +89,17 @@ export default function OrderDate() {
               </td>
             </tr>
           </table>
-          <center>
+        </div>
+      </div>
           {startDate && endDate ? (
             <button
               onClick={handleConfirm}
               className="button-primary mt-4 p-2"
-              style={{ width: "100%" }}
+              style={{ width: "100%", position: 'sticky',  bottom: '0px', borderRadius: '0px' }}
             >
               Confirm
             </button>
           ) : ""}
-            
-          </center>
-        </div>
-      </div>
     </div>
   );
 }

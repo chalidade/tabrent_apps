@@ -3,7 +3,8 @@ import { TextField, Grid, Button, Link } from "@material-ui/core";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
-import { STORE, INDEX } from "../../config/api_url";
+import { MAIN, STORE, INDEX } from "../../config/api_url";
+import { Modal } from 'react-bootstrap';
 
 const style = {
   textField: { marginTop: "10px", marginBottom: "10px" },
@@ -39,6 +40,8 @@ export default function AccountInformation() {
   const [address, setAddress] = useState();
   const [uploadIdCard, setUploadIdCard] = useState();
   const [uploadIdPhoto, setUploadIdPhoto] = useState();
+  const [modalPhoto, setModalPhoto] = useState(false);
+  const [modalPhotoData, setModalPhotoData] = useState();
 
   const handleFinish = async () => {
     let json = {
@@ -101,6 +104,8 @@ export default function AccountInformation() {
       fetch_data(INDEX, json).then(function (data) {
         if (data.success) {
           let user = data.result;
+          let card = JSON.parse(user.user_id_photo)[0];
+          let ktp_foto = JSON.parse(user.user_id_photo_with_user)[0];
           localStorage.setItem("user_data", JSON.stringify(user));
           setFirstName(user.user_first_name);
           setLastName(user.user_last_name);
@@ -111,6 +116,8 @@ export default function AccountInformation() {
           setKtpNumber(user.user_personal_id_number);
           setAddress(user.user_address);
           setUserId(user.user_id);
+          setUploadIdCard(card);
+          setUploadIdPhoto(ktp_foto);
         }
       });
     }
@@ -233,14 +240,14 @@ export default function AccountInformation() {
           label="ID Card Number"
         />
         <div className="mt-30 mb-30">
-          <p className="weight-500">Photo ID Card</p>
+          <p className="weight-500" onClick={() => (setModalPhoto(true), setModalPhotoData('card'))}>Photo ID Card</p>
         </div>
         <div className="mt-30 mb-30">
-          <p className="weight-500">Photo With ID Card</p>
+          <p className="weight-500" onClick={() => (setModalPhoto(true), setModalPhotoData('card_photo'))}>Photo With ID Card</p>
         </div>
-        <div className="mt-30">
+        {/* <div className="mt-30">
           <p className="weight-500">Driving Licence Card</p>
-        </div>
+        </div> */}
         <Grid container style={style.mt50}>
           <Grid item xs={3}></Grid>
           <Grid item xs={5}>
@@ -255,6 +262,14 @@ export default function AccountInformation() {
           </Grid>
         </Grid>
       </div>
+      <Modal show={modalPhoto} onHide={() => setModalPhoto(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{modalPhotoData == 'card' ? 'Photo ID Card' : 'Photo With ID Card'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <img src={modalPhotoData == 'card' ? MAIN+uploadIdCard : MAIN+uploadIdPhoto } style={{width: '100%'}} />
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

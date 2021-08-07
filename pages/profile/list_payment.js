@@ -243,8 +243,8 @@ const handleSend = ({data}) => {
          </tr>
        </table>
      </div>
-     <div className="profile-div-product" style={{paddingTop: product.length !== 0 ? "20px" : "100px", paddingBottom: product.length !== 0 ? "20px" : "0px"}}>
-       {product.length !== 0 ? product.map((data, index) => {
+     <div className="profile-div-product" style={{paddingTop: product ? "20px" : "100px", paddingBottom: product ? "20px" : "0px"}}>
+       {product ? product.map((data, index) => {
          return (
            <div className="product-div" style={{height: '75px'}}>
              <table width="100%">
@@ -282,7 +282,7 @@ const handleSend = ({data}) => {
                    )}  
                      <br /> 
                      <font style={{fontSize: '12px', fontWeight: '400'}}>{data.transfer_date}</font> | <font style={{fontSize: '12px', fontWeight: '400'}}>
-                        {data.transfer_account_name.length > 10 ? data.transfer_account_name.slice(0, 10) + "..." : data.transfer_account_name }
+                        {data.transfer_account_name !== null && data.transfer_account_name.length > 10 ? data.transfer_account_name.slice(0, 10) : data.transfer_account_name }
                     </font>
                      </p>
                  </td>

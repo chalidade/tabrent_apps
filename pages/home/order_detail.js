@@ -199,7 +199,7 @@ export default function Detail() {
   }, [])
 
   return (
-    <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
+    <div style={{ background: "#E5E5E5", height: "auto" }}>
       <TopNav back="true" text="Back" arrow="true" page="Progress" />
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <table width="100%">
@@ -242,7 +242,7 @@ export default function Detail() {
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <p>Confirmation Transfer</p>
         <hr />
-        <table cellPadding="4" style={{ fontSize: "14px" }}>
+        <table width="100%" cellPadding="4" style={{ fontSize: "14px" }}>
           <tr>
             <td width>Bank Account Name</td>
             <td>:</td>
@@ -308,6 +308,7 @@ export default function Detail() {
           position: "absolute",
           width: "100%",
           fontSize: "14px",
+          bottom: '0px'
         }}
       >
          <table width="100%">

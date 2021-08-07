@@ -56,7 +56,15 @@ export default function OrderDate() {
         </center>
         <p className="mt-4 text-secondary weight-600">
           Payment Name <br />
-          <input onChange={(e)=> setName(e.target.value)} className="form-control mt-2 p-4" />
+          <select className="form-control mt-2 p-4" onChange={(e)=> setName(e.target.value)} style={{ height: '55px' }}>
+            <option value="BCA">Bank Central Asia (BCA)</option>
+            <option value="BNI">Bank Negara Indonesia (BNI)</option>
+            <option value="BRI">Bank Rakyat Indonesia (BRI)</option>
+            <option value="Bank Mandiri">Bank Mandiri</option>
+            <option value="Bank Jatim">Bank Jatim</option>
+            <option value="DANA">DANA</option>
+            <option value="OVO">OVO</option>
+          </select>
         </p>
         <p className="mt-4 text-secondary weight-600">
           Account Name <br />

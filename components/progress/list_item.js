@@ -61,6 +61,8 @@ export default function ListItem({ data }) {
                 ? "Booking Cancel"
                 : data.order_status == "8"
                 ? "Payment Reject"
+                : data.order_status == "9"
+                ? "Reviewed"
                 : data.order_status == "1"
                 ? "Waiting Confirm By Tabrent"
                 : "Waiting Payment"}

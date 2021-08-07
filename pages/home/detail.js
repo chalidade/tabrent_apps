@@ -1,7 +1,7 @@
 import TopNav from "../../components/globals/top_nav";
 import { Container, Typography } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
-import { Carousel } from "react-bootstrap";
+import { Carousel, Tab, Tabs } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
 import { useState, useEffect } from "react";
@@ -9,7 +9,10 @@ import { INDEX, MAIN } from "../../config/api_url";
 
 export default function Detail() {
   const router = useRouter();
+  const [key, setKey] = useState('home');
   const [product, setProduct] = useState([]);
+  const [percent, setPercent] = useState();
+  const [percentDriver, setPercentDriver] = useState();
   const [slider, setSlider] = useState([]);
 
   useEffect(() => {
@@ -21,13 +24,18 @@ export default function Detail() {
         db : "tabrent",
         table : "tx_product",
         raw : {
-          selected : "tx_product.*, tx_user.user_first_name,  tx_user.user_last_name, tx_user.user_profile"
+          selected : "ROUND((SUM(`rating_number`) / COUNT(`rating_number`)), 0) as `rating`, tx_product.*, tx_user.user_first_name,  tx_user.user_last_name, tx_user.user_profile"
         },
         leftJoin : [{
           table : "tx_user",
           field1 : "tx_user.user_id",
           field2 : "tx_product.product_owner"
-      }],
+        },
+        {
+          table: "tx_rating",
+          field1: "tx_rating.rating_product_id",
+          field2: "tx_product.product_id"
+        }],
         "where": [
           [
               "product_id",
@@ -41,6 +49,19 @@ export default function Detail() {
       fetch_data(INDEX, json).then(function (data) {
         if (data.success) { 
           let product = data.result;
+
+          // Percent no Driver
+          let price = parseInt(product.product_price);
+          let discount = parseInt(product.product_discount);
+          let percent = (((price - discount) / (price)) * 100).toFixed();
+
+           // Percent With Driver
+           let price_driver = parseInt(product.product_price_with_driver);
+           let discount_driver = parseInt(product.product_price_with_driver_discount);
+           let percent_driver = (((price_driver - discount_driver) / (price_driver)) * 100).toFixed();
+
+          setPercent(percent);
+          setPercentDriver(percent_driver);
           setProduct(product);
           setSlider(JSON.parse(product.product_image))
           localStorage.setItem("product", JSON.stringify(product));
@@ -87,69 +108,150 @@ export default function Detail() {
         </Carousel.Item>
       </div>)}
       </Carousel>
-      <div className="bg-white mt-3 p-3 pl-4 pr-4" style={{ height: "145px" }}>
-        <p className="m-0" style={{ fontSize: "14px" }}>
-          <b>{product.product_name ? product.product_name : "Product Name"}</b>
-        </p>
-        <p className="m-0">
-          <font style={{ color: "#2F2F8D", fontSize: "22px" }}>
-            <b>Rp. {product.product_price ? product.product_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "120.000"} </b>
-          </font>
-          <font style={{ color: "#2F2F8D", fontSize: "14px" }}> / Day </font>
-        </p>
-        <p className="m-0 mt-1">
-          <button
-            style={{
-              background: "#FFA9A9",
-              color: "#F82C2C",
-              borderRadius: "5px",
-              border: "none",
-              fontSize: "12px",
-              marginRight: "10px",
-            }}
-          >
-            17%
-          </button>
-          <font
-            style={{
-              color: "#C8C8C8",
-              fontSize: "12px",
-              textDecoration: "line-through",
-            }}
-          >
-            Rp. 300.000 / Day
-          </font>
-        </p>
-        <table>
-          <tr>
-            <td>
-              <Rating
-                name="read-only"
-                size="small"
-                readOnly
-                value={product.product_rating ? product.product_rating : 0}
-                style={{ marginTop: "10px" }}
-              />
-            </td>
-            <td>
-              <font style={{ fontSize: "11px", marginLeft: "5px" }}>{product.product_rating ? product.product_rating : 0}</font>
-            </td>
-            <td>
-              <span
+      <div className="bg-white mt-3 p-3 pl-4 pr-4" style={{ height: "auto" }}>
+        <Tabs
+        id="controlled-tab-example"
+        activeKey={key}
+        onSelect={(k) => setKey(k)}
+        className="mb-3"
+      >
+          <Tab eventKey="home" title="Regular Rent">
+            <p className="m-0" style={{ fontSize: "14px" }}>
+              <b>{product.product_name ? product.product_name : "Product Name"}</b>
+            </p>
+            <p className="m-0">
+              <font style={{ color: "#2F2F8D", fontSize: "22px" }}>
+                <b>Rp. {product.length !== 0 && product.product_discount !== "0" ? product.product_discount.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : product && product.product_discount == "0" ? product.product_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""} </b>
+              </font>
+              <font style={{ color: "#2F2F8D", fontSize: "14px" }}> / Day </font>
+            </p>
+
+            {product && product.product_discount !== "0" ? (
+              <p className="m-0 mt-1">
+              <button
                 style={{
-                  color: "#C8C8C8",
-                  marginLeft: "5px",
-                  marginRight: "5px",
+                  background: "#FFA9A9",
+                  color: "#F82C2C",
+                  borderRadius: "5px",
+                  border: "none",
+                  fontSize: "12px",
+                  marginRight: "10px",
                 }}
               >
-                |
-              </span>
-              <font style={{ fontSize: "11px", marginLeft: "5px" }}>
-                Rented {product.product_rent_count ? product.product_rent_count : 0} Times
+                {percent} %
+              </button>
+              <font
+                style={{
+                  color: "#C8C8C8",
+                  fontSize: "12px",
+                  textDecoration: "line-through",
+                }}
+              >
+                Rp. {product.product_price ? product.product_price.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "120.000"} / Day
               </font>
-            </td>
-          </tr>
-        </table>
+            </p>
+            ) : "" }
+            
+            <table>
+              <tr>
+                <td>
+                  <Rating
+                    name="read-only"
+                    size="small"
+                    readOnly
+                    value={product.rating ? product.rating : 0}
+                    style={{ marginTop: "10px" }}
+                  />
+                </td>
+                <td>
+                  <font style={{ fontSize: "11px", marginLeft: "5px" }}>{product.rating ? product.rating : 0}</font>
+                </td>
+                <td>
+                  <span
+                    style={{
+                      color: "#C8C8C8",
+                      marginLeft: "5px",
+                      marginRight: "5px",
+                    }}
+                  >
+                    |
+                  </span>
+                  <font style={{ fontSize: "11px", marginLeft: "5px" }}>
+                    Rented {product.product_rent_count ? product.product_rent_count : 0} Times
+                  </font>
+                </td>
+              </tr>
+            </table>
+          </Tab>
+          <Tab eventKey="profile" title="With Driver">
+            <p className="m-0" style={{ fontSize: "14px" }}>
+                <b>{product.product_name ? product.product_name : "Product Name"}</b>
+              </p>
+              <p className="m-0">
+                <font style={{ color: "#2F2F8D", fontSize: "22px" }}>
+                  <b>Rp. {product.length !== 0 && product.product_price_with_driver_discount !== "0" ? product.product_price_with_driver_discount.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : product && product.product_price_with_driver_discount == "0" ? product.product_price_with_driver.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""} </b>
+                </font>
+                <font style={{ color: "#2F2F8D", fontSize: "14px" }}> / Day </font>
+              </p>
+
+              {product && product.product_price_with_driver_discount !== "0" ? (
+                <p className="m-0 mt-1">
+                <button
+                  style={{
+                    background: "#FFA9A9",
+                    color: "#F82C2C",
+                    borderRadius: "5px",
+                    border: "none",
+                    fontSize: "12px",
+                    marginRight: "10px",
+                  }}
+                >
+                  {percent} %
+                </button>
+                <font
+                  style={{
+                    color: "#C8C8C8",
+                    fontSize: "12px",
+                    textDecoration: "line-through",
+                  }}
+                >
+                  Rp. {product.product_price_with_driver ? product.product_price_with_driver.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "120.000"} / Day
+                </font>
+              </p>
+              ) : "" }
+              
+              <table>
+                <tr>
+                  <td>
+                    <Rating
+                      name="read-only"
+                      size="small"
+                      readOnly
+                      value={product.rating ? product.rating : 0}
+                      style={{ marginTop: "10px" }}
+                    />
+                  </td>
+                  <td>
+                    <font style={{ fontSize: "11px", marginLeft: "5px" }}>{product.rating ? product.rating : 0}</font>
+                  </td>
+                  <td>
+                    <span
+                      style={{
+                        color: "#C8C8C8",
+                        marginLeft: "5px",
+                        marginRight: "5px",
+                      }}
+                    >
+                      |
+                    </span>
+                    <font style={{ fontSize: "11px", marginLeft: "5px" }}>
+                      Rented {product.product_rent_count ? product.product_rent_count : 0} Times
+                    </font>
+                  </td>
+                </tr>
+              </table>
+          </Tab>
+       </Tabs>
       </div>
       <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "90px" }}>
         <table>
@@ -227,7 +329,51 @@ export default function Detail() {
           <br />
         </p>
       </div>
+      
 
+     {product && product.product_price_with_driver !== "0" ? (
+      <div
+        className="mt-3 text-center text-white"
+        style={{
+          height: "auto",
+          background: "#fff",
+          position: "sticky",
+          bottom: "0px",
+          fontSize: "14px",
+        }}
+      >
+        <table width="100%">
+          <tr>
+            <td width="50%">
+              <button
+                onClick={() => router.push({
+                    pathname: "/home/order_date",
+                    query: {
+                      id: product.product_id, 
+                      type: 0
+                    }
+                  })} 
+                className="p-2 btn-primary" 
+                style={{ width:'100%', border: 'none' }}
+              >Regular Rent</button>
+            </td>
+            <td>
+              <button
+                onClick={() => router.push({
+                    pathname: "/home/order_date",
+                    query: {
+                      id: product.product_id, 
+                      type: 1
+                    }
+                  })} 
+                className="p-2 btn-success" 
+                style={{ width:'100%', border: 'none' }}
+              >Rent With Driver</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+     ) : (
       <div
         className="mt-3 p-2 text-center text-white"
         style={{
@@ -239,11 +385,15 @@ export default function Detail() {
         }}
         onClick={() => router.push({
           pathname: "/home/order_date",
-          query: {id: product.product_id}
+          query: {
+            id: product.product_id,
+            type: 0
+            }
         })}
       >
         Rent Now
       </div>
+     )}
     </div>
   );
 

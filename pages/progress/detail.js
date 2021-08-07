@@ -237,6 +237,8 @@ export default function Detail() {
                 ? "Booking Cancel"
                 : order.order_status == "8"
                 ? "Payment Reject"
+                : order.order_status == "9"
+                ? "Reviewed"
                 : order.order_status == "1"
                 ? "Waiting Confirm By Tabrent"
                 : "Waiting Payment"}
@@ -263,6 +265,10 @@ export default function Detail() {
           ) : order.order_status == 7 ? (
           <tr>
             <td width="100%"><button onClick={() => handleUnCancel()} className="bg-danger button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Re-Booking</button></td>
+          </tr>
+          )  : order.order_status == 5 || order.order_status == 9 ? (
+          <tr>
+            <td width="100%"><button onClick={() => router.push({ pathname: "/progress/review", query: {id: order.order_id, order_transaction_number: order.order_transaction_number} })} className="bg-primary button-primary w-100 p-2" style={{ borderRadius: '0px' }}>Review</button></td>
           </tr>
           ) : ""}
           

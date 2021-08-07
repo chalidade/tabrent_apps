@@ -2,32 +2,49 @@ import TopNav from "../../components/globals/top_nav";
 import { Carousel, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { STORE, INDEX } from "../../config/api_url";
+import { MAIN, STORE, INDEX } from "../../config/api_url";
 import { fetch_data } from "../../components/globals/api";
 
 export default function Detail() {
   const router = useRouter();
   const [showPayment, setShowPayment] = useState(false);
   const [user, setUser] = useState(false);
+  const [order, setOrder] = useState([]);
   const [productId, setProductId] = useState();
   const [message, setMessage] = useState();
-  const [paymentId, setPaymentId] = useState();
+  const [paymentId, setPaymentId] = useState(0);
   const [paymentName, setPaymentName] = useState();
   const [paymentNumber, setPaymentNumber] = useState();
   const [orderData, setOrderData] = useState();
   const [duration, setDuration] = useState();
   const [product, setProduct] = useState();
+  const [slider, setSlider] = useState();
   const [paymentMethod, setPaymentMethod] = useState();
 
   const handleRent = () => {
     const timeElapsed = Date.now();
     let today = new Date(timeElapsed);
     today = today.toLocaleDateString();
+    let randNumber = Math.floor(Math.random() * 200);
     let transaction_number = today.toString().replaceAll("/", "");
+
+    let payment_total;
+
+    if (product && orderData.order_type == 0 && product.product_discount !== "0") {
+      payment_total = (product.product_discount * duration);
+    } else if(product && orderData.order_type == 0 && product.product_discount == "0") {
+      payment_total = (product.product_price * duration);
+    } else if(product && orderData.order_type == 1 && product.product_price_with_driver_discount !== "0") {
+      payment_total = (product.product_price_with_driver_discount * duration);
+    } else if(product && orderData.order_type == 1 && product.product_price_with_driver_discount == "0") {
+      payment_total = (product.product_price_with_driver * duration);
+    } else {
+      payment_total = (product.product_price * duration);
+    }
 
     let value = orderData;
     value.order_user_id = user.user_id;
-    value.order_transaction_number = "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number;
+    value.order_transaction_number = "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number+"/"+randNumber;
     value.order_product_id = product.product_id;
     value.order_duration = duration;
     value.order_payment_id = paymentId;
@@ -35,7 +52,7 @@ export default function Detail() {
     value.order_payment_number = paymentNumber;
     value.order_message = message;
     value.order_status = 0;
-    value.order_payment_total = product.product_price * duration;
+    value.order_payment_total = payment_total;
 
     let check_order = {
       action : "list",
@@ -51,45 +68,49 @@ export default function Detail() {
     };
     
     let json;
-
-    fetch_data(INDEX, check_order).then(function (data) {
-      if (data.success) { 
-        json = {
-          action : "update",
-          db : "tabrent",
-          table : "tx_order",
-          where: [
-            [
-                "order_transaction_number",
-                "=",
-                "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number
-            ]
-          ],
-          value: value
-        };
-      } else {
-        json = {
-          action : "save",
-          db : "tabrent",
-          table : "tx_order",
-          primaryKey : "order_id",
-          value: [value],
-        };
-      }
-      
-       fetch_data(STORE, json).then(function (result) {
-        if (result.success) {
-          localStorage.setItem("order_data", JSON.stringify(result.data[0]));
-          router.push({
-              pathname: "/home/order_detail",
-              query: {id: result.data[0].order_id}
-          });
+    
+    if (paymentId == 0) {
+      alert("Please Choose Payment Method");
+    } else {
+      fetch_data(INDEX, check_order).then(function (data) {
+        if (data.success) { 
+          json = {
+            action : "update",
+            db : "tabrent",
+            table : "tx_order",
+            where: [
+              [
+                  "order_transaction_number",
+                  "=",
+                  "INV/"+product.product_id+"/"+user.user_id+"/"+transaction_number
+              ]
+            ],
+            value: value
+          };
         } else {
-          alert("Check Your Data");
+          json = {
+            action : "save",
+            db : "tabrent",
+            table : "tx_order",
+            primaryKey : "order_id",
+            value: [value],
+          };
         }
-       });
+        
+        fetch_data(STORE, json).then(function (result) {
+          if (result.success) {
+            localStorage.setItem("order_data", JSON.stringify(result.data));
+            router.push({
+                pathname: "/home/order_detail",
+                query: {id: result.id}
+            });
+          } else {
+            alert("Check Your Data");
+          }
+        });
 
-    });
+      });
+    }
   };
 
   const handlePayment = (id, name, number) => {
@@ -108,7 +129,8 @@ useEffect(() => {
       let json_payment = {
         action : "list",
         db : "tabrent",
-        table : "tx_payment_method"
+        table : "tx_payment_method",
+        where : [['payment_status', "=", "1"]]
       };
 
       fetch_data(INDEX, json_payment).then(function (data) {
@@ -134,6 +156,7 @@ useEffect(() => {
 
       setDuration(Difference_In_Days);
       setOrderData(order);
+      setSlider(JSON.parse(product.product_image))
       setProduct(product);
     }
   }, [])
@@ -142,16 +165,19 @@ useEffect(() => {
     <div style={{ background: "#E5E5E5", height: "auto", minHeight: "100vh" }}>
       <TopNav back="true" text="Confirm Order" arrow="true" search="true" />
       <Carousel slide={true} touch={true} indicators={false} controls={false}>
-        <Carousel.Item>
+      {slider ? slider.map((data, index) => {
+        return <Carousel.Item>
           <div
             style={{
-              background: "url(/home/product_2.jpg)",
+              background: `url(${data ? MAIN+data : "/home/product_2.jpg"})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
               height: "345px",
             }}
           ></div>
-        </Carousel.Item>
+        </Carousel.Item>;
+      }) : (
+        <div>
         <Carousel.Item>
           <div
             style={{
@@ -172,10 +198,11 @@ useEffect(() => {
             }}
           ></div>
         </Carousel.Item>
+      </div>)}
       </Carousel>
-      <div className="bg-white p-3 pl-3 pr-3" style={{ height: "210px" }}>
+     <div className="bg-white p-3 pl-3 pr-3" style={{ height: "210px" }}>
         <table
-          cellpadding="4"
+          cellPadding="4"
           style={{ fontSize: "14px", width: "100%", fontWeight: "600" }}
         >
           <tr>
@@ -189,9 +216,9 @@ useEffect(() => {
             <td className="text-right">{product ? product.product_brand : "Daihatsu"}</td>
           </tr>
           <tr>
-            <td width="45%">Vehicle Number</td>
+            <td width="45%">Category</td>
             <td width="3%">:</td>
-            <td className="text-right">{product ? product.product_vehicle_number : "A 1234 BA"}</td>
+            <td className="text-right">{product ? product.product_category : "A 1234 BA"}</td>
           </tr>
           <tr>
             <td width="45%">Rent Duration</td>
@@ -240,7 +267,7 @@ useEffect(() => {
         </table>
       </div>
 
-      <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
+      {/* <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <center>
           <button
             style={{
@@ -263,7 +290,7 @@ useEffect(() => {
             payment
           </p>
         </center>
-      </div>
+      </div> */}
 
       <div
         className="mt-3 text-center"
@@ -282,7 +309,16 @@ useEffect(() => {
                 <font style={{ fontSize: "10px" }}>Total Price</font>
                 <br />
                 <font style={{ fontWeight: "700", color: "#2F2F8D" }}>
-                  Rp {product ? (product.product_price * duration).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "1.200.000"}
+                  Rp {
+                      product && orderData.order_type == 0 && product.product_discount !== "0" ? 
+                        (product.product_discount * duration).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 
+                      product && orderData.order_type == 0 && product.product_discount == "0" ? 
+                        (product.product_price * duration).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 
+                      product && orderData.order_type == 1 && product.product_price_with_driver_discount !== "0" ? 
+                        (product.product_price_with_driver_discount * duration).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 
+                      product && orderData.order_type == 1 && product.product_price_with_driver_discount == "0" ? 
+                        (product.product_price_with_driver * duration).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 
+                        "1.200.000"}
                 </font>
               </p>
             </td>
@@ -314,7 +350,23 @@ useEffect(() => {
               {paymentMethod ? paymentMethod.map((data, index) => {
                 return (
                   <tr >
-                    {/* <td><img src="/icons/icon_bca.png" width="70px" /></td> */}
+                    <td>
+                      {data.payment_name == "BCA" ? (
+                        <img src="/icons/icon_bca.png" width="70px" />
+                      ) : data.payment_name == "BNI" ? (
+                        <img src="/icons/icon_bni.png" width="70px" />
+                      ) : data.payment_name == "BRI" ? (
+                        <img src="/icons/icon_bri.png" width="70px" />
+                      ) : data.payment_name == "Bank Mandiri" ? (
+                        <img src="/icons/icon_mandiri.png" width="70px" />
+                      ) : data.payment_name == "Bank Jatim" ? (
+                        <img src="/icons/icon_bank_jatim.png" width="70px" />
+                      ) : data.payment_name == "DANA" ? (
+                        <img src="/icons/icon_dana.png" width="70px" />
+                      ) : data.payment_name == "OVO" ? (
+                        <img src="/icons/icon_ovo.png" width="70px" />
+                      ) : ""}
+                      </td>
                     <td className="pl-3">
                       <div onClick={(id, name, number) => handlePayment(data.payment_id, data.payment_name, data.payment_number)}>
                         <font style={{fontSize: "20px", fontWeight: "500"}}> {data.payment_name} </font>
