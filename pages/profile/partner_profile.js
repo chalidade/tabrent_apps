@@ -202,9 +202,6 @@ export default function OrderDate() {
         </p>
         <p style={{ fontSize: "12px" }}>0 Reviews</p>
         <hr />
-        <button onClick={() => router.push('/profile/product_new')} className="button-primary p-3 w-100 mt-3">
-          Add New Product
-        </button>
       </div>
       <div
         className="profile-mitra text-center"
@@ -228,6 +225,35 @@ export default function OrderDate() {
         </table> */}
       </div>
       <div className="main"></div>
+      <div style={{
+        position: 'fixed',
+        bottom: '0px',
+        width: '100%',
+        zIndex: '1'
+      }}>
+        <table width="100%">
+            <tr>
+              <td width="80%">
+              <button onClick={() => router.push('/profile/product_new')} className="button-primary p-3 w-100 mt-3">
+                Add New Product
+              </button>
+              </td>
+              <td style={{paddingTop: '15px'}}>
+                <a href="https://api.whatsapp.com/send?phone=6285708279238&text=Hi%20Admin%20Tabrent">
+                  <center 
+                    className="button-white" 
+                    style={{
+                      padding: '5px',
+                      border: 'solid thin #2f2f8d',
+                      borderRadius: '5px'
+                    }}>
+                    <img src="/icons/icon_wa.png" style={{ width: "35px" }} />
+                  </center>
+                </a>
+              </td>
+            </tr>
+          </table>
+      </div>
     </div>
   );
 }
