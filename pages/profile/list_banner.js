@@ -71,12 +71,18 @@ const handleInActivate = (e) => {
         if (data.success) {
           if (data.count == 1) {
             setProduct([data.result]);
+            setShowConfirm(false);
+            setShow(false);
             alert("Delete Banner");
           } else {
             setProduct(data.result);
+            setShowConfirm(false);
+            setShow(false);
             alert("Delete Banner");
           }
         } else {
+          setShowConfirm(false);
+          setShow(false);
           setProduct([]);
         }
       });
