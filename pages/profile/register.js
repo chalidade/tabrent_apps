@@ -89,7 +89,7 @@ export default function Register() {
               user_password: password,
               user_personal_id_number: ktpNumber,
               user_address: address,
-              user_type: 0,
+              user_type: asId ? asId : 1,
               user_status: 0,
             },
           ],
