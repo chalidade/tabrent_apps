@@ -136,7 +136,7 @@ export default function OrderDate() {
       </div>
       <div
         className="profile-main"
-        style={{ overflow: "hidden", height: "60vh", top: "50vh" }}
+        style={{ overflow: "hidden", height: "68vh", top: "50vh" }}
       >
         <p className="weight-600" style={{ fontSize: "12px" }}>
           ORDERS
@@ -201,6 +201,11 @@ export default function OrderDate() {
           REVIEWS
         </p>
         <p style={{ fontSize: "12px" }}>0 Reviews</p>
+        <hr />
+        <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
+          PAYMENTS
+        </p>
+        <p onClick={() => router.push("/profile/list_payment_rental")} style={{ fontSize: "12px" }}>{product.length} Payments</p>
         <hr />
       </div>
       <div

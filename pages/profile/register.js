@@ -21,8 +21,16 @@ export default function Register() {
   const [address, setAddress] = useState();
   const [asId, setAsId] = useState();
   const [asName, setAsName] = useState();
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [allCities, setAllCities] = useState([]);
+  const [allDistricts, setAllDistricts] = useState([]);
   const [uploadIdCard, setUploadIdCard] = useState();
   const [uploadIdPhoto, setUploadIdPhoto] = useState();
+  const [city, setCity] = useState();
+  const [province, setProvince] = useState();
+  const [district, setDistrict] = useState();
 
   const router = useRouter();
   const [indexPage, setIndexpage] = useState(0);
@@ -89,6 +97,9 @@ export default function Register() {
               user_password: password,
               user_personal_id_number: ktpNumber,
               user_address: address,
+              user_province: province,
+              user_city: city,
+              user_district: district,
               user_type: asId ? asId : 1,
               user_status: 0,
             },
@@ -241,6 +252,64 @@ export default function Register() {
     setShow(false);
   }
 
+  const handleChangeProvince = (e) => {
+    let city = allCities.filter(cities => cities.prov_id  == e.target.value);
+    setProvince(e.target.value);
+    setCities(city);
+  }
+
+  const handleChangeCity = (e) => {
+    let district = allDistricts.filter(districts => districts.city_id  == e.target.value);
+    setCity(e.target.value);
+    setDistricts(district);
+  }
+
+  const handleChangeDistrict = (e) => {
+    setDistrict(e.target.value);
+  }
+
+  useEffect(() => {
+      let json = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_cities",
+        orderBy: ["city_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+            setAllCities(data.result);
+        }
+      });
+
+      let json_provice = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_provinces",
+        orderBy: ["prov_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json_provice).then(function (data) {
+        if (data.success) {
+          setProvinces(data.result);
+        }
+      });
+
+      let json_district = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_districts",
+        orderBy: ["dis_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json_district).then(function (data) {
+        if (data.success) {
+            setAllDistricts(data.result);
+        }
+      });
+  }, [])
+ 
+
   return (
     <div>
       <TopNav
@@ -377,6 +446,67 @@ export default function Register() {
               defaultValue=""
               label="Personal ID Number (KTP)"
             />
+            <p className="mb-1 mt-2 label-form">Province</p>
+            <select className="form-control" 
+              onChange={(e)=>handleChangeProvince(e)}
+              style={{
+                color: '#000',
+                borderTop: 'none',
+                paddingLeft: '0px',
+                borderRight: 'none',
+                borderBottom: 'thin solid rgb(0, 0, 0)',
+                borderLeft: 'none',
+                borderImage: 'initial',
+                borderRadius: '0px'
+            }}>
+              <option selected disabled>-- Your Province --</option>
+            {
+              provinces.length !== 0 ? provinces.map((provinces, index) => {
+                return (<option value={provinces.prov_id}>{provinces.prov_name}</option>)
+              }) : ""
+            }
+              
+            </select>
+            <p className="mb-1 mt-3 label-form">City</p>
+            <select className="form-control" 
+              onChange={(e)=>handleChangeCity(e)}
+              style={{
+                color: '#000',
+                borderTop: 'none',
+                paddingLeft: '0px',
+                borderRight: 'none',
+                borderBottom: 'thin solid rgb(0, 0, 0)',
+                borderLeft: 'none',
+                borderImage: 'initial',
+                borderRadius: '0px'
+            }}>
+              <option selected disabled>-- Your City --</option>
+              {
+                cities.length !== 0 ? cities.map((cities, index) => {
+                  return (<option value={cities.city_id}>{cities.city_name}</option>)
+                }) : ""
+              }
+            </select>
+            <p className="mb-1 mt-3 label-form">Districts</p>
+            <select className="form-control mb-2" 
+              onChange={(e)=>handleChangeDistrict(e)}
+              style={{
+                color: '#000',
+                borderTop: 'none',
+                paddingLeft: '0px',
+                borderRight: 'none',
+                borderBottom: 'thin solid rgb(0, 0, 0)',
+                borderLeft: 'none',
+                borderImage: 'initial',
+                borderRadius: '0px'
+            }}>
+              <option selected disabled>-- Your District --</option>
+              {
+                districts.length !== 0 ? districts.map((districts, index) => {
+                  return (<option value={districts.dis_id}>{districts.dis_name}</option>)
+                }) : ""
+              }
+            </select>
             <TextField
               style={style.textField}
               className="mt-15 mb-15"
@@ -387,9 +517,9 @@ export default function Register() {
               InputLabelProps={{
                 shrink: true,
               }}
-              label="Current Address"
+              label="Full Address"
             />
-            <p className="mt-3 text-secondary weight-600">
+            <p className="mt-4 text-secondary weight-600">
               Upload Your ID Card Photo
             </p>
             <div

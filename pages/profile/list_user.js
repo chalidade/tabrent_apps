@@ -10,7 +10,14 @@ export default function ListUser() {
  const [show, setShow] = useState(false);
  const [user, setUser] = useState();
  const [modal, setModal] = useState([]);
+ const [modalFilter, setModalFilter] = useState(false);
  const [showConfirm, setShowConfirm] = useState();
+
+ const [filterEmail, setFilterEmail] = useState("");
+ const [filterPhone, setFilterPhone] = useState("");
+ const [filterKTP, setFilterKTP] = useState("");
+ const [filterFirstName, setFilterFirstName] = useState("");
+ const [filterStatus, setFilterStatus] = useState("2");
 
  useEffect(() => {
    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
@@ -21,7 +28,7 @@ export default function ListUser() {
        db: "tabrent",
        table: "tx_user",
        where: [['user_type', '!=', '3']]
-   };
+    };
  
      fetch_data(INDEX, json).then(function (data) {
        if (data.success) {
@@ -170,6 +177,61 @@ const handleActivate = (e) => {
   });
 }
 
+const handleFilter = () => {
+  let email, phone, ktp, status, type, firstName;
+  let filter = [];
+  
+  type = ['user_type', '!=', '3'];
+  filter.push(type);
+
+  if (filterStatus !== '2') {
+    status = ['user_status', '=', filterStatus];
+    filter.push(status);
+  }
+
+  if (filterFirstName.length !== 0) {
+    firstName = ['user_first_name', 'like', '%'+filterFirstName+'%'];
+    filter.push(firstName);
+  }
+
+  if (filterEmail.length !== 0) {
+    email = ['user_email', 'like', '%'+filterEmail+'%'];
+    filter.push(email);
+  }
+  
+  if (filterPhone.length !== 0) {
+    ktp = ['user_phone', 'like', '%'+filterPhone+'%'];
+    filter.push(ktp);
+  }
+
+  if (filterKTP.length !== 0) {
+    phone = ['user_email', 'like', '%'+filterKTP+'%'];
+    filter.push(phone);
+  }
+
+    let json = {
+      action: "list",
+      db: "tabrent",
+      table: "tx_user",
+      where: filter
+    };
+
+    fetch_data(INDEX, json).then(function (data) {
+      if (data.success) {
+        if (data.count == 1) {
+          setProduct([data.result]);
+        } else {
+          setProduct(data.result);
+        }
+      } else {
+        setProduct(data.result);
+      }
+    });
+
+    setModalFilter(false);
+
+}
+
  return (
    <div>
      <TopNav back="true" text="Back" arrow="true" customPage="profile/admin_menu" />
@@ -180,7 +242,7 @@ const handleActivate = (e) => {
              <p className="mb-0 weight-700">List User</p>
            </td>
            <td className="text-right">
-
+              <img src="/icons/icon_filter.png" style={{width: '20px'}} onClick={() => setModalFilter(true)} />
            </td>
          </tr>
        </table>
@@ -289,6 +351,57 @@ const handleActivate = (e) => {
             </Modal.Footer>
           </Modal>
       ) : ""}
+
+      <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table width="100%">
+          <tr>
+              <td>
+                <p className="mb-1">First Name</p>
+               <input className="form-control" type="text" value={filterFirstName} onChange={(e) => setFilterFirstName(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Email Address</p>
+               <input className="form-control" type="text" value={filterEmail} onChange={(e) => setFilterEmail(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">KTP Number</p>
+               <input className="form-control" type="text" value={filterKTP} onChange={(e) => setFilterKTP(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Phone Number</p>
+               <input className="form-control" type="text" value={filterPhone} onChange={(e) => setFilterPhone(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Status</p>
+                <table width="100%">
+                  <tr>
+                    <td><input type="radio" name="status" value="2" checked={filterStatus == 2 ? true : false} onChange={(e) => setFilterStatus(e.target.value)}/> All</td>
+                    <td><input type="radio"  name="status" value="1" checked={filterStatus == 1 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Verified</td>
+                    <td><input type="radio"  name="status" value="0" checked={filterStatus == 0 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Not Verified</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleFilter()}>
+            Filter
+          </Button>
+        </Modal.Footer>
+      </Modal>
    </div>
  );
 }

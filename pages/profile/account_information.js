@@ -42,6 +42,18 @@ export default function AccountInformation() {
   const [uploadIdPhoto, setUploadIdPhoto] = useState();
   const [modalPhoto, setModalPhoto] = useState(false);
   const [modalPhotoData, setModalPhotoData] = useState();
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [allCities, setAllCities] = useState([]);
+  const [allDistricts, setAllDistricts] = useState([]);
+  const [city, setCity] = useState();
+  const [province, setProvince] = useState();
+  const [district, setDistrict] = useState();
+  const [cityName, setCityName] = useState();
+  const [provinceName, setProvinceName] = useState();
+  const [districtName, setDistrictName] = useState();
+
 
   const handleFinish = async () => {
     let json = {
@@ -59,6 +71,9 @@ export default function AccountInformation() {
               user_username: username,
               user_password: password,
               user_personal_id_number: ktpNumber,
+              user_province: province,
+              user_city: city,
+              user_district: district,
               user_address: address,
               user_type: 1,
               user_status: 0,
@@ -87,41 +102,109 @@ export default function AccountInformation() {
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
-      let data = JSON.parse(localStorage.getItem('user_data'));
-      let json = {
-        action : "list",
-        db : "tabrent",
-        table : "tx_user",
-        "where": [
-          [
-              "user_id",
-              "=",
-              data.user_id
-          ]
-        ]
+      let json_city = {
+          action: "list",
+          db: "tabrent",
+          table: "tm_cities",
+          orderBy: ["city_name", "ASC"]
       };
+      
+      let json_provice = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_provinces",
+        orderBy: ["prov_name", "ASC"]
+      };
+
+    let json_district = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_districts",
+        orderBy: ["dis_name", "ASC"]
+    };
+
+    let data = JSON.parse(localStorage.getItem('user_data'));
+    let json = {
+      action : "list",
+      db : "tabrent",
+      table : "tx_user",
+      "where": [
+        [
+            "user_id",
+            "=",
+            data.user_id
+        ]
+      ]
+    };
   
-      fetch_data(INDEX, json).then(function (data) {
-        if (data.success) {
-          let user = data.result;
-          let card = JSON.parse(user.user_id_photo)[0];
-          let ktp_foto = JSON.parse(user.user_id_photo_with_user)[0];
-          localStorage.setItem("user_data", JSON.stringify(user));
-          setFirstName(user.user_first_name);
-          setLastName(user.user_last_name);
-          setBirthdate(user.user_birthdate);
-          setPhoneNumber(user.user_phone_number);
-          setUsername(user.user_username);
-          setEmail(user.user_email);
-          setKtpNumber(user.user_personal_id_number);
-          setAddress(user.user_address);
-          setUserId(user.user_id);
-          setUploadIdCard(card);
-          setUploadIdPhoto(ktp_foto);
+      fetch_data(INDEX, json_provice).then(function (province) {
+        if (province.success) {
+          setProvinces(province.result);
+          fetch_data(INDEX, json_city).then(function (cities) {
+            if (cities.success) {
+                setAllCities(cities.result);
+                fetch_data(INDEX, json_district).then(function (districts) {
+                  if (districts.success) {
+                      setAllDistricts(districts.result);
+                      fetch_data(INDEX, json).then(function (data) {
+                        if (data.success) {
+                          let user = data.result;
+                          let card = JSON.parse(user.user_id_photo)[0];
+                          let ktp_foto = JSON.parse(user.user_id_photo_with_user)[0];
+                          localStorage.setItem("user_data", JSON.stringify(user));
+                
+                          let city_name = cities.result.filter(cities => cities.city_id  == user.user_city);
+                          city_name = city_name[0].city_name;
+                
+                          let prov_name = province.result.filter(province => province.prov_id  == user.user_province);
+                          prov_name = prov_name[0].prov_name;
+                
+                          let dis_name = districts.result.filter(dis => dis.dis_id  == user.user_district);
+                          dis_name = dis_name[0].dis_name;
+                
+                          setCity(user.user_city);
+                          setProvince(user.user_province);
+                          setDistrict(user.user_district);
+                          setProvinceName(prov_name);
+                          setCityName(city_name);
+                          setDistrictName(dis_name);
+                          setFirstName(user.user_first_name);
+                          setLastName(user.user_last_name);
+                          setBirthdate(user.user_birthdate);
+                          setPhoneNumber(user.user_phone_number);
+                          setUsername(user.user_username);
+                          setEmail(user.user_email);
+                          setKtpNumber(user.user_personal_id_number);
+                          setAddress(user.user_address);
+                          setUserId(user.user_id);
+                          setUploadIdCard(card);
+                          setUploadIdPhoto(ktp_foto);
+                        }
+                      });
+                  }
+                });
+            }
+          });
         }
       });
     }
   }, [])
+
+  const handleChangeProvince = (e) => {
+    let city = allCities.filter(cities => cities.prov_id  == e.target.value);
+    setProvince(e.target.value);
+    setCities(city);
+  }
+
+  const handleChangeCity = (e) => {
+    let district = allDistricts.filter(districts => districts.city_id  == e.target.value);
+    setCity(e.target.value);
+    setDistricts(district);
+  }
+
+  const handleChangeDistrict = (e) => {
+    setDistrict(e.target.value);
+  }
 
   return (
     <div className="mb-30">
@@ -201,6 +284,67 @@ export default function AccountInformation() {
           }}
           label="Phone Number"
         />
+        <p className="mb-1 mt-2 label-form">Province</p>
+        <select className="form-control" 
+          onChange={(e)=>handleChangeProvince(e)}
+          style={{
+            color: '#000',
+            borderTop: 'none',
+            paddingLeft: '0px',
+            borderRight: 'none',
+            borderBottom: 'thin solid rgb(0, 0, 0)',
+            borderLeft: 'none',
+            borderImage: 'initial',
+            borderRadius: '0px'
+        }}>
+          <option value={province}>{provinceName}</option>
+        {
+          provinces.length !== 0 ? provinces.map((provinces, index) => {
+            return (<option value={provinces.prov_id}>{provinces.prov_name}</option>)
+          }) : ""
+        }
+          
+        </select>
+        <p className="mb-1 mt-3 label-form">City</p>
+        <select className="form-control" 
+          onChange={(e)=>handleChangeCity(e)}
+          style={{
+            color: '#000',
+            borderTop: 'none',
+            paddingLeft: '0px',
+            borderRight: 'none',
+            borderBottom: 'thin solid rgb(0, 0, 0)',
+            borderLeft: 'none',
+            borderImage: 'initial',
+            borderRadius: '0px'
+        }}>
+          <option value={city}>{cityName}</option>
+          {
+            cities.length !== 0 ? cities.map((cities, index) => {
+              return (<option value={cities.city_id}>{cities.city_name}</option>)
+            }) : ""
+          }
+        </select>
+        <p className="mb-1 mt-3 label-form">Districts</p>
+        <select className="form-control mb-2" 
+          onChange={(e)=>handleChangeDistrict(e)}
+          style={{
+            color: '#000',
+            borderTop: 'none',
+            paddingLeft: '0px',
+            borderRight: 'none',
+            borderBottom: 'thin solid rgb(0, 0, 0)',
+            borderLeft: 'none',
+            borderImage: 'initial',
+            borderRadius: '0px'
+        }}>
+          <option value={district}>{districtName}</option>
+          {
+            districts.length !== 0 ? districts.map((districts, index) => {
+              return (<option value={districts.dis_id}>{districts.dis_name}</option>)
+            }) : ""
+          }
+        </select>
         <TextField
           style={style.textField}
           fullWidth={true}

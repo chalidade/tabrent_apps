@@ -12,12 +12,6 @@ export default function ListUser() {
  const [photo, setPhoto] = useState([]);
  const [modal, setModal] = useState([]);
 
- const [modalFilter, setModalFilter] = useState(true);
- const [filterTransactionAccount, setFilterTransactionAccount] = useState("");
- const [filterTransactionDate, setFilterTransactionDate] = useState("");
- const [filterTransactionNumber, setFilterTransactionNumber] = useState("");
- const [filterStatus, setFilterStatus] = useState("2");
-
  useEffect(() => {
    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
      let data = JSON.parse(localStorage.getItem('user_data'));
@@ -234,64 +228,6 @@ const handleSend = ({data}) => {
     });
 }
 
-const handleFilter = () => {
-  let number, account, date, status;
-  let filter = [];
-
-  if (filterStatus !== '2') {
-    status = ['transfer_status', '=', filterStatus];
-    filter.push(status);
-  }
-
-  if (filterTransactionNumber.length !== 0) {
-    number = ['order_transaction_number', 'like', '%'+filterTransactionNumber+'%'];
-    filter.push(number);
-  }
-
-  if (filterTransactionAccount.length !== 0) {
-    account = ['transfer_account_name', 'like', '%'+filterTransactionAccount+'%'];
-    filter.push(account);
-  }
-  
-  if (filterTransactionDate.length !== 0) {
-    date = ['transfer_date', 'like', '%'+filterTransactionDate+'%'];
-    filter.push(date);
-  }
-
-  let json = {
-    action: "list",
-    db: "tabrent",
-    table: "tx_order",
-    leftJoin: [
-     {
-         table: "tx_transfer",
-         field1: "tx_transfer.transfer_transaction_number",
-         field2: "tx_order.order_transaction_number"
-     },
-     {
-         table: "tx_product",
-         field1: "tx_product.product_id",
-         field2: "tx_order.order_product_id"
-     }],
-     where: filter
- };
-
-  fetch_data(INDEX, json).then(function (data) {
-    if (data.success) {
-      if (data.count == 1) {
-        setProduct([data.result]);
-      } else {
-        setProduct(data.result);
-      }
-    } else {
-      setProduct(data.result);
-    }
-  });
-
-  setModalFilter(false);
-
-}
-
  return (
    <div>
      <TopNav back="true" text="Back" arrow="true" />
@@ -302,7 +238,7 @@ const handleFilter = () => {
              <p className="mb-0 weight-700">List Transfer</p>
            </td>
            <td className="text-right">
-             <img src="/icons/icon_filter.png" style={{width: '20px'}} onClick={() => setModalFilter(true)} />
+
            </td>
          </tr>
        </table>
@@ -355,11 +291,6 @@ const handleFilter = () => {
                      Detail
                    </button>
                  </td>
-                 <td>
-                    <button onClick={() => (handleSend({data}))} className="btn btn-success mt-2" style={{border: 'none', borderRadius:'5px', float:'left', fontSize: '12px'}}>
-                     Send
-                   </button>
-                 </td>
                </tr>
              </table>
            </div>);
@@ -410,51 +341,6 @@ const handleFilter = () => {
             </Modal.Footer>
           </Modal>
      ) : ""}
-
-     <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Filter Data</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <table width="100%">
-          <tr>
-              <td>
-                <p className="mb-1">Transaction Number</p>
-               <input className="form-control" type="text" value={filterTransactionNumber} onChange={(e) => setFilterTransactionNumber(e.target.value)} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p className="mb-1 mt-3">Transfer Account</p>
-               <input className="form-control" type="text" value={filterTransactionAccount} onChange={(e) => setFilterTransactionAccount(e.target.value)} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p className="mb-1 mt-3">Transfer Date</p>
-               <input className="form-control" type="date" value={filterTransactionDate} onChange={(e) => setFilterTransactionDate(e.target.value)} />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p className="mb-1 mt-3">Status</p>
-                <table width="100%">
-                  <tr>
-                    <td><input type="radio" name="status" value="2" checked={filterStatus == 2 ? true : false} onChange={(e) => setFilterStatus(e.target.value)}/> All</td>
-                    <td><input type="radio"  name="status" value="1" checked={filterStatus == 1 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Verified</td>
-                    <td><input type="radio"  name="status" value="0" checked={filterStatus == 0 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Not Verified</td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={() => handleFilter()}>
-            Filter
-          </Button>
-        </Modal.Footer>
-      </Modal>
    </div>
  );
 }
