@@ -12,6 +12,12 @@ export default function ListUser() {
  const [photo, setPhoto] = useState([]);
  const [modal, setModal] = useState([]);
 
+ const [modalFilter, setModalFilter] = useState(false);
+ const [filterProductName, setFilterProductName] = useState("");
+ const [filterProductBrand, setFilterProductBrand] = useState("");
+ const [filterProductOwner, setFilterProductOwner] = useState("");
+ const [filterStatus, setFilterStatus] = useState("2");
+
  useEffect(() => {
    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
      let data = JSON.parse(localStorage.getItem('user_data'));
@@ -155,6 +161,65 @@ const handleActivate = (e) => {
   });
 }
 
+const handleFilter = () => {
+  let name, brand, owner, status;
+  let filter = [];
+
+  if (filterStatus !== '2') {
+    status = ['product_status', '=', filterStatus];
+    filter.push(status);
+  }
+
+  if (filterProductName.length !== 0) {
+    name = ['product_name', 'like', '%'+filterProductName+'%'];
+    filter.push(name);
+  }
+
+  if (filterProductBrand.length !== 0) {
+    brand = ['product_brand', 'like', '%'+filterProductBrand+'%'];
+    filter.push(brand);
+  }
+  
+  if (filterProductOwner.length !== 0) {
+    date = ['user_first_name', 'like', '%'+filterProductOwner+'%'];
+    owner.push(owner);
+  }
+
+  let json = {
+      action: "list",
+      db: "tabrent",
+      table: "tx_product",
+      leftJoin: [
+      {
+          table: "tx_user",
+          field1: "tx_user.user_id",
+          field2: "tx_product.product_owner"
+      }],
+      raw: {
+      selected: "tx_product.*, tx_user.user_first_name, tx_user.user_last_name"
+      },
+      where: filter
+  };
+
+  console.log(json);
+
+  fetch_data(INDEX, json).then(function (data) {
+    if (data.success) {
+      if (data.count == 1) {
+        setProduct([data.result]);
+      } else {
+        setProduct(data.result);
+      }
+    } else {
+      setProduct(data.result);
+    }
+  });
+
+  setModalFilter(false);
+
+}
+
+
  return (
    <div>
      <TopNav back="true" text="Back" arrow="true" customPage="profile/admin_menu" />
@@ -165,7 +230,7 @@ const handleActivate = (e) => {
              <p className="mb-0 weight-700">List Product</p>
            </td>
            <td className="text-right">
-
+            <img src="/icons/icon_filter.png" style={{width: '20px'}} onClick={() => setModalFilter(true)} />
            </td>
          </tr>
        </table>
@@ -266,6 +331,54 @@ const handleActivate = (e) => {
             </Modal.Footer>
           </Modal>
      ) : ""}
+
+     
+     <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table width="100%">
+          <tr>
+              <td>
+
+
+                <p className="mb-1">Product Name</p>
+               <input className="form-control" type="text" value={filterProductName} onChange={(e) => setFilterProductName(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Product Brand</p>
+               <input className="form-control" type="text" value={filterProductBrand} onChange={(e) => setFilterProductBrand(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Product Owner</p>
+               <input className="form-control" type="text" value={filterProductOwner} onChange={(e) => setFilterProductOwner(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Status</p>
+                <table width="100%">
+                  <tr>
+                    <td><input type="radio" name="status" value="2" checked={filterStatus == 2 ? true : false} onChange={(e) => setFilterStatus(e.target.value)}/> All</td>
+                    <td><input type="radio"  name="status" value="1" checked={filterStatus == 1 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Verified</td>
+                    <td><input type="radio"  name="status" value="0" checked={filterStatus == 0 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Not Verified</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleFilter()}>
+            Filter
+          </Button>
+        </Modal.Footer>
+      </Modal>
    </div>
  );
 }

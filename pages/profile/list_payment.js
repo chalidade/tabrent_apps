@@ -12,7 +12,7 @@ export default function ListUser() {
  const [photo, setPhoto] = useState([]);
  const [modal, setModal] = useState([]);
 
- const [modalFilter, setModalFilter] = useState(true);
+ const [modalFilter, setModalFilter] = useState(false);
  const [filterTransactionAccount, setFilterTransactionAccount] = useState("");
  const [filterTransactionDate, setFilterTransactionDate] = useState("");
  const [filterTransactionNumber, setFilterTransactionNumber] = useState("");

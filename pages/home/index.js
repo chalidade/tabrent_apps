@@ -7,13 +7,19 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { fetch_data } from "../../components/globals/api";
 import { STORE, INDEX } from "../../config/api_url";
-import { Button } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { BsFilterRight } from "react-icons/bs";
 import { VscSettings } from "react-icons/vsc";
 
 export default function Index() {
   const [product, setProduct] = useState([]);
   const [banner, setBanner] = useState([]);
+
+  const [modalFilter, setModalFilter] = useState(false);
+  const [filterBankName, setFilterBankName] = useState("All Bank");
+  const [filterBankNumber, setFilterBankNumber] = useState("");
+  const [filterBankOwner, setFilterBankOwner] = useState("");
+  const [filterStatus, setFilterStatus] = useState("2");
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
@@ -31,6 +37,11 @@ export default function Index() {
               table: "tx_rating",
               field1: "tx_rating.rating_product_id",
               field2: "tx_product.product_id"
+          },
+          {
+            table: "tx_user",
+            field1: "tx_user.user_id",
+            field2: "tx_product.product_owner"
           }],
         where: [["product_status", "=", "1"]]
       };
@@ -217,7 +228,7 @@ export default function Index() {
           style={{ height: "auto", width: "auto" }}
         >
           <div className="row">
-            <div className="col">
+            <div className="col-10">
               <p
                 style={{
                   width: "119px",
@@ -237,6 +248,9 @@ export default function Index() {
                 Ready to rent!
               </p>
             </div>
+            <div className="col">
+              <img src="/icons/icon_filter.png" style={{width: '20px'}} onClick={() => setModalFilter(true)} />
+            </div>
           </div>
         </div>
         <div
@@ -250,6 +264,32 @@ export default function Index() {
           </div>
         </div>
       </div>
+      <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table width="100%">
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Bank Account Number</p>
+               <input className="form-control" type="text" value={filterBankNumber} onChange={(e) => setFilterBankNumber(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Bank Account Name</p>
+               <input className="form-control" type="text" value={filterBankOwner} onChange={(e) => setFilterBankOwner(e.target.value)} />
+              </td>
+            </tr>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleFilter()}>
+            Filter
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

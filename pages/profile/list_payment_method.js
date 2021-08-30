@@ -13,6 +13,12 @@ export default function ListUser() {
  const [photo, setPhoto] = useState([]);
  const [modal, setModal] = useState([]);
 
+ const [modalFilter, setModalFilter] = useState(false);
+ const [filterBankName, setFilterBankName] = useState("All Bank");
+ const [filterBankNumber, setFilterBankNumber] = useState("");
+ const [filterBankOwner, setFilterBankOwner] = useState("");
+ const [filterStatus, setFilterStatus] = useState("2");
+
  useEffect(() => {
    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
      let data = JSON.parse(localStorage.getItem('user_data'));
@@ -121,6 +127,56 @@ const handleActivate = (e) => {
   });
 }
 
+const handleFilter = () => {
+  let name, brand, owner, status;
+  let filter = [];
+
+  if (filterStatus !== '2') {
+    status = ['product_status', '=', filterStatus];
+    filter.push(status);
+  }
+
+  if (filterBankName !== 'All Bank') {
+    name = ['payment_name', 'like', '%'+filterBankName+'%'];
+    filter.push(name);
+  }
+
+  if (filterBankNumber.length !== 0) {
+    brand = ['payment_number', 'like', '%'+filterBankNumber+'%'];
+    filter.push(brand);
+  }
+  
+  if (filterBankOwner.length !== 0) {
+    owner = ['payment_account_name', 'like', '%'+filterBankOwner+'%'];
+    filter.push(owner);
+  }
+
+  let json = {
+    action: "list",
+    db: "tabrent",
+    table: "tx_payment_method",
+    where: filter
+ };
+
+ console.log(json);
+
+  fetch_data(INDEX, json).then(function (data) {
+    if (data.success) {
+      if (data.count == 1) {
+        setProduct([data.result]);
+      } else {
+        setProduct(data.result);
+      }
+    } else {
+      setProduct(data.result);
+    }
+  });
+
+  setModalFilter(false);
+
+}
+
+
  return (
    <div>
      <TopNav back="true" text="Back" arrow="true" customPage="profile/admin_menu" />
@@ -131,7 +187,7 @@ const handleActivate = (e) => {
              <p className="mb-0 weight-700">List Payment Method</p>
            </td>
            <td className="text-right">
-
+            <img src="/icons/icon_filter.png" style={{width: '20px'}} onClick={() => setModalFilter(true)} />
            </td>
          </tr>
        </table>
@@ -194,6 +250,62 @@ const handleActivate = (e) => {
          <div>
            <img src="/icons/icon_no_product.svg" />
          </div> )}
+         
+     
+     <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Data</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <table width="100%">
+          <tr>
+              <td>
+                <p className="mb-1">Bank Name</p>
+                <select className="form-control" onChange={(e) => setFilterBankName(e.target.value)} style={{ height: '55px' }}>
+                  <option value={filterBankName.length == 0 ? "All Bank" : filterBankName}>{filterBankName.length == 0 ? "All Bank" : filterBankName}</option>
+                  {filterBankName !==  "All Bank" ? (<option value="All Bank">All Bank</option>) : ""}
+                  <option value="BCA">Bank Central Asia (BCA)</option>
+                  <option value="BNI">Bank Negara Indonesia (BNI)</option>
+                  <option value="BRI">Bank Rakyat Indonesia (BRI)</option>
+                  <option value="Bank Mandiri">Bank Mandiri</option>
+                  <option value="Bank Jatim">Bank Jatim</option>
+                  <option value="DANA">DANA</option>
+                  <option value="OVO">OVO</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Bank Account Number</p>
+               <input className="form-control" type="text" value={filterBankNumber} onChange={(e) => setFilterBankNumber(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Bank Account Name</p>
+               <input className="form-control" type="text" value={filterBankOwner} onChange={(e) => setFilterBankOwner(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Status</p>
+                <table width="100%">
+                  <tr>
+                    <td><input type="radio" name="status" value="2" checked={filterStatus == 2 ? true : false} onChange={(e) => setFilterStatus(e.target.value)}/> All</td>
+                    <td><input type="radio"  name="status" value="1" checked={filterStatus == 1 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Verified</td>
+                    <td><input type="radio"  name="status" value="0" checked={filterStatus == 0 ? true : false} onChange={(e) => setFilterStatus(e.target.value)} /> Not Verified</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => handleFilter()}>
+            Filter
+          </Button>
+        </Modal.Footer>
+      </Modal>
      </div>
          <button onClick={() => router.push('/profile/new_payment_method')} className="button-primary p-3 w-100 mt-3" style={{position: 'sticky', bottom: '0'}}>
           Add Payment Method
