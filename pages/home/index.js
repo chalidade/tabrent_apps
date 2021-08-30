@@ -16,20 +16,99 @@ export default function Index() {
   const [banner, setBanner] = useState([]);
 
   const [modalFilter, setModalFilter] = useState(false);
-  const [filterBankName, setFilterBankName] = useState("All Bank");
-  const [filterBankNumber, setFilterBankNumber] = useState("");
-  const [filterBankOwner, setFilterBankOwner] = useState("");
-  const [filterStatus, setFilterStatus] = useState("2");
+  const [filterProductName, setFilterProductName] = useState("");
+  const [filterProductBrand, setFilterProductBrand] = useState("");
+  const [filterMinPrice, setFilterMinPrice] = useState('');
+  const [filterMaxPrice, setFilterMaxPrice] = useState('');
+  const [provinces, setProvinces] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [allDistricts, setAllDistricts] = useState([]);
+  const [allCities, setAllCities] = useState([]);
+  const [city, setCity] = useState('');
+  const [province_id, setProvince] = useState('');
+  const [district, setDistrict] = useState('');
+
+  useEffect(() => {
+      let json = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_cities",
+        orderBy: ["city_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+            setAllCities(data.result);
+        }
+      });
+
+      let json_provice = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_provinces",
+        orderBy: ["prov_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json_provice).then(function (data) {
+        if (data.success) {
+          setProvinces(data.result);
+        }
+      });
+
+      let json_district = {
+        action: "list",
+        db: "tabrent",
+        table: "tm_districts",
+        orderBy: ["dis_name", "ASC"]
+     };
+  
+      fetch_data(INDEX, json_district).then(function (data) {
+        if (data.success) {
+            setAllDistricts(data.result);
+        }
+      });
+  }, [])
+
+  
+  const handleChangeProvince = (e) => {
+    let city = allCities.filter(cities => cities.prov_id  == e.target.value);
+    setProvince(e.target.value);
+    setCities(city);
+  }
+
+  const handleChangeCity = (e) => {
+    let district = allDistricts.filter(districts => districts.city_id  == e.target.value);
+    setCity(e.target.value);
+    setDistricts(district);
+  }
+
+  const handleChangeDistrict = (e) => {
+    setDistrict(e.target.value);
+  }
+
+
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       let data = JSON.parse(localStorage.getItem('user_data'));
+      let status, getProvince;
+      let filter = [];
+    
+      status = ['product_status', '=', '1'];
+      filter.push(status);
+    
+      if (data.user_province !== null) {
+        getProvince = ['user_province', '=', data.user_province];
+        filter.push(getProvince);
+      }
+
       let json = {
         action : "list",
         db : "tabrent",
         table : "tx_product",
         raw : {
-          selected : "ROUND((SUM(`rating_number`) / COUNT(`rating_number`)), 0) as `rating`, `tx_product`.*"
+          selected : "ROUND((SUM(`rating_number`) / COUNT(`rating_number`)), 0) as `rating`, `tx_product`.*, tx_user.user_province, tx_user.user_city, tx_user.user_district"
         },
         groupby: "product_id",
         leftJoin: [
@@ -43,7 +122,7 @@ export default function Index() {
             field1: "tx_user.user_id",
             field2: "tx_product.product_owner"
           }],
-        where: [["product_status", "=", "1"]]
+        where: filter
       };
   
       fetch_data(INDEX, json).then(function (data) {
@@ -84,26 +163,109 @@ export default function Index() {
   }, [])
 
   const handleFilter = (e) => {
-    let category = e;
-    let json = {
-      action : "list",
-      db : "tabrent",
-      table : "tx_product",
-      where: [["product_status", "=", "1"], ["product_category", "=", category]]
-    };
+      let status, name, brand, minPrice, maxPrice, filterCity, filterProvince, filterDistrict, filterRating;
+      let filter = [];
+      
+      status = ['product_status', '=', '1'];
+      filter.push(status);
 
-    fetch_data(INDEX, json).then(function (data) {
-      if (data.success) {
-        if (data.count == 1) {
-          setProduct([data.result]);
+      console.log(filterProductName);
+    
+      if (filterProductName !== '') {
+        name = ['product_name', 'like', '%'+filterProductName+'%'];
+        filter.push(name);
+      }
+
+      if (filterProductBrand !== '') {
+        brand = ['product_brand', '=', '%'+filterProductBrand+'%'];
+        filter.push(brand);
+      }
+
+      if (filterMinPrice !== '') {
+        minPrice = ['product_price', '>=', filterMinPrice];
+        filter.push(minPrice);
+      }
+
+      if (filterMaxPrice !== '') {
+        maxPrice = ['product_price', '<=', filterMaxPrice];
+        filter.push(maxPrice);
+      }
+
+      if (city !== '') {
+        filterCity = ['user_city', '=', city];
+        filter.push(filterCity);
+      }
+
+      if (province_id !== '') {
+        filterProvince = ['user_province', '=', province_id];
+        filter.push(filterProvince);
+      }
+
+      if (district !== '') {
+        filterDistrict = ['user_district', '=', district];
+        filter.push(filterDistrict);
+      }
+
+
+      let json = {
+        action : "list",
+        db : "tabrent",
+        table : "tx_product",
+        raw : {
+          selected : "ROUND((SUM(`rating_number`) / COUNT(`rating_number`)), 0) as `rating`, `tx_product`.*, tx_user.user_province, tx_user.user_city, tx_user.user_district "
+        },
+        groupby: "product_id",
+        leftJoin: [
+          {
+              table: "tx_rating",
+              field1: "tx_rating.rating_product_id",
+              field2: "tx_product.product_id"
+          },
+          {
+            table: "tx_user",
+            field1: "tx_user.user_id",
+            field2: "tx_product.product_owner"
+          }],
+        where: filter
+      };
+  
+      fetch_data(INDEX, json).then(function (data) {
+        if (data.success) {
+          if (data.count == 1) {
+            setProduct([data.result]);
+          } else {
+            setProduct(data.result);
+          }
         } else {
           setProduct(data.result);
         }
-      } else {
-        setProduct([]);
-      }
-    });
+      });
 
+      let json_banner = {
+        action: "list",
+        db: "tabrent",
+        table: "tx_banner"
+     };
+  
+      fetch_data(INDEX, json_banner).then(function (data) {
+        if (data.success) {
+          let photo = [];
+          if (data.count == 1) {
+            let photo_data = JSON.parse(data.result.banner_image);
+            photo.push(photo_data[0]);
+          } else {
+              data.result.forEach(value => {
+                let photo_data = JSON.parse(value.banner_image);
+                photo.push(photo_data[0]);
+              });
+          }
+          setBanner(photo);
+        } else {
+         setBanner([]);
+        }
+      });
+
+      setModalFilter(false);
   }
 
   return (
@@ -264,7 +426,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <Modal show={modalFilter} onHide={() => setModalFilter(false)}>
+      <Modal show={modalFilter} onHide={() => setModalFilter(false)} style={{paddingLeft: '0px'}}>
         <Modal.Header closeButton>
           <Modal.Title>Filter Data</Modal.Title>
         </Modal.Header>
@@ -272,14 +434,65 @@ export default function Index() {
           <table width="100%">
             <tr>
               <td>
-                <p className="mb-1 mt-3">Bank Account Number</p>
-               <input className="form-control" type="text" value={filterBankNumber} onChange={(e) => setFilterBankNumber(e.target.value)} />
+                <p className="mb-1 mt-3">Product Name</p>
+               <input className="form-control" type="text" value={filterProductName} onChange={(e) => setFilterProductName(e.target.value)} />
               </td>
             </tr>
             <tr>
               <td>
-                <p className="mb-1 mt-3">Bank Account Name</p>
-               <input className="form-control" type="text" value={filterBankOwner} onChange={(e) => setFilterBankOwner(e.target.value)} />
+                <p className="mb-1 mt-3">Product Brand</p>
+               <input className="form-control" type="text" value={filterProductBrand} onChange={(e) => setFilterProductBrand(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Product Min Price</p>
+               <input className="form-control" type="text" value={filterMinPrice} onChange={(e) => setFilterMinPrice(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Product Max Price</p>
+               <input className="form-control" type="text" value={filterMaxPrice} onChange={(e) => setFilterMaxPrice(e.target.value)} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">Province</p>
+                <select className="form-control" onChange={(e)=>handleChangeProvince(e)}>
+                    <option selected disabled>-- Your Province --</option>
+                  {
+                    provinces.length !== 0 ? provinces.map((provinces, index) => {
+                      return (<option value={provinces.prov_id}>{provinces.prov_name}</option>)
+                    }) : ""
+                  }
+              </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">City</p>
+                <select className="form-control" onChange={(e)=>handleChangeCity(e)}>
+                    <option selected disabled>-- Your City --</option>
+                    {
+                      cities.length !== 0 ? cities.map((cities, index) => {
+                        return (<option value={cities.city_id}>{cities.city_name}</option>)
+                      }) : ""
+                    }
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p className="mb-1 mt-3">District</p>
+                <select className="form-control mb-2" onChange={(e)=>handleChangeDistrict(e)}>
+                    <option selected disabled>-- Your District --</option>
+                    {
+                      districts.length !== 0 ? districts.map((districts, index) => {
+                        return (<option value={districts.dis_id}>{districts.dis_name}</option>)
+                      }) : ""
+                    }
+                  </select>
               </td>
             </tr>
           </table>
