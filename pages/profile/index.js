@@ -98,7 +98,7 @@ export default function Index({ page, setPage }) {
         <ListItem
           value="Get help"
           icon="./icons/icon_help.svg"
-          url="/profile/get_help"
+          url="https://api.whatsapp.com/send?phone=6285708279238&text=Hi%20Admin%20Tabrent"
         />
        
         {/* <ListItem value="Rate us" icon="./icons/icon_like.svg" /> */}
