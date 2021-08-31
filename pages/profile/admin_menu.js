@@ -86,7 +86,7 @@ export default function AdminMenu() {
         <p><b>Admin Menu</b></p>
         <hr />
         <p onClick={() => router.push('/profile/register_shop')} className="mb-1 weight-600" style={{ fontSize: "12px" }}>
-            REGISTER RENTAL OWNER
+            NEW CUSTOMER
         </p>
         <hr />
         <p onClick={() => router.push('/profile/list_user')} className="mb-1 weight-600" style={{ fontSize: "12px" }}>
