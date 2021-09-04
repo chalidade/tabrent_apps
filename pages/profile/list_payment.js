@@ -8,10 +8,14 @@ import { STORE, INDEX, MAIN } from "../../config/api_url";
 export default function ListUser() {
  const [product, setProduct] = useState([]);
  const [show, setShow] = useState(false);
+ const [showSend, setShowSend] = useState(false);
  const [user, setUser] = useState();
  const [photo, setPhoto] = useState([]);
  const [modal, setModal] = useState([]);
-
+ const [photoTransfer, setPhotoTransfer] = useState();
+ 
+ const [tmpSent, setTmpSent] = useState([]);
+ const [transferRent, setTransferRent] = useState(0);
  const [modalFilter, setModalFilter] = useState(false);
  const [filterTransactionAccount, setFilterTransactionAccount] = useState("");
  const [filterTransactionDate, setFilterTransactionDate] = useState("");
@@ -209,7 +213,48 @@ const handleActivate = (e) => {
   });
 }
 
-const handleSend = ({data}) => {
+const handleGetPhoto = (e) => {
+  // get the files
+  let files = e.target.files;
+
+  // Process each file
+  var allFiles = [];
+  for (var i = 0; i < files.length; i++) {
+
+    let file = files[i];
+
+    // Make new FileReader
+    let reader = new FileReader();
+
+    // Convert the file to base64 text
+    reader.readAsDataURL(file);
+
+    // on reader load somthing...
+    reader.onload = () => {
+
+      // Make a fileInfo Object
+      let fileInfo = {
+        name: file.name,
+        type: file.type,
+        size: Math.round(file.size / 1000) + ' kB',
+        base64: reader.result,
+        file: file,
+      };
+
+      // Push it to the state
+      allFiles.push(fileInfo);
+
+      // If all files have been proceed
+      if(allFiles.length == files.length){
+        setPhotoTransfer(allFiles);
+      }
+    }
+  }
+}
+
+const handleSend = () => {
+  if (transferRent !== 0) {
+    let data = tmpSent.data;
     let transaction_number = data.order_transaction_number;
     let update_order = {
         action: "update",
@@ -223,15 +268,40 @@ const handleSend = ({data}) => {
             ]
         ],
         value: {
-            "order_status": "3"
+            "order_status": "3",
+            "order_total_rent": transferRent
         }
       };
 
     fetch_data(STORE, update_order).then(function (data) {
     if (data.success) {
         alert("Order Send to Rental Owner");
-    }
+        let json_file = {
+          "action": "upload_base64",
+          "db": "tabrent",
+          "table": "tx_order",
+          "update" : "order_picture_rent",
+          "main" : false,
+          "where": [
+              [
+                  "order_transaction_number",
+                  "=",
+                  transaction_number
+              ]
+          ],
+          "value" : photoTransfer
+        }
+        fetch_data(STORE, json_file).then(function (result_file) {
+          if (result_file.success) {
+            console.log("File Uploaded");
+          } else {
+            console.log("Upload File Failed");
+          }
+        });
+        setShowSend(false);
+      }
     });
+  }
 }
 
 const handleFilter = () => {
@@ -356,7 +426,7 @@ const handleFilter = () => {
                    </button>
                  </td>
                  <td>
-                    <button onClick={() => (handleSend({data}))} className="btn btn-success mt-2" style={{border: 'none', borderRadius:'5px', float:'left', fontSize: '12px'}}>
+                    <button onClick={() => (setTmpSent({data}), setShowSend(true))} className="btn btn-success mt-2" style={{border: 'none', borderRadius:'5px', float:'left', fontSize: '12px'}}>
                      Send
                    </button>
                  </td>
@@ -406,6 +476,34 @@ const handleFilter = () => {
               </Button>
               <Button id={modal.transfer_id} onClick={(e) => handleActivate(e)} variant="success">
                 Verify
+              </Button>
+            </Modal.Footer>
+          </Modal>
+     ) : ""}
+
+     {modal ? (
+      <Modal centered show={showSend} onHide={() => setShowSend(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Transfer to Rental Owner</Modal.Title>
+          </Modal.Header>
+            <Modal.Body>
+              {/* <img style={{width: '100%', borderRadius: '10px'}} src={data.product_image_main !== null ? MAIN+data.product_image_main : "/profile/icon_no_picture.PNG"} /> */}
+              <div className="">
+                <p className="m-1"><font style={{fontSize: '14px'}}><b>Transfer Total :</b></font> <br /> 
+                  <input className="form-control mt-2" type="number" onChange={(e)=>setTransferRent(e.target.value)} />
+                </p>
+                  <label htmlFor="upload" className="button-primary mt-2 ml-1 p-2" onChange={e => handleGetPhoto(e)}>
+                  <input id="upload" multiple="true" type="file" style={{display:'none'}} /> 
+                  Upload transfer
+                </label>
+             </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button id={modal.transfer_id} className="btn-danger" variant="secondary" onClick={() => setShowSend(false)}>
+                Cancel
+              </Button>
+              <Button id={modal.transfer_id} onClick={() => handleSend()} variant="success">
+                Send
               </Button>
             </Modal.Footer>
           </Modal>
