@@ -158,9 +158,9 @@ export default function AdminMenu() {
             UPDATE ADMIN CONTACT 
         </p>
         <hr />
-        <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
+        {/* <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
             NEW NOTIFICATION 
-        </p>
+        </p> */}
       </div>
       <div
         className="profile-mitra text-center"

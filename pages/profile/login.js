@@ -95,8 +95,9 @@ export default function login() {
           Login
         </button>
         <p className="mt-3" style={{ fontSize: "14px" }}>
-          <font className="color-primary weight-700">Forget Password </font>{" "}
-          <br /> or <br /> Don't have account ?{" "}
+          {/* <font className="color-primary weight-700">Forget Password </font>{" "}
+          <br /> or  */}
+          <br /> Don't have account ?{" "}
           <font className="color-primary weight-700" onClick={handleRegister}>
             Register
           </font>

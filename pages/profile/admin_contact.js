@@ -75,7 +75,7 @@ export default function OrderDate() {
           </p>
         </center>
         <p className="mt-4 text-secondary weight-600">
-          Name <br />
+          Email <br />
           <input onChange={(e)=> setContactName(e.target.value)} value={contact_name} className="form-control mt-2 p-4" />
         </p>
         <p className="mt-4 text-secondary weight-600">

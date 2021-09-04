@@ -290,7 +290,7 @@ const handleFilter = () => {
                         fontWeight: '800'
                     }}>✓</font>
                    )}  
-                     <br /> <font style={{fontSize: '12px', fontWeight: '400'}}>May, 20 2020</font> | <font style={{fontSize: '12px', fontWeight: '400'}}>Rental Owner</font>
+                     <br /> <font style={{fontSize: '12px', fontWeight: '400'}}>May, 20 2020</font> | <font style={{fontSize: '12px', fontWeight: '400'}}>{data.user_status == 1 ? "Customer" : "Rental Owner"}</font>
                      </p>
                  </td>
                  <td>
