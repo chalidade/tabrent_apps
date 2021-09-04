@@ -154,8 +154,8 @@ export default function AdminMenu() {
             PROMO LIST
         </p>
         <hr />
-        <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>
-            UPDATE HELP 
+        <p onClick={() => router.push('/profile/admin_contact')} className="mb-1 weight-600" style={{ fontSize: "12px" }}>
+            UPDATE ADMIN CONTACT 
         </p>
         <hr />
         <p className="mb-1 weight-600" style={{ fontSize: "12px" }}>

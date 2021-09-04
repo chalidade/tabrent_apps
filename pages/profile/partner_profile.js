@@ -12,6 +12,8 @@ export default function OrderDate() {
   const [user, setUser] = useState([]);
   const [newOrder, setNewOrder] = useState(0);
   const [rented, setRented] = useState(0);
+  const [contact_name, setContactName] = useState();
+  const [contact_number, setContactNumber] = useState();
 
   const handleLogout = () => {
     router.push('/');
@@ -23,6 +25,22 @@ export default function OrderDate() {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
       if (localStorage.getItem("is_login") !== null) {
         let data = JSON.parse(localStorage.getItem('user_data'));
+
+        let json_contact = {
+          action: "list",
+          db: "tabrent",
+          table: "tx_contact"
+       };
+    
+        fetch_data(INDEX, json_contact).then(function (data) {
+          if (data.success) {
+            if (data.count == 1) {
+              setContactName(data.result.contact_name);
+              setContactNumber(data.result.contact_number);
+            }
+          }
+        });
+
         setUser(data);
         let json = {
           action : "list",
@@ -244,7 +262,7 @@ export default function OrderDate() {
               </button>
               </td>
               <td style={{paddingTop: '15px'}}>
-                <a href="https://api.whatsapp.com/send?phone=6285708279238&text=Hi%20Admin%20Tabrent">
+                <a href={`https://api.whatsapp.com/send?phone=${contact_number}&text=Hi%20Admin%20Tabrent`}>
                   <center 
                     className="button-white" 
                     style={{

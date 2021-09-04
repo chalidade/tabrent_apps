@@ -18,6 +18,7 @@ export default function ListUser() {
  const [filterKTP, setFilterKTP] = useState("");
  const [filterFirstName, setFilterFirstName] = useState("");
  const [filterStatus, setFilterStatus] = useState("2");
+ const [userType, setUserType] = useState(0);
 
  useEffect(() => {
    if (typeof localStorage !== 'undefined' && localStorage.getItem('user_data')) {
@@ -181,8 +182,13 @@ const handleFilter = () => {
   let email, phone, ktp, status, type, firstName;
   let filter = [];
   
+  if (userType == 0) {
   type = ['user_type', '!=', '3'];
   filter.push(type);
+} else {
+  type = ['user_type', '=', userType];
+  filter.push(type);
+  }
 
   if (filterStatus !== '2') {
     status = ['user_status', '=', filterStatus];
@@ -358,6 +364,18 @@ const handleFilter = () => {
         </Modal.Header>
         <Modal.Body>
           <table width="100%">
+          <tr>
+              <td>
+                <p className="mb-1 mt-3">User Type</p>
+                <select className="form-control mb-1" onChange={(e) => setUserType(e.target.value)}>
+                  {userType == 1 ? (<option value={userType} selected disabled>{userType == 1 ? "Customer" : "Rental Owner"}</option>) : ""}
+                  {userType == 2 ? (<option value={userType} selected disabled>{userType == 1 ? "Customer" : "Rental Owner"}</option>) : ""}
+                  {userType !== 0 ? (<option value="0">All</option>) : ""}
+                  {userType == 1 ? "" : (<option value="1">Customer</option>)}
+                  {userType == 2 ? "" : (<option value="2">Rental Owner</option>)}
+                </select>
+              </td>
+            </tr>
           <tr>
               <td>
                 <p className="mb-1">First Name</p>
