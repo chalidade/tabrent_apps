@@ -285,7 +285,7 @@ export default function Detail() {
         </table>
       </div>
 
-      <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
+      {/* <div className="bg-white mt-3 p-3  pl-4 pr-4" style={{ height: "auto" }}>
         <table width="100%">
           <tr>
             <td>
@@ -299,7 +299,7 @@ export default function Detail() {
             </td>
           </tr>
         </table>
-      </div>
+      </div> */}
 
       <div
         className="mt-3 text-center text-white"

@@ -75,8 +75,7 @@ export default function AccountInformation() {
               user_city: city,
               user_district: district,
               user_address: address,
-              user_type: 1,
-              user_status: 0,
+              user_type: 1
             },
     };
 
@@ -152,22 +151,28 @@ export default function AccountInformation() {
                           let card = JSON.parse(user.user_id_photo)[0];
                           let ktp_foto = JSON.parse(user.user_id_photo_with_user)[0];
                           localStorage.setItem("user_data", JSON.stringify(user));
-                
-                          let city_name = cities.result.filter(cities => cities.city_id  == user.user_city);
-                          city_name = city_name[0].city_name;
-                
-                          let prov_name = province.result.filter(province => province.prov_id  == user.user_province);
-                          prov_name = prov_name[0].prov_name;
-                
-                          let dis_name = districts.result.filter(dis => dis.dis_id  == user.user_district);
-                          dis_name = dis_name[0].dis_name;
+                          
+                          if (user.user_city !== null) {
+                            let city_name = cities.result.filter(cities => cities.city_id  == user.user_city);
+                            city_name = city_name[0].city_name;
+                            setCityName(city_name);
+                          }
+                          
+                          if (user.user_province !== null) {
+                            let prov_name = province.result.filter(province => province.prov_id  == user.user_province);
+                            prov_name = prov_name[0].prov_name;
+                            setProvinceName(prov_name);
+                          }
+                          
+                          if (user.user_district !== null) {
+                            let dis_name = districts.result.filter(dis => dis.dis_id  == user.user_district);
+                            dis_name = dis_name[0].dis_name;
+                            setDistrictName(dis_name);
+                          }
                 
                           setCity(user.user_city);
                           setProvince(user.user_province);
                           setDistrict(user.user_district);
-                          setProvinceName(prov_name);
-                          setCityName(city_name);
-                          setDistrictName(dis_name);
                           setFirstName(user.user_first_name);
                           setLastName(user.user_last_name);
                           setBirthdate(user.user_birthdate);
@@ -367,11 +372,11 @@ export default function AccountInformation() {
           }}
           label="Email"
         />
-        <div className="mt-15 mb-15">
+        {/* <div className="mt-15 mb-15">
           <Link href="/profile/change_password">
             <font className="color-primary weight-600">Change Password</font>
           </Link>
-        </div>
+        </div> */}
         <TextField
           style={style.textField}
           fullWidth={true}
@@ -383,12 +388,12 @@ export default function AccountInformation() {
           }}
           label="ID Card Number"
         />
-        <div className="mt-30 mb-30">
+        {/* <div className="mt-30 mb-30">
           <p className="weight-500" onClick={() => (setModalPhoto(true), setModalPhotoData('card'))}>Photo ID Card</p>
         </div>
         <div className="mt-30 mb-30">
           <p className="weight-500" onClick={() => (setModalPhoto(true), setModalPhotoData('card_photo'))}>Photo With ID Card</p>
-        </div>
+        </div> */}
         {/* <div className="mt-30">
           <p className="weight-500">Driving Licence Card</p>
         </div> */}

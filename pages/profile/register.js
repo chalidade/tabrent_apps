@@ -519,7 +519,7 @@ export default function Register() {
               }}
               label="Full Address"
             />
-            <p className="mt-4 text-secondary weight-600">
+            {/* <p className="mt-4 text-secondary weight-600">
               Upload Your ID Card Photo
             </p>
             <div
@@ -574,7 +574,7 @@ export default function Register() {
             </label>
             <span style={{ fontSize: "12px", paddingLeft: "10px" }}>
               (max file size 2 Mb)
-            </span>
+            </span> */}
             <button
               onClick={handleFinish}
               className="button-primary mt-4"
